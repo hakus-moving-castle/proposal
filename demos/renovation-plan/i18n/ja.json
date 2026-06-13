@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "プロジェクト全面刷新：AI駆動のアジャイル考古学とリファクタリング計画"
+  },
+  "nav": {
+    "lang_label": "言語"
+  },
+  "hero": {
+    "title": "プロジェクト全面刷新：AI駆動のアジャイル考古学とリファクタリング計画",
+    "subtitle": "AI考古学、データ境界の分離、TDDパイプラインにより、デザインの乖離と技術的負債を根本から解消します。",
+    "toggle_as_is": "現状 As-is",
+    "toggle_to_be": "刷新ビジョン To-be",
+    "as_is_items": [
+      "デザイン稿との乖離",
+      "コードの劣化",
+      "新人オンボーディングの困難"
+    ],
+    "to_be_items": [
+      "100%テストカバレッジ",
+      "デザインシステムの同期",
+      "AI Agentによる自動タスク配分"
+    ]
+  },
+  "roles": {
+    "heading": "モダナイゼーションパイプライン：4つのコアロール",
+    "subheading": "人とAIの協業境界を明確に定義し、属人化された知識への依存を大幅に削減します。",
+    "cards": [
+      {
+        "title": "コード考古学者",
+        "description": "レガシーコードから隠れたビジネスロジックを発掘し、デッドコードを除去します。",
+        "badge": "🤖 AI 80%"
+      },
+      {
+        "title": "データ境界プランナー",
+        "description": "クリーンなフロントエンド型を定義し、バックエンドの不整合データを遮断し、派生計算ロジックを集約します。",
+        "badge": "🤖 AI 70%"
+      },
+      {
+        "title": "振る舞いテストアーキテクト",
+        "description": "ビジネスロジックをBDDテストケースに変換し、リファクタリング時の機能漏れを防ぎます。",
+        "badge": "🤖 AI 60%"
+      },
+      {
+        "title": "ドキュメント監査員",
+        "description": "コードカバレッジを厳格に監査し、残存するすべてのコードパスに記録があることを保証します。",
+        "badge": "🧑‍💻 人手 70%（最終防衛線）"
+      }
+    ]
+  },
+  "figma": {
+    "heading": "Figmaデザインシステム：Token三層物理分離防衛線",
+    "subheading": "自由設計を終焉させ、コピーとフロントエンドフィールドをi18n-keyで恒久的に整合させます。",
+    "tiers": [
+      {
+        "name": "Primitive Layer",
+        "tokens": "slate-50, blue-500",
+        "locked": true,
+        "lock_label": "デザイナー使用禁止"
+      },
+      {
+        "name": "Brand Layer",
+        "tokens": "brand-primary",
+        "locked": true,
+        "lock_label": "デザイナー使用禁止"
+      },
+      {
+        "name": "Semantic Layer",
+        "tokens": "semantic/bg/base",
+        "locked": false,
+        "lock_label": "キャンバス唯一の合法呼び出し層"
+      }
+    ]
+  },
+  "pipeline": {
+    "heading": "Matt Pocock 5ステップ実行ファクトリー",
+    "steps": [
+      "Grill-with-Docs",
+      "To-PRD",
+      "To-Issues",
+      "TDD",
+      "Architecture-Refactor"
+    ],
+    "simulate_btn": "AI原子化配分をシミュレート (Simulate)",
+    "simulate_success": "配分成功！3件の原子化Issueを生成しました。",
+    "mock_issues": [
+      {
+        "id": "#01",
+        "tag": "Schema",
+        "title": "transformBookingAmount純関数を実装する"
+      },
+      {
+        "id": "#02",
+        "tag": "UI",
+        "title": "Figmaに基づき新版BookingCard静的コンポーネントを実装する"
+      },
+      {
+        "id": "#03",
+        "tag": "BDD",
+        "title": "予約コード検証Edge Casesの受入テストを作成する"
+      }
+    ]
+  },
+  "roadmap": {
+    "heading": "ロードマップ",
+    "phases": [
+      {
+        "title": "Phase 1：考古学とデータ境界",
+        "description": "恒久的な事実ドキュメントを産出する",
+        "risk": "🔥 リスク管理ポイント：PMと技術変更ディスカッションを開始する"
+      },
+      {
+        "title": "Phase 2：Figmaシステム再編",
+        "description": "As-is画面の100%復元と変数の導入"
+      },
+      {
+        "title": "Phase 3：開発とリファクタリング開始",
+        "description": "TDD実行パイプライン、PRDからIssuesへの開発"
+      }
+    ]
+  },
+  "footer": {
+    "text": "Project Renovation & Refactor Plan"
+  }
+}

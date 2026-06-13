@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "專案全面翻新：AI 驅動的敏捷考古與重構計畫"
+  },
+  "nav": {
+    "lang_label": "語系"
+  },
+  "hero": {
+    "title": "專案全面翻新：AI 驅動的敏捷考古與重構計畫",
+    "subtitle": "透過 AI 考古、資料邊界隔離與 TDD 流水線，徹底終結設計脫鉤與技術債。",
+    "toggle_as_is": "檢視現況 As-is",
+    "toggle_to_be": "翻新願景 To-be",
+    "as_is_items": [
+      "設計稿脫鉤",
+      "程式碼劣化",
+      "新人 Onboarding 困難"
+    ],
+    "to_be_items": [
+      "100% 測試覆蓋",
+      "設計系統同步",
+      "AI Agent 自動化派工"
+    ]
+  },
+  "roles": {
+    "heading": "現代化重構流水線：4 大核心角色",
+    "subheading": "精準框定人機協作邊界，大幅降低人工通靈時間。",
+    "cards": [
+      {
+        "title": "代碼考古學家",
+        "description": "翻閱舊代碼，挖出隱藏的業務邏輯，剔除死碼。",
+        "badge": "🤖 AI 80%"
+      },
+      {
+        "title": "資料邊界規劃師",
+        "description": "定義乾淨的新前端型別，阻絕後端髒資料，收攏衍生計算邏輯。",
+        "badge": "🤖 AI 70%"
+      },
+      {
+        "title": "行為測試架構師",
+        "description": "將業務邏輯轉化為 BDD 測試案例，確保重構時功能不漏。",
+        "badge": "🤖 AI 60%"
+      },
+      {
+        "title": "文件盤點員",
+        "description": "嚴格審查程式碼覆蓋率，確保留下的每條線路都有紀錄。",
+        "badge": "🧑‍💻 人工 70%（最終防線）"
+      }
+    ]
+  },
+  "figma": {
+    "heading": "Figma 設計系統：Token 三層物理隔離防線",
+    "subheading": "終結自由發揮，文案與前端欄位透過 i18n-key 永久對齊。",
+    "tiers": [
+      {
+        "name": "Primitive Layer",
+        "tokens": "slate-50, blue-500",
+        "locked": true,
+        "lock_label": "設計師禁用"
+      },
+      {
+        "name": "Brand Layer",
+        "tokens": "brand-primary",
+        "locked": true,
+        "lock_label": "設計師禁用"
+      },
+      {
+        "name": "Semantic Layer",
+        "tokens": "semantic/bg/base",
+        "locked": false,
+        "lock_label": "畫布唯一合法調用層"
+      }
+    ]
+  },
+  "pipeline": {
+    "heading": "Matt Pocock 5 步驟執行工廠",
+    "steps": [
+      "Grill-with-Docs",
+      "To-PRD",
+      "To-Issues",
+      "TDD",
+      "Architecture-Refactor"
+    ],
+    "simulate_btn": "模擬 AI 原子化派工 (Simulate)",
+    "simulate_success": "派工成功！已產出 3 張原子化 Issue",
+    "mock_issues": [
+      {
+        "id": "#01",
+        "tag": "Schema",
+        "title": "實作 transformBookingAmount 純函數"
+      },
+      {
+        "id": "#02",
+        "tag": "UI",
+        "title": "依據 Figma 實作新版 BookingCard 靜態元件"
+      },
+      {
+        "id": "#03",
+        "tag": "BDD",
+        "title": "撰寫預約代碼驗證 Edge Cases 驗收案例"
+      }
+    ]
+  },
+  "roadmap": {
+    "heading": "Roadmap",
+    "phases": [
+      {
+        "title": "Phase 1：考古與資料邊界",
+        "description": "產出永久事實文檔",
+        "risk": "🔥 風險控制點：與 PM 發動技術變更討論"
+      },
+      {
+        "title": "Phase 2：Figma 系統重組",
+        "description": "100% 還原 As-is 畫面與變數導入"
+      },
+      {
+        "title": "Phase 3：開發與重構啟動",
+        "description": "TDD 執行流水線，PRD 轉 Issues 開發"
+      }
+    ]
+  },
+  "footer": {
+    "text": "Project Renovation & Refactor Plan"
+  }
+}

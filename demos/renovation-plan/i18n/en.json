@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "Full Project Renovation: AI-Driven Agile Archaeology & Refactor Plan"
+  },
+  "nav": {
+    "lang_label": "Language"
+  },
+  "hero": {
+    "title": "Full Project Renovation: AI-Driven Agile Archaeology & Refactor Plan",
+    "subtitle": "End design drift and technical debt through AI archaeology, data boundary isolation, and a TDD pipeline.",
+    "toggle_as_is": "View As-is",
+    "toggle_to_be": "Vision To-be",
+    "as_is_items": [
+      "Design specs out of sync",
+      "Code degradation",
+      "Difficult onboarding for new hires"
+    ],
+    "to_be_items": [
+      "100% test coverage",
+      "Design system in sync",
+      "AI Agent automated task dispatch"
+    ]
+  },
+  "roles": {
+    "heading": "Modernization Pipeline: 4 Core Roles",
+    "subheading": "Precisely define human-AI collaboration boundaries to drastically reduce tribal knowledge overhead.",
+    "cards": [
+      {
+        "title": "Code Archaeologist",
+        "description": "Excavate hidden business logic from legacy code and eliminate dead code.",
+        "badge": "🤖 AI 80%"
+      },
+      {
+        "title": "Data Boundary Planner",
+        "description": "Define clean frontend types, block dirty backend data, and consolidate derived computation logic.",
+        "badge": "🤖 AI 70%"
+      },
+      {
+        "title": "Behavior Test Architect",
+        "description": "Transform business logic into BDD test cases to ensure nothing breaks during refactoring.",
+        "badge": "🤖 AI 60%"
+      },
+      {
+        "title": "Documentation Auditor",
+        "description": "Rigorously audit code coverage to ensure every surviving code path is documented.",
+        "badge": "🧑‍💻 Human 70% (final gate)"
+      }
+    ]
+  },
+  "figma": {
+    "heading": "Figma Design System: 3-Tier Token Physical Isolation",
+    "subheading": "End free-form design. Copy and frontend fields stay permanently aligned via i18n-key.",
+    "tiers": [
+      {
+        "name": "Primitive Layer",
+        "tokens": "slate-50, blue-500",
+        "locked": true,
+        "lock_label": "Designers disabled"
+      },
+      {
+        "name": "Brand Layer",
+        "tokens": "brand-primary",
+        "locked": true,
+        "lock_label": "Designers disabled"
+      },
+      {
+        "name": "Semantic Layer",
+        "tokens": "semantic/bg/base",
+        "locked": false,
+        "lock_label": "Only legal layer for canvas"
+      }
+    ]
+  },
+  "pipeline": {
+    "heading": "Matt Pocock 5-Step Execution Factory",
+    "steps": [
+      "Grill-with-Docs",
+      "To-PRD",
+      "To-Issues",
+      "TDD",
+      "Architecture-Refactor"
+    ],
+    "simulate_btn": "Simulate AI Atomic Dispatch",
+    "simulate_success": "Dispatch successful! 3 atomic Issues generated.",
+    "mock_issues": [
+      {
+        "id": "#01",
+        "tag": "Schema",
+        "title": "Implement transformBookingAmount pure function"
+      },
+      {
+        "id": "#02",
+        "tag": "UI",
+        "title": "Build new BookingCard static component per Figma"
+      },
+      {
+        "id": "#03",
+        "tag": "BDD",
+        "title": "Write booking code validation Edge Cases acceptance tests"
+      }
+    ]
+  },
+  "roadmap": {
+    "heading": "Roadmap",
+    "phases": [
+      {
+        "title": "Phase 1: Archaeology & Data Boundaries",
+        "description": "Produce permanent fact documentation",
+        "risk": "🔥 Risk checkpoint: Initiate technical change discussion with PM"
+      },
+      {
+        "title": "Phase 2: Figma System Reorganization",
+        "description": "100% As-is screen restoration and variable import"
+      },
+      {
+        "title": "Phase 3: Development & Refactor Launch",
+        "description": "TDD execution pipeline, PRD to Issues development"
+      }
+    ]
+  },
+  "footer": {
+    "text": "Project Renovation & Refactor Plan"
+  }
+}
