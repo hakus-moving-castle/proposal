@@ -2,101 +2,461 @@
   "meta": {
     "title": "Full Project Renovation: AI-Driven Agile Archaeology & Refactor Plan"
   },
+  "common": {
+    "fold_docflow": "Document flow diagram",
+    "fold_iof": "Input / Output / Format details",
+    "fold_output_tree": "Output directory structure",
+    "fold_note": "Survey notes",
+    "fold_steps": "Translation prep steps ({n} steps)",
+    "fold_skills_table": "Skills reference table",
+    "fold_deliverables": "Deliverables",
+    "label_input": "Input",
+    "label_output": "Output",
+    "label_format": "Format",
+    "tier_budget": "Budget",
+    "tier_required": "Required",
+    "tier_context": "Context",
+    "tier_human": "Human",
+    "tier_budget_desc": "cheaper model OK",
+    "tier_required_desc": "do not downgrade",
+    "tier_context_desc": "needs full codebase",
+    "tier_human_desc": "no AI needed",
+    "tool_claude": "Claude",
+    "tool_cursor": "Cursor",
+    "tool_human": "Human"
+  },
   "nav": {
-    "lang_label": "Language"
+    "toc": "Contents"
   },
   "hero": {
     "title": "Full Project Renovation: AI-Driven Agile Archaeology & Refactor Plan",
-    "subtitle": "End design drift and technical debt through AI archaeology, data boundary isolation, and a TDD pipeline.",
-    "toggle_as_is": "View As-is",
-    "toggle_to_be": "Vision To-be",
-    "as_is_items": [
-      "Design specs out of sync",
-      "Code degradation",
-      "Difficult onboarding for new hires"
-    ],
-    "to_be_items": [
-      "100% test coverage",
-      "Design system in sync",
-      "AI Agent automated task dispatch"
-    ]
+    "subtitle": "End design drift and technical debt through AI archaeology, data boundary isolation, Figma design system rebuild, and the Matt Pocock Skills pipeline."
   },
-  "roles": {
-    "heading": "Modernization Pipeline: 4 Core Roles",
-    "subheading": "Precisely define human-AI collaboration boundaries to drastically reduce tribal knowledge overhead.",
-    "cards": [
+  "toc": [
+    {
+      "id": "problems",
+      "label": "Background"
+    },
+    {
+      "id": "vision",
+      "label": "As-is vs To-be"
+    },
+    {
+      "id": "roles",
+      "label": "4-Role Pipeline"
+    },
+    {
+      "id": "docflow",
+      "label": "Doc Flow"
+    },
+    {
+      "id": "survey",
+      "label": "Survey Priority"
+    },
+    {
+      "id": "freeze",
+      "label": "Freeze & Change"
+    },
+    {
+      "id": "figma",
+      "label": "Figma System"
+    },
+    {
+      "id": "i18n",
+      "label": "i18n Prep"
+    },
+    {
+      "id": "dev",
+      "label": "Dev Workflow"
+    },
+    {
+      "id": "pipeline",
+      "label": "Execution Factory"
+    },
+    {
+      "id": "roadmap",
+      "label": "Roadmap"
+    }
+  ],
+  "problems": {
+    "heading": "Background: Current Problems",
+    "groups": [
       {
-        "title": "Code Archaeologist",
-        "description": "Excavate hidden business logic from legacy code and eliminate dead code.",
-        "badge": "🤖 AI 80%"
+        "title": "Messy frontend code",
+        "items": [
+          "Non-recommended patterns that trigger hard-to-debug framework bugs"
+        ]
       },
       {
-        "title": "Data Boundary Planner",
-        "description": "Define clean frontend types, block dirty backend data, and consolidate derived computation logic.",
-        "badge": "🤖 AI 70%"
-      },
-      {
-        "title": "Behavior Test Architect",
-        "description": "Transform business logic into BDD test cases to ensure nothing breaks during refactoring.",
-        "badge": "🤖 AI 60%"
-      },
-      {
-        "title": "Documentation Auditor",
-        "description": "Rigorously audit code coverage to ensure every surviving code path is documented.",
-        "badge": "🧑‍💻 Human 70% (final gate)"
+        "title": "No backend specification",
+        "items": [
+          "Cannot infer API response format from frontend code alone; extra guards added as workarounds",
+          "Inconsistent error formats leading to scattered error-handling logic",
+          "Chaotic naming and shapes; transforms are scattered, making original values hard to trace"
+        ]
       }
     ]
   },
+  "vision": {
+    "heading": "Pain Points vs Renovation Vision",
+    "as_is_title": "As-is Pain Points",
+    "to_be_title": "To-be Vision",
+    "as_is_items": [
+      "Design specs out of sync with production",
+      "Code degradation and tech debt",
+      "Difficult onboarding and tribal knowledge",
+      "Chaotic backend formats with scattered transforms"
+    ],
+    "to_be_items": [
+      "100% test coverage — refactor without regressions",
+      "Figma design system synced with code",
+      "AI Agent dispatch with clear human-AI boundaries",
+      "Data boundary isolation with clean types"
+    ]
+  },
+  "roles": {
+    "heading": "Spec Creation: 4-Role Skills Workflow",
+    "subheading": "Define human-AI boundaries and distill chaos into freezable fact documentation.",
+    "cards": [
+      {
+        "title": "1. Code Archaeologist",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "batch archaeology"
+        },
+        "task": "Map As-is behavior, extract pure business logic, eliminate dead code.",
+        "inputs": [
+          "Legacy route/component source (Repomix bundle)"
+        ],
+        "output": "docs/records/[domain]/flow.md",
+        "format": [
+          "### Happy Path",
+          "### Edge Cases (business branches only)",
+          "### Unverified Logic"
+        ]
+      },
+      {
+        "title": "2. Data Boundary Planner",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Opus 4.6",
+          "tier": "required",
+          "hint": "high-precision types"
+        },
+        "task": "Block dirty backend formats; define clean interfaces; consolidate transformers.",
+        "inputs": [
+          "Raw API JSON",
+          "flow.md",
+          "Component transform logic",
+          "Store triggers & derived state"
+        ],
+        "output": "docs/main/contract-schemas/endpoints/[name].md",
+        "format": [
+          "Upstream Raw JSON Schema",
+          "Target Interface with JSDoc",
+          "Transformer pure function prototypes"
+        ]
+      },
+      {
+        "title": "3. Behavior Test Architect",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "structured BDD"
+        },
+        "task": "Convert flow.md + schemas into decoupled BDD acceptance tests.",
+        "inputs": [
+          "flow.md",
+          "contract-schemas/"
+        ],
+        "output": "docs/records/[domain]/e2e-cases.feature",
+        "format": [
+          "Gherkin Given-When-Then",
+          "All business edge cases",
+          "Exclude infra errors (404/500/offline)"
+        ]
+      },
+      {
+        "title": "4. Documentation Auditor",
+        "ai_recommendation": {
+          "tool": "human",
+          "tier": "human",
+          "hint": "final gate"
+        },
+        "task": "Audit archaeology progress from a code-coverage perspective.",
+        "inputs": [
+          "Legacy file inventory",
+          "docs/records/ output"
+        ],
+        "output": "docs/survey-checklist.md",
+        "format": [
+          "All .ts/.tsx accounted for",
+          "Every API has schema + BDD",
+          "100% check = Main Docs freeze"
+        ]
+      }
+    ]
+  },
+  "docflow": {
+    "heading": "Top-Level Architecture & Document Flow",
+    "subheading": "From legacy codebase to freezable Main Docs.",
+    "diagram": "graph TD\n    Code[\"Legacy codebase\"] -->|Repomix / Cursor| R1[\"1. Code Archaeologist\"]\n    R1 -->|As-is behavior| Flow[\"records/…/flow.md\"]\n    Payload[\"Raw API JSON\"] --> R2[\"2. Data Boundary Planner\"]\n    Flow --> R2\n    Comp[\"Legacy components & Store\"] --> R2\n    R2 -->|To-be clean types| Schema[\"main/contract-schemas/\"]\n    R2 --> Ctx[\"context.md\"]\n    R1 --> Ctx\n    Flow --> R3[\"3. Behavior Test Architect\"]\n    Schema --> R3\n    R3 -->|BDD| BDD[\"records/…/e2e-cases.feature\"]\n    Flow --> R4[\"4. Documentation Auditor\"]\n    Schema --> R4\n    BDD --> R4\n    R4 -->|Coverage audit| Check[\"survey-checklist.md\"]\n    Check -->|100%| Final[\"Main Docs freeze point\"]"
+  },
+  "docstructure": {
+    "heading": "Output Directory Convention",
+    "tree": "docs/\n├── context.md               # Global terminology (permanent)\n├── survey-checklist.md      # Archaeology progress tracker\n├── records/                 # Staging (deletable after freeze)\n│   └── [domain]/\n│       ├── flow.md\n│       └── e2e-cases.feature\n└── main/                    # Single Source of Truth\n    ├── flows/\n    ├── pages/\n    └── contract-schemas/\n        ├── shared/\n        └── endpoints/"
+  },
+  "survey": {
+    "heading": "Core Survey Priority",
+    "categories": [
+      {
+        "title": "1. Core Domain Flows",
+        "priority": "Highest",
+        "items": [
+          "Booking Flow",
+          "Search & Filter",
+          "Coupon / Affiliate"
+        ],
+        "note": "Cross-page flows — full flow.md + contract-schemas + BDD required.",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Opus 4.6",
+          "tier": "required",
+          "hint": "core flows"
+        }
+      },
+      {
+        "title": "2. Static & Content Pages",
+        "priority": "Simplified",
+        "items": [
+          "Navigation, FAQ, Top Page blocks"
+        ],
+        "note": "Stored in i18n files (no CMS). List blocks and i18n keys in docs/main/pages/ only.",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "static pages"
+        }
+      },
+      {
+        "title": "3. Global Infrastructure",
+        "priority": "global-constraints",
+        "items": [
+          "Session validity period",
+          "Error attempt limits (anti-abuse)",
+          "Global state & URL sync (locale, currency)"
+        ],
+        "note": "Consolidated into docs/records/global-constraints/e2e-cases.feature.",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "cross-module"
+        }
+      }
+    ]
+  },
+  "freeze": {
+    "heading": "Change Management & Main Docs Freeze",
+    "phase1_title": "Phase 1: Archaeology",
+    "phase1_items": [
+      "records/ captures As-is",
+      "main/flows/ writes confirmed As-is logic",
+      "main/contract-schemas/ produces To-be clean types",
+      "survey-checklist.md 100% → freeze point, PM change discussion"
+    ],
+    "phase2_title": "Phase 2: Refactor & New Development",
+    "phase2_items": [
+      "Feature branches modify docs/main/ (always To-be endpoint)",
+      "PR includes CHANGELOG.md with ticket links",
+      "Docs merge with code — code is docs, docs is code"
+    ]
+  },
   "figma": {
-    "heading": "Figma Design System: 3-Tier Token Physical Isolation",
-    "subheading": "End free-form design. Copy and frontend fields stay permanently aligned via i18n-key.",
+    "heading": "Figma Design System",
+    "org_heading": "Organization: Central Template, Local Customization",
+    "org_desc": "Figma Professional cannot cross-file link Variables — Standard Recipe architecture.",
+    "variables_note": "⚠️ Creating Figma Variables requires at least a Pro plan Full seat (not Collab seat).",
+    "org_central": "Central Workspace → Core shadcn Template (Primitives + Standard Components)",
+    "org_local": "Per-project → Copy template + Local Semantic overrides + 100% As-is screen rebuild",
+    "pattern_heading": "Pattern Maintenance Boundaries",
+    "pattern_central": "Central: 100% identical logic & visuals, zero customization (e.g. Japan map selector) → Copy-Paste",
+    "pattern_local": "Local: Product-specific semantics (BookingCard, CouponSelector) → Central shadcn base + local assembly",
+    "token_heading": "3-Tier Token Physical Isolation",
+    "token_subheading": "Designers may only use Layer 3 Semantic tokens on canvas.",
     "tiers": [
       {
-        "name": "Primitive Layer",
-        "tokens": "slate-50, blue-500",
-        "locked": true,
-        "lock_label": "Designers disabled"
+        "layer": "1. Primitive",
+        "example": "primitive/neutral/100, primitive/blue/500",
+        "css": "--nv-primitive-neutral-100",
+        "access": "🔒 Designers forbidden",
+        "locked": true
       },
       {
-        "name": "Brand Layer",
-        "tokens": "brand-primary",
-        "locked": true,
-        "lock_label": "Designers disabled"
+        "layer": "2. Brand",
+        "example": "brand/primary, brand/secondary",
+        "css": "--nv-brand-primary",
+        "access": "🔒 Designers forbidden",
+        "locked": true
       },
       {
-        "name": "Semantic Layer",
-        "tokens": "semantic/bg/base",
-        "locked": false,
-        "lock_label": "Only legal layer for canvas"
+        "layer": "3. Semantic",
+        "example": "semantic/bg/base",
+        "css": "--nv-semantic-bg-base",
+        "access": "🔓 Only legal canvas layer",
+        "locked": false
+      }
+    ],
+    "align_heading": "Screen Rebuild & i18n-key Contextual Alignment",
+    "align_desc": "100% structural alignment with production. Figma component Description must note i18n key.",
+    "align_example": "Canvas shows \"Please enter your booking code\" → Description: [i18n-key] booking.field.code_placeholder"
+  },
+  "i18n_prep": {
+    "heading": "Translation Preparation",
+    "note": "Archaeology docs via Claude Web; renovation implementation via Cursor.",
+    "steps": [
+      "AI consolidates legacy translations to JSON (status: active | unused | in-progress)",
+      "Script compares legacy_key vs original translations; flag dynamic keys as active manually",
+      "Script writes to Google Spreadsheet (single sheet + namespace; Instruction Sheet for Tone Guide)",
+      "Gemini can handle initial translation delegation (Japanese: 敬體)",
+      "New project script syncs Sheet → code (filter unused; in-progress shows 🚧)",
+      "SKILL.md rule: missing keys → hardcode + // TODO: i18n-missing, never invent keys"
+    ],
+    "step_details": [
+      {
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Haiku 4.5",
+          "tier": "budget",
+          "hint": "format cleanup"
+        }
+      },
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  "dev": {
+    "heading": "Development: Matt Pocock Agent Skills Split",
+    "subheading": "Matt Pocock's 5-step Skills pipeline with clear Claude vs Cursor responsibilities.",
+    "ref_label": "Reference",
+    "ref_url": "https://www.aihero.dev/5-agent-skills-i-use-every-day",
+    "claude_title": "Claude (Archaeology → To-Issues)",
+    "claude_desc": "Documentation, requirement clarification, PRD writing, atomic issue breakdown. Strict process for planning.",
+    "cursor_title": "Cursor Agent + Junior Practice (TDD → Renovation)",
+    "cursor_desc": "TDD red-green-refactor, architecture deepening, actual code renovation. Some issues for juniors; seniors gate with Cursor Agent.",
+    "table_skill": "Skill",
+    "table_desc": "Description",
+    "table_ai": "Recommended AI",
+    "table_phase": "Phase",
+    "skills": [
+      {
+        "name": "Grill-with-Docs",
+        "desc": "Walk the design tree using archaeology docs",
+        "tool": "Claude",
+        "phase": "Planning",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Opus 4.6",
+          "tier": "required",
+          "hint": "decision-tree reasoning"
+        }
+      },
+      {
+        "name": "To-PRD",
+        "desc": "Produce PRD with user stories and module sketch",
+        "tool": "Claude",
+        "phase": "Planning",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "structured PRD"
+        }
+      },
+      {
+        "name": "To-Issues",
+        "desc": "Break PRD into vertical-slice issues with blocking relations",
+        "tool": "Claude",
+        "phase": "Planning",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "atomic breakdown"
+        }
+      },
+      {
+        "name": "TDD",
+        "desc": "Red-green-refactor loop; one test, one implementation",
+        "tool": "Cursor",
+        "phase": "Development",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "red-green refactor"
+        }
+      },
+      {
+        "name": "Architecture-Refactor",
+        "desc": "Deepen shallow modules; clarify test boundaries for agents",
+        "tool": "Cursor",
+        "phase": "Development",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "cross-file refactor"
+        }
       }
     ]
   },
   "pipeline": {
-    "heading": "Matt Pocock 5-Step Execution Factory",
-    "steps": [
-      "Grill-with-Docs",
-      "To-PRD",
-      "To-Issues",
-      "TDD",
-      "Architecture-Refactor"
-    ],
-    "simulate_btn": "Simulate AI Atomic Dispatch",
-    "simulate_success": "Dispatch successful! 3 atomic Issues generated.",
+    "heading": "Execution Factory: Sample Atomic Issues",
+    "subheading": "Vertical slices from To-Issues — each cuts through all integration layers (Tracer Bullet).",
     "mock_issues": [
       {
         "id": "#01",
         "tag": "Schema",
-        "title": "Implement transformBookingAmount pure function"
+        "title": "Implement transformBookingAmount pure function",
+        "blocks": "No blockers — start immediately",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "TDD pure fn"
+        }
       },
       {
         "id": "#02",
         "tag": "UI",
-        "title": "Build new BookingCard static component per Figma"
+        "title": "Build BookingCard static component per Figma",
+        "blocks": "Blocked by #01",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "component build"
+        }
       },
       {
         "id": "#03",
         "tag": "BDD",
-        "title": "Write booking code validation Edge Cases acceptance tests"
+        "title": "Write booking code validation edge case tests",
+        "blocks": "Parallel with #01",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "acceptance tests"
+        }
       }
     ]
   },
@@ -105,16 +465,49 @@
     "phases": [
       {
         "title": "Phase 1: Archaeology & Data Boundaries",
-        "description": "Produce permanent fact documentation",
-        "risk": "🔥 Risk checkpoint: Initiate technical change discussion with PM"
+        "description": "4-role Skills produce Main Docs; 100% survey-checklist",
+        "risk": "🔥 Risk checkpoint: Freeze then PM change discussion",
+        "deliverables": [
+          "flow.md × N domains",
+          "contract-schemas/",
+          "e2e-cases.feature",
+          "context.md"
+        ],
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Opus+Sonnet",
+          "tier": "required",
+          "hint": "planning phase"
+        }
       },
       {
         "title": "Phase 2: Figma System Reorganization",
-        "description": "100% As-is screen restoration and variable import"
+        "description": "Copy central template + Local Semantic + 100% As-is rebuild",
+        "deliverables": [
+          "Design System File",
+          "i18n-key alignment notes",
+          "Translation JSON → Google Sheet"
+        ],
+        "ai_recommendation": {
+          "tool": "human",
+          "tier": "human",
+          "hint": "manual Figma work"
+        }
       },
       {
         "title": "Phase 3: Development & Refactor Launch",
-        "description": "TDD execution pipeline, PRD to Issues development"
+        "description": "After Claude To-Issues: Cursor Agent + juniors run TDD pipeline",
+        "deliverables": [
+          "Vertical-slice PRs",
+          "CHANGELOG.md",
+          "Test coverage target met"
+        ],
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "dev & refactor"
+        }
       }
     ]
   },

@@ -2,101 +2,461 @@
   "meta": {
     "title": "プロジェクト全面刷新：AI駆動のアジャイル考古学とリファクタリング計画"
   },
+  "common": {
+    "fold_docflow": "文書フロー図",
+    "fold_iof": "Input / Output / Format 詳細",
+    "fold_output_tree": "Outputディレクトリ構造",
+    "fold_note": "棚卸備考",
+    "fold_steps": "翻訳準備ステップ（全{n}ステップ）",
+    "fold_skills_table": "Skills対照表",
+    "fold_deliverables": "成果物一覧",
+    "label_input": "Input",
+    "label_output": "Output",
+    "label_format": "Format",
+    "tier_budget": "節約可",
+    "tier_required": "必須",
+    "tier_context": "要コンテキスト",
+    "tier_human": "人手",
+    "tier_budget_desc": "安価なモデル可",
+    "tier_required_desc": "ダウングレード非推奨",
+    "tier_context_desc": "codebase全体が必要",
+    "tier_human_desc": "AI不要",
+    "tool_claude": "Claude",
+    "tool_cursor": "Cursor",
+    "tool_human": "人手"
+  },
   "nav": {
-    "lang_label": "言語"
+    "toc": "目次"
   },
   "hero": {
     "title": "プロジェクト全面刷新：AI駆動のアジャイル考古学とリファクタリング計画",
-    "subtitle": "AI考古学、データ境界の分離、TDDパイプラインにより、デザインの乖離と技術的負債を根本から解消します。",
-    "toggle_as_is": "現状 As-is",
-    "toggle_to_be": "刷新ビジョン To-be",
-    "as_is_items": [
-      "デザイン稿との乖離",
-      "コードの劣化",
-      "新人オンボーディングの困難"
-    ],
-    "to_be_items": [
-      "100%テストカバレッジ",
-      "デザインシステムの同期",
-      "AI Agentによる自動タスク配分"
-    ]
+    "subtitle": "AI考古学、データ境界の分離、Figmaデザインシステム再構築、Matt Pocock Skillsパイプラインにより、デザイン乖離と技術的負債を根本から解消します。"
   },
-  "roles": {
-    "heading": "モダナイゼーションパイプライン：4つのコアロール",
-    "subheading": "人とAIの協業境界を明確に定義し、属人化された知識への依存を大幅に削減します。",
-    "cards": [
+  "toc": [
+    {
+      "id": "problems",
+      "label": "前情提要"
+    },
+    {
+      "id": "vision",
+      "label": "現状とビジョン"
+    },
+    {
+      "id": "roles",
+      "label": "4ロール"
+    },
+    {
+      "id": "docflow",
+      "label": "文書フロー"
+    },
+    {
+      "id": "survey",
+      "label": "棚卸優先順位"
+    },
+    {
+      "id": "freeze",
+      "label": "凍結と変更管理"
+    },
+    {
+      "id": "figma",
+      "label": "Figma"
+    },
+    {
+      "id": "i18n",
+      "label": "翻訳準備"
+    },
+    {
+      "id": "dev",
+      "label": "開発分担"
+    },
+    {
+      "id": "pipeline",
+      "label": "実行ファクトリー"
+    },
+    {
+      "id": "roadmap",
+      "label": "ロードマップ"
+    }
+  ],
+  "problems": {
+    "heading": "前情提要：現在の課題",
+    "groups": [
       {
-        "title": "コード考古学者",
-        "description": "レガシーコードから隠れたビジネスロジックを発掘し、デッドコードを除去します。",
-        "badge": "🤖 AI 80%"
+        "title": "フロントエンドコードの混乱",
+        "items": [
+          "非推奨パターンが多く、Framework Bugに遭遇しやすく排查が困難"
+        ]
       },
       {
-        "title": "データ境界プランナー",
-        "description": "クリーンなフロントエンド型を定義し、バックエンドの不整合データを遮断し、派生計算ロジックを集約します。",
-        "badge": "🤖 AI 70%"
-      },
-      {
-        "title": "振る舞いテストアーキテクト",
-        "description": "ビジネスロジックをBDDテストケースに変換し、リファクタリング時の機能漏れを防ぎます。",
-        "badge": "🤖 AI 60%"
-      },
-      {
-        "title": "ドキュメント監査員",
-        "description": "コードカバレッジを厳格に監査し、残存するすべてのコードパスに記録があることを保証します。",
-        "badge": "🧑‍💻 人手 70%（最終防衛線）"
+        "title": "バックエンド仕様書の欠如",
+        "items": [
+          "フロントエンドコードだけではAPIレスポンス形式を正確に判断できず、暫定対応の分岐が増加",
+          "エラー形式が統一されておらず、異なる形式への対応ロジックが散在",
+          "命名・形式が混乱し、transformが各所に分散し元のvalueを追跡困難"
+        ]
       }
     ]
   },
+  "vision": {
+    "heading": "現状の課題 vs 刷新ビジョン",
+    "as_is_title": "As-is 現状の課題",
+    "to_be_title": "To-be 刷新ビジョン",
+    "as_is_items": [
+      "デザイン稿と本番環境の乖離",
+      "コード劣化・技術的負債の蓄積",
+      "新人オンボーディング困難・属人化",
+      "バックエンド形式混乱・transform分散"
+    ],
+    "to_be_items": [
+      "100%テストカバレッジでリファクタリング時の機能漏れ防止",
+      "Figmaデザインシステムとコードの同期",
+      "AI Agent自動配分＋人とAIの協業境界明確化",
+      "データ境界分離によるクリーンな型定義"
+    ]
+  },
+  "roles": {
+    "heading": "仕様書構築：4ロール Skills Workflow",
+    "subheading": "人とAIの協業境界を明確にし、混乱したコードを凍結可能な事実文書に昇華します。",
+    "cards": [
+      {
+        "title": "1. コード考古学者",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "大量ファイル分割考古"
+        },
+        "task": "As-isを把握し、純粋なビジネスロジックを抽出し、デッドコードを除去します。",
+        "inputs": [
+          "レガシーの特定ルート/コンポーネント（Repomixバンドル）"
+        ],
+        "output": "docs/records/[domain]/flow.md",
+        "format": [
+          "### Happy Path",
+          "### Edge Cases（業務分岐のみ）",
+          "### Unverified Logic"
+        ]
+      },
+      {
+        "title": "2. データ境界プランナー",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Opus 4.6",
+          "tier": "required",
+          "hint": "型精度が重要"
+        },
+        "task": "不良なバックエンド形式を遮断し、クリーンなInterfaceとTransformerを定義します。",
+        "inputs": [
+          "Raw API JSON",
+          "flow.md",
+          "コンポーネント変換ロジック",
+          "Storeトリガーと派生状態"
+        ],
+        "output": "docs/main/contract-schemas/endpoints/[name].md",
+        "format": [
+          "Upstream Raw JSON Schema",
+          "Target Interface（JSDoc付き）",
+          "Transformer純関数プロトタイプ"
+        ]
+      },
+      {
+        "title": "3. 振る舞いテストアーキテクト",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "構造化BDD"
+        },
+        "task": "flow.mdとschemasをBDD受入テストに変換します。",
+        "inputs": [
+          "flow.md",
+          "contract-schemas/"
+        ],
+        "output": "docs/records/[domain]/e2e-cases.feature",
+        "format": [
+          "Gherkin Given-When-Then",
+          "全業務Edge Cases",
+          "インフラエラー（404/500/オフライン）除外"
+        ]
+      },
+      {
+        "title": "4. ドキュメント監査員",
+        "ai_recommendation": {
+          "tool": "human",
+          "tier": "human",
+          "hint": "最終防衛線"
+        },
+        "task": "コードカバレッジ視点で考古進捗を客観的に監査します。",
+        "inputs": [
+          "レガシーファイル一覧",
+          "docs/records/ 産出物"
+        ],
+        "output": "docs/survey-checklist.md",
+        "format": [
+          "全.ts/.tsxの棚卸完了",
+          "全APIにschema+BDD",
+          "100%チェック＝Main Docs凍結点"
+        ]
+      }
+    ]
+  },
+  "docflow": {
+    "heading": "トップレベルアーキテクチャと文書フロー",
+    "subheading": "レガシーCodebaseから凍結可能なMain Docsまでの完全な産出チェーン。",
+    "diagram": "graph TD\n    Code[\"レガシーコードベース\"] -->|Repomix / Cursor| R1[\"1. コード考古学者\"]\n    R1 -->|As-is業務行為| Flow[\"records/…/flow.md\"]\n    Payload[\"Raw API JSON\"] --> R2[\"2. データ境界プランナー\"]\n    Flow --> R2\n    Comp[\"レガシーコンポーネントとStore\"] --> R2\n    R2 -->|To-beクリーン型| Schema[\"main/contract-schemas/\"]\n    R2 --> Ctx[\"context.md\"]\n    R1 --> Ctx\n    Flow --> R3[\"3. 振る舞いテストアーキテクト\"]\n    Schema --> R3\n    R3 -->|BDD| BDD[\"records/…/e2e-cases.feature\"]\n    Flow --> R4[\"4. ドキュメント監査員\"]\n    Schema --> R4\n    BDD --> R4\n    R4 -->|カバレッジ監査| Check[\"survey-checklist.md\"]\n    Check -->|100%| Final[\"Main Docs凍結点\"]"
+  },
+  "docstructure": {
+    "heading": "Outputディレクトリ規範",
+    "tree": "docs/\n├── context.md               # グローバルTerminology（常駐）\n├── survey-checklist.md      # 考古進捗追跡\n├── records/                 # 考古ステージング（凍結後削除可）\n│   └── [domain]/\n│       ├── flow.md\n│       └── e2e-cases.feature\n└── main/                    # Single Source of Truth\n    ├── flows/\n    ├── pages/\n    └── contract-schemas/\n        ├── shared/\n        └── endpoints/"
+  },
+  "survey": {
+    "heading": "コア棚卸優先順位",
+    "categories": [
+      {
+        "title": "1. コアドメインフロー",
+        "priority": "最優先",
+        "items": [
+          "Booking Flow",
+          "Search & Filter",
+          "Coupon / Affiliate"
+        ],
+        "note": "ページ横断フロー — flow.md + contract-schemas + BDD必須。",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Opus 4.6",
+          "tier": "required",
+          "hint": "コアフロー"
+        }
+      },
+      {
+        "title": "2. 静的・コンテンツページ",
+        "priority": "簡易棚卸",
+        "items": [
+          "ナビ、FAQ、Top Pageブロック等"
+        ],
+        "note": "i18nファイルに格納（CMSなし）。docs/main/pages/にブロックとi18n keyをリスト即可。",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "静的ページ棚卸"
+        }
+      },
+      {
+        "title": "3. グローバルインフラ",
+        "priority": "global-constraints",
+        "items": [
+          "検証状態の有効期限",
+          "エラー試行回数制限（防刷）",
+          "グローバル状態とURL同期（言語・通貨）"
+        ],
+        "note": "docs/records/global-constraints/e2e-cases.featureに統合。",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "横断モジュール統合"
+        }
+      }
+    ]
+  },
+  "freeze": {
+    "heading": "変更管理とMain Docs凍結",
+    "phase1_title": "第一段階：考古期",
+    "phase1_items": [
+      "records/にAs-isを記録",
+      "main/flows/に確認済みAs-isロジック",
+      "main/contract-schemas/にTo-beクリーン型",
+      "survey-checklist.md 100% → 凍結点、PMと技術変更討論"
+    ],
+    "phase2_title": "第二段階：リファクタリングと新規開発",
+    "phase2_items": [
+      "Feature Branchでdocs/main/を修正（常にTo-be終点状態）",
+      "PRにCHANGELOG.md（Ticket link付き）",
+      "コードと文書を同時Merge — コード即文書"
+    ]
+  },
   "figma": {
-    "heading": "Figmaデザインシステム：Token三層物理分離防衛線",
-    "subheading": "自由設計を終焉させ、コピーとフロントエンドフィールドをi18n-keyで恒久的に整合させます。",
+    "heading": "Figmaデザインシステム",
+    "org_heading": "組織構造：中央テンプレート、ローカルカスタマイズ",
+    "org_desc": "Figma Professionalはファイル間Variable連動不可 — Standard Recipeアーキテクチャを採用。",
+    "variables_note": "⚠️ Figma Variablesの作成には、Pro planのFull seat（Collab seat不可）が必要です。",
+    "org_central": "中央Workspace → Core shadcn Template（Primitive + Standard Components）",
+    "org_local": "各プロジェクト → テンプレート複製 + Local Semantic上書き + As-is画面100%復元",
+    "pattern_heading": "業務モジュール維持境界",
+    "pattern_central": "中央維持：100%同一ロジック・視覚、カスタマイズ不可（日本地図選択等）→ Copy-Paste",
+    "pattern_local": "ローカル維持：製品線で語意が変わる複合コンポーネント → 中央shadcn基礎 + ローカル組立",
+    "token_heading": "Token三層物理分離防衛線",
+    "token_subheading": "デザイナーはキャンバスで第三層Semantic Tokenのみ使用可能。",
     "tiers": [
       {
-        "name": "Primitive Layer",
-        "tokens": "slate-50, blue-500",
-        "locked": true,
-        "lock_label": "デザイナー使用禁止"
+        "layer": "1. Primitive",
+        "example": "primitive/neutral/100, primitive/blue/500",
+        "css": "--nv-primitive-neutral-100",
+        "access": "🔒 デザイナー使用禁止",
+        "locked": true
       },
       {
-        "name": "Brand Layer",
-        "tokens": "brand-primary",
-        "locked": true,
-        "lock_label": "デザイナー使用禁止"
+        "layer": "2. Brand",
+        "example": "brand/primary, brand/secondary",
+        "css": "--nv-brand-primary",
+        "access": "🔒 デザイナー使用禁止",
+        "locked": true
       },
       {
-        "name": "Semantic Layer",
-        "tokens": "semantic/bg/base",
-        "locked": false,
-        "lock_label": "キャンバス唯一の合法呼び出し層"
+        "layer": "3. Semantic",
+        "example": "semantic/bg/base",
+        "css": "--nv-semantic-bg-base",
+        "access": "🔓 キャンバス唯一の合法層",
+        "locked": false
+      }
+    ],
+    "align_heading": "画面再構築とi18n-key脈絡整合",
+    "align_desc": "本番環境と100%構造整合。FigmaコンポーネントDescriptionにi18n key必須。",
+    "align_example": "キャンバス \"Please enter your booking code\" → Description: [i18n-key] booking.field.code_placeholder"
+  },
+  "i18n_prep": {
+    "heading": "翻訳準備フロー",
+    "note": "考古文書はClaude Webで産出。刷新実装はCursorに委任。",
+    "steps": [
+      "AIがレガシー翻訳をJSONに整理（status: active | unused | in-progress）",
+      "Scriptでlegacy_keyと元translationsを比較（動的keyは手動でactive指定）",
+      "ScriptでGoogle Spreadsheetに書き込み（単一sheet + namespace、Instruction SheetにTone Guide）",
+      "Geminiが初版翻訳委託を代行可能（日本語は敬體統一）",
+      "新プロジェクトscriptでSheet→コード同期（unused除外、in-progressは🚧表示）",
+      "SKILL.md鉄則：key不足時はhardcode + // TODO: i18n-missing、新key禁止"
+    ],
+    "step_details": [
+      {
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Haiku 4.5",
+          "tier": "budget",
+          "hint": "フォーマット整理"
+        }
+      },
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  "dev": {
+    "heading": "開発段階：Matt Pocock Agent Skills分担",
+    "subheading": "Matt Pocockの5ステップSkillsパイプラインでClaudeとCursorの役割を明確化。",
+    "ref_label": "参考",
+    "ref_url": "https://www.aihero.dev/5-agent-skills-i-use-every-day",
+    "claude_title": "Claude担当（考古 → To-Issues）",
+    "claude_desc": "文書産出、要件明確化、PRD作成、Issue原子化分解。厳格なプロセスが必要な計画段階に最適。",
+    "cursor_title": "Cursor Agent + 新人練習（TDD → 刷新実装）",
+    "cursor_desc": "TDD赤緑リファクタリング、アーキテクチャ深化、実際のコード刷新。一部Issueは新人練習、シニアがCursor Agentで品質管理。",
+    "table_skill": "Skill",
+    "table_desc": "説明",
+    "table_ai": "推奨AI",
+    "table_phase": "段階",
+    "skills": [
+      {
+        "name": "Grill-with-Docs",
+        "desc": "考古文書を活用し設計ツリーを逐次明確化",
+        "tool": "Claude",
+        "phase": "計画",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Opus 4.6",
+          "tier": "required",
+          "hint": "決定ツリー推論"
+        }
+      },
+      {
+        "name": "To-PRD",
+        "desc": "合意からPRDを産出（User Stories + モジュール草案）",
+        "tool": "Claude",
+        "phase": "計画",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "構造化PRD"
+        }
+      },
+      {
+        "name": "To-Issues",
+        "desc": "PRDを垂直スライスIssueに分解、blocking関係を設定",
+        "tool": "Claude",
+        "phase": "計画",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "原子化分解"
+        }
+      },
+      {
+        "name": "TDD",
+        "desc": "赤緑リファクタリングループ、一行テスト一行実装",
+        "tool": "Cursor",
+        "phase": "開発",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "赤緑リファクタ"
+        }
+      },
+      {
+        "name": "Architecture-Refactor",
+        "desc": "浅いモジュールを深化、Agentが安定ナビゲーション可能に",
+        "tool": "Cursor",
+        "phase": "開発",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "ファイル横断リファクタ"
+        }
       }
     ]
   },
   "pipeline": {
-    "heading": "Matt Pocock 5ステップ実行ファクトリー",
-    "steps": [
-      "Grill-with-Docs",
-      "To-PRD",
-      "To-Issues",
-      "TDD",
-      "Architecture-Refactor"
-    ],
-    "simulate_btn": "AI原子化配分をシミュレート (Simulate)",
-    "simulate_success": "配分成功！3件の原子化Issueを生成しました。",
+    "heading": "実行ファクトリー：原子化Issueサンプル",
+    "subheading": "To-Issuesが産出する垂直スライス — 各Issueが全統合層を貫通（Tracer Bullet）。",
     "mock_issues": [
       {
         "id": "#01",
         "tag": "Schema",
-        "title": "transformBookingAmount純関数を実装する"
+        "title": "transformBookingAmount純関数を実装",
+        "blocks": "ブロッカーなし — 即開始可能",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "TDD純関数"
+        }
       },
       {
         "id": "#02",
         "tag": "UI",
-        "title": "Figmaに基づき新版BookingCard静的コンポーネントを実装する"
+        "title": "Figmaに基づきBookingCard静的コンポーネントを実装",
+        "blocks": "#01にブロック",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "コンポーネント実装"
+        }
       },
       {
         "id": "#03",
         "tag": "BDD",
-        "title": "予約コード検証Edge Casesの受入テストを作成する"
+        "title": "予約コード検証Edge Cases受入テストを作成",
+        "blocks": "#01と並行可能",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "受入テスト作成"
+        }
       }
     ]
   },
@@ -105,16 +465,49 @@
     "phases": [
       {
         "title": "Phase 1：考古学とデータ境界",
-        "description": "恒久的な事実ドキュメントを産出する",
-        "risk": "🔥 リスク管理ポイント：PMと技術変更ディスカッションを開始する"
+        "description": "4ロールSkillsでMain Docs産出、survey-checklist 100%達成",
+        "risk": "🔥 リスク管理：凍結後PMと技術変更討論",
+        "deliverables": [
+          "flow.md × N domains",
+          "contract-schemas/",
+          "e2e-cases.feature",
+          "context.md"
+        ],
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Opus+Sonnet",
+          "tier": "required",
+          "hint": "計画段階"
+        }
       },
       {
         "title": "Phase 2：Figmaシステム再編",
-        "description": "As-is画面の100%復元と変数の導入"
+        "description": "中央テンプレート複製 + Local Semantic + As-is画面100%復元",
+        "deliverables": [
+          "Design System File",
+          "i18n-key整合備考",
+          "翻訳JSON → Google Sheet"
+        ],
+        "ai_recommendation": {
+          "tool": "human",
+          "tier": "human",
+          "hint": "Figma手作業"
+        }
       },
       {
         "title": "Phase 3：開発とリファクタリング開始",
-        "description": "TDD実行パイプライン、PRDからIssuesへの開発"
+        "description": "Claude To-Issues完了後、Cursor Agent + 新人がTDD刷新パイプライン実行",
+        "deliverables": [
+          "垂直スライスPR",
+          "CHANGELOG.md",
+          "テストカバレッジ達成"
+        ],
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "開発とリファクタ"
+        }
       }
     ]
   },

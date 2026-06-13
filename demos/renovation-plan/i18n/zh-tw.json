@@ -2,101 +2,461 @@
   "meta": {
     "title": "專案全面翻新：AI 驅動的敏捷考古與重構計畫"
   },
+  "common": {
+    "fold_docflow": "文件流向圖",
+    "fold_iof": "Input / Output / Format 細節",
+    "fold_output_tree": "Output 目錄結構",
+    "fold_note": "盤點備註",
+    "fold_steps": "翻譯準備步驟（共 {n} 步）",
+    "fold_skills_table": "Skills 對照表",
+    "fold_deliverables": "產出物清單",
+    "label_input": "Input",
+    "label_output": "Output",
+    "label_format": "Format",
+    "tier_budget": "可省",
+    "tier_required": "必用",
+    "tier_context": "需上下文",
+    "tier_human": "人工",
+    "tier_budget_desc": "可用較便宜模型",
+    "tier_required_desc": "不建議降級",
+    "tier_context_desc": "需完整 codebase",
+    "tier_human_desc": "不需 AI",
+    "tool_claude": "Claude",
+    "tool_cursor": "Cursor",
+    "tool_human": "人工"
+  },
   "nav": {
-    "lang_label": "語系"
+    "toc": "目錄"
   },
   "hero": {
     "title": "專案全面翻新：AI 驅動的敏捷考古與重構計畫",
-    "subtitle": "透過 AI 考古、資料邊界隔離與 TDD 流水線，徹底終結設計脫鉤與技術債。",
-    "toggle_as_is": "檢視現況 As-is",
-    "toggle_to_be": "翻新願景 To-be",
-    "as_is_items": [
-      "設計稿脫鉤",
-      "程式碼劣化",
-      "新人 Onboarding 困難"
-    ],
-    "to_be_items": [
-      "100% 測試覆蓋",
-      "設計系統同步",
-      "AI Agent 自動化派工"
-    ]
+    "subtitle": "透過 AI 考古、資料邊界隔離、Figma 設計系統重建與 Matt Pocock Skills 流水線，徹底終結設計脫鉤與技術債。"
   },
-  "roles": {
-    "heading": "現代化重構流水線：4 大核心角色",
-    "subheading": "精準框定人機協作邊界，大幅降低人工通靈時間。",
-    "cards": [
+  "toc": [
+    {
+      "id": "problems",
+      "label": "前情提要"
+    },
+    {
+      "id": "vision",
+      "label": "現況與願景"
+    },
+    {
+      "id": "roles",
+      "label": "四角色流水線"
+    },
+    {
+      "id": "docflow",
+      "label": "文件流向"
+    },
+    {
+      "id": "survey",
+      "label": "盤點優先順序"
+    },
+    {
+      "id": "freeze",
+      "label": "凍結與變更管理"
+    },
+    {
+      "id": "figma",
+      "label": "Figma 設計系統"
+    },
+    {
+      "id": "i18n",
+      "label": "翻譯準備"
+    },
+    {
+      "id": "dev",
+      "label": "開發階段分工"
+    },
+    {
+      "id": "pipeline",
+      "label": "執行工廠"
+    },
+    {
+      "id": "roadmap",
+      "label": "Roadmap"
+    }
+  ],
+  "problems": {
+    "heading": "前情提要：目前遇到的問題",
+    "groups": [
       {
-        "title": "代碼考古學家",
-        "description": "翻閱舊代碼，挖出隱藏的業務邏輯，剔除死碼。",
-        "badge": "🤖 AI 80%"
+        "title": "前端程式碼混亂",
+        "items": [
+          "出現許多不推薦的寫法，容易踩到 Framework Bug 且不易排查"
+        ]
       },
       {
-        "title": "資料邊界規劃師",
-        "description": "定義乾淨的新前端型別，阻絕後端髒資料，收攏衍生計算邏輯。",
-        "badge": "🤖 AI 70%"
-      },
-      {
-        "title": "行為測試架構師",
-        "description": "將業務邏輯轉化為 BDD 測試案例，確保重構時功能不漏。",
-        "badge": "🤖 AI 60%"
-      },
-      {
-        "title": "文件盤點員",
-        "description": "嚴格審查程式碼覆蓋率，確保留下的每條線路都有紀錄。",
-        "badge": "🧑‍💻 人工 70%（最終防線）"
+        "title": "後端沒有規格書",
+        "items": [
+          "單從前端程式碼無法準確判斷 API 回應格式，為暫解錯誤格式而加上額外判斷",
+          "Error 格式不統一，前端累積大量處理不同錯誤格式的額外邏輯",
+          "回傳格式與命名混亂，前端自行多一層 transform，但分散各處，難以追溯原始 value"
+        ]
       }
     ]
   },
+  "vision": {
+    "heading": "現況痛點 vs 翻新願景",
+    "as_is_title": "As-is 現況痛點",
+    "to_be_title": "To-be 翻新願景",
+    "as_is_items": [
+      "設計稿與正式環境脫鉤",
+      "程式碼劣化、技術債累積",
+      "新人 Onboarding 困難、通靈成本高",
+      "後端格式混亂，前端 transform 分散"
+    ],
+    "to_be_items": [
+      "100% 測試覆蓋，重構不漏功能",
+      "Figma 設計系統與程式碼同步",
+      "AI Agent 自動化派工 + 人機協作邊界清晰",
+      "資料邊界隔離，乾淨型別取代髒資料"
+    ]
+  },
+  "roles": {
+    "heading": "規格書建立：四角色 Skills Workflow",
+    "subheading": "精準框定人機協作邊界，將混亂代碼提煉為可凍結的永久事實文檔。",
+    "cards": [
+      {
+        "title": "1. 代碼考古學家",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "大量檔案分批考古"
+        },
+        "task": "摸清舊系統 As-is，提煉純粹業務行為，排除死碼。",
+        "inputs": [
+          "舊專案特定路由/組件原始碼（Repomix 打包）"
+        ],
+        "output": "docs/records/[domain]/flow.md",
+        "format": [
+          "### Happy Path — 極簡成功操作步驟",
+          "### Edge Cases — 所有業務 if-else 分支（排除基建錯誤）",
+          "### Unverified Logic — 死碼/神祕邏輯，留待討論"
+        ]
+      },
+      {
+        "title": "2. 資料邊界規劃師",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Opus 4.6",
+          "tier": "required",
+          "hint": "型別精度要求高"
+        },
+        "task": "阻絕舊後端不良格式，定義乾淨前端 Interface，收攏 Transformer。",
+        "inputs": [
+          "舊 API Raw JSON",
+          "flow.md 業務邏輯",
+          "組件轉換/衍生計算片段",
+          "Store 觸發源與衍生狀態"
+        ],
+        "output": "docs/main/contract-schemas/endpoints/[name].md",
+        "format": [
+          "Upstream Raw JSON Schema (TS type)",
+          "Target Interface（@upstream_source / @old_logic_location）",
+          "Transformer 純函數原型（可執行 TS）"
+        ]
+      },
+      {
+        "title": "3. 行為測試架構師",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "結構化 BDD 輸出"
+        },
+        "task": "將 flow.md + contract-schemas 轉化為解耦的 BDD 驗收案例。",
+        "inputs": [
+          "docs/records/[domain]/flow.md",
+          "docs/main/contract-schemas/"
+        ],
+        "output": "docs/records/[domain]/e2e-cases.feature",
+        "format": [
+          "Gherkin Given-When-Then",
+          "涵蓋所有業務 Edge Cases",
+          "排除 404/500/斷線等基建錯誤"
+        ]
+      },
+      {
+        "title": "4. 文件盤點員",
+        "ai_recommendation": {
+          "tool": "human",
+          "tier": "human",
+          "hint": "最終防線"
+        },
+        "task": "以代碼覆蓋率視角客觀審查考古進度，確保不漏任何檔案。",
+        "inputs": [
+          "舊專案檔案清單",
+          "docs/records/ 已產出文檔"
+        ],
+        "output": "docs/survey-checklist.md",
+        "format": [
+          "模組下所有 .ts/.tsx 已盤點",
+          "每隻 API 有 contract-schemas + BDD",
+          "100% 勾選 = Main Docs 凍結點"
+        ]
+      }
+    ]
+  },
+  "docflow": {
+    "heading": "頂層架構與文件流向",
+    "subheading": "從舊 Codebase 到可凍結 Main Docs 的完整產出鏈。",
+    "diagram": "graph TD\n    Code[\"舊專案原始碼\"] -->|Repomix / Cursor| R1[\"1. 代碼考古學家\"]\n    R1 -->|As-is 業務行為| Flow[\"records/…/flow.md\"]\n    Payload[\"舊 API Raw JSON\"] --> R2[\"2. 資料邊界規劃師\"]\n    Flow --> R2\n    Comp[\"舊組件與 Store\"] --> R2\n    R2 -->|To-be 乾淨型別| Schema[\"main/contract-schemas/\"]\n    R2 --> Ctx[\"context.md\"]\n    R1 --> Ctx\n    Flow --> R3[\"3. 行為測試架構師\"]\n    Schema --> R3\n    R3 -->|BDD| BDD[\"records/…/e2e-cases.feature\"]\n    Flow --> R4[\"4. 文件盤點員\"]\n    Schema --> R4\n    BDD --> R4\n    R4 -->|覆蓋率審查| Check[\"survey-checklist.md\"]\n    Check -->|100%| Final[\"Main Docs 凍結點\"]"
+  },
+  "docstructure": {
+    "heading": "Output 目錄規範",
+    "tree": "docs/\n├── context.md               # 全域 Terminology（常駐不刪）\n├── survey-checklist.md      # 考古進度追蹤（文件盤點員維護）\n├── records/                 # 考古暫存區（凍結後可刪）\n│   └── [domain]/\n│       ├── flow.md          # As-is 業務行為\n│       └── e2e-cases.feature\n└── main/                    # 永久事實來源 SSOT\n    ├── flows/               # 核心業務流程\n    ├── pages/               # 頁面與區塊邏輯\n    └── contract-schemas/\n        ├── shared/          # 全域 Entities\n        └── endpoints/       # API 規格 + Transformer"
+  },
+  "survey": {
+    "heading": "核心盤點優先順序",
+    "categories": [
+      {
+        "title": "1. 核心業務流程",
+        "priority": "最高優先",
+        "items": [
+          "Booking Flow（預約主流程）",
+          "Search & Filter（逆向盤點 UI 衍生狀態）",
+          "Coupon / Affiliate（優惠券與引流）"
+        ],
+        "note": "跨頁面連續動作，必須優先處理。需完整 flow.md + contract-schemas + BDD。",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Opus 4.6",
+          "tier": "required",
+          "hint": "核心流程"
+        }
+      },
+      {
+        "title": "2. 靜態與內容頁",
+        "priority": "簡化盤點",
+        "items": [
+          "導覽頁、FAQ、Top Page 區塊等"
+        ],
+        "note": "存於前端翻譯檔（無 CMS），不需 contract-schemas 與 BDD。只需在 docs/main/pages/ 列出區塊與 i18n key 結構。",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "靜態頁盤點"
+        }
+      },
+      {
+        "title": "3. 全域基礎設施",
+        "priority": "收攏至 global-constraints",
+        "items": [
+          "驗證狀態有效期限（Session 生存週期）",
+          "錯誤嘗試次數限制（防刷邏輯）",
+          "全域狀態與 URL 同步（語系、貨幣）"
+        ],
+        "note": "不屬單一頁面但具強烈業務行為。統一收攏至 docs/records/global-constraints/e2e-cases.feature。",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "跨模組收攏"
+        }
+      }
+    ]
+  },
+  "freeze": {
+    "heading": "變更管理與 Main Docs 凍結",
+    "phase1_title": "第一階段：考古期",
+    "phase1_items": [
+      "records/ 記錄 As-is 現況",
+      "main/flows/ 寫入確認過的 As-is 邏輯",
+      "main/contract-schemas/ 產出 To-be 純淨型別",
+      "survey-checklist.md 達 100% → Main Docs 凍結點，與 PM 進行技術變更討論"
+    ],
+    "phase2_title": "第二階段：重構與新需求開發期",
+    "phase2_items": [
+      "新需求在 Feature Branch 修改 docs/main/（永遠保持 To-be 終點狀態）",
+      "PR 附帶 CHANGELOG.md（Ticket link + 修改文件清單）",
+      "程式碼上線時文檔一併 Merge — 代碼即文件，文件即代碼"
+    ]
+  },
   "figma": {
-    "heading": "Figma 設計系統：Token 三層物理隔離防線",
-    "subheading": "終結自由發揮，文案與前端欄位透過 i18n-key 永久對齊。",
+    "heading": "Figma 設計系統",
+    "org_heading": "組織架構：中央範本，本地清洗",
+    "org_desc": "Figma Professional 無法跨檔案連動 Variables，改採 Standard Recipe 務實架構。",
+    "variables_note": "⚠️ 建立 Figma Variables 至少需要 Pro plan 的 Full seat（非 Collab seat）。",
+    "org_central": "中央 Workspace → Core shadcn Template（Primitive Tokens + Standard Components）",
+    "org_local": "各專案本地 → 複製範本 + Local Semantic 覆寫 + 100% 還原 As-is 畫面",
+    "pattern_heading": "業務模組維護邊界",
+    "pattern_central": "中央維護：100% 邏輯視覺一致、絕無客製化可能（如日本地圖選區）→ Copy-Paste",
+    "pattern_local": "本地維護：會因產品線改變語意的複合組件（BookingCard、CouponSelector）→ 中央 shadcn 基礎 + 本地組裝",
+    "token_heading": "三層 Token 物理隔離防線",
+    "token_subheading": "設計師在畫布上只能且必須使用第三層 Semantic Token。",
     "tiers": [
       {
-        "name": "Primitive Layer",
-        "tokens": "slate-50, blue-500",
-        "locked": true,
-        "lock_label": "設計師禁用"
+        "layer": "1. Primitive",
+        "example": "primitive/neutral/100, primitive/blue/500",
+        "css": "--nv-primitive-neutral-100",
+        "access": "🔒 設計師全面禁止",
+        "locked": true
       },
       {
-        "name": "Brand Layer",
-        "tokens": "brand-primary",
-        "locked": true,
-        "lock_label": "設計師禁用"
+        "layer": "2. Brand",
+        "example": "brand/primary, brand/secondary",
+        "css": "--nv-brand-primary",
+        "access": "🔒 設計師全面禁止",
+        "locked": true
       },
       {
-        "name": "Semantic Layer",
-        "tokens": "semantic/bg/base",
-        "locked": false,
-        "lock_label": "畫布唯一合法調用層"
+        "layer": "3. Semantic",
+        "example": "semantic/bg/base, semantic/badge/anniversary-bg",
+        "css": "--nv-semantic-bg-base",
+        "access": "🔓 畫布唯一合法層",
+        "locked": false
+      }
+    ],
+    "align_heading": "畫面重建與 i18n-key 脈絡對齊",
+    "align_desc": "設計稿 100% 對齊正式環境結構。文案不強求即時同步，但 Figma 組件 Description 必須備註 i18n key。",
+    "align_example": "畫布顯示 \"Please enter your booking code\" → Description: [i18n-key] booking.field.code_placeholder"
+  },
+  "i18n_prep": {
+    "heading": "翻譯準備流程",
+    "note": "考古文件建議用 Claude Web 產出；翻新實作交給 Cursor。",
+    "steps": [
+      "AI 整理 legacy 翻譯為 JSON（status: active | unused | in-progress，含 namespace + legacy_key）",
+      "Script 比對 legacy_key 與原 translations，檢查缺漏（動態 key 需手動標 active）",
+      "Script 寫入 Google Spreadsheet（單一 sheet + namespace 欄位；Instruction Sheet 放 Tone Guide）",
+      "Gemini 可代勞初版翻譯委託（日文統一敬體）",
+      "新專案 script 從 Sheet 同步回程式碼（unused 過濾、in-progress 顯示 🚧）",
+      "SKILL.md 鐵律：缺 key 禁止自創，hardcode + // TODO: i18n-missing"
+    ],
+    "step_details": [
+      {
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Haiku 4.5",
+          "tier": "budget",
+          "hint": "格式整理"
+        }
+      },
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  "dev": {
+    "heading": "開發階段：Matt Pocock Agent Skills 分工",
+    "subheading": "參考 Matt Pocock 五步驟 Skills 流水線，明確區分 Claude 與 Cursor 職責。",
+    "ref_label": "參考來源",
+    "ref_url": "https://www.aihero.dev/5-agent-skills-i-use-every-day",
+    "claude_title": "Claude 負責（考古 → To-Issues）",
+    "claude_desc": "文件產出、需求釐清、PRD 撰寫、Issue 原子化拆解。適合無記憶但需要嚴格流程的規劃階段。",
+    "cursor_title": "Cursor Agent + 新人練習（TDD → 翻新實作）",
+    "cursor_desc": "TDD 紅綠重構、架構深化、實際程式碼翻新。部分 Issue 交給新人練習，資深用 Cursor Agent 把關。",
+    "table_skill": "Skill",
+    "table_desc": "說明",
+    "table_ai": "建議 AI",
+    "table_phase": "階段",
+    "skills": [
+      {
+        "name": "Grill-with-Docs",
+        "desc": "結合考古文件，沿設計樹逐項釐清決策分支",
+        "tool": "Claude",
+        "phase": "規劃",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Opus 4.6",
+          "tier": "required",
+          "hint": "決策樹深度推理"
+        }
+      },
+      {
+        "name": "To-PRD",
+        "desc": "從共識產出 PRD，含 User Stories 與模組草圖",
+        "tool": "Claude",
+        "phase": "規劃",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "結構化 PRD"
+        }
+      },
+      {
+        "name": "To-Issues",
+        "desc": "PRD 拆解為垂直切片 Issue，建立 blocking 關係",
+        "tool": "Claude",
+        "phase": "規劃",
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Sonnet 4.5",
+          "tier": "budget",
+          "hint": "原子化拆解"
+        }
+      },
+      {
+        "name": "TDD",
+        "desc": "紅綠重構循環，一行測試一行實作，確保重構不漏",
+        "tool": "Cursor",
+        "phase": "開發",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "紅綠重構"
+        }
+      },
+      {
+        "name": "Architecture-Refactor",
+        "desc": "深化淺層模組、釐清測試邊界，讓 Agent 能穩定導航",
+        "tool": "Cursor",
+        "phase": "開發",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "跨檔案重構"
+        }
       }
     ]
   },
   "pipeline": {
-    "heading": "Matt Pocock 5 步驟執行工廠",
-    "steps": [
-      "Grill-with-Docs",
-      "To-PRD",
-      "To-Issues",
-      "TDD",
-      "Architecture-Refactor"
-    ],
-    "simulate_btn": "模擬 AI 原子化派工 (Simulate)",
-    "simulate_success": "派工成功！已產出 3 張原子化 Issue",
+    "heading": "執行工廠：原子化 Issue 範例",
+    "subheading": "To-Issues 產出的垂直切片，每張 Issue 貫穿所有整合層（Tracer Bullet）。",
     "mock_issues": [
       {
         "id": "#01",
         "tag": "Schema",
-        "title": "實作 transformBookingAmount 純函數"
+        "title": "實作 transformBookingAmount 純函數",
+        "blocks": "無阻塞，可立即開始",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "TDD 純函數"
+        }
       },
       {
         "id": "#02",
         "tag": "UI",
-        "title": "依據 Figma 實作新版 BookingCard 靜態元件"
+        "title": "依據 Figma 實作新版 BookingCard 靜態元件",
+        "blocks": "阻塞於 #01",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "元件實作"
+        }
       },
       {
         "id": "#03",
         "tag": "BDD",
-        "title": "撰寫預約代碼驗證 Edge Cases 驗收案例"
+        "title": "撰寫預約代碼驗證 Edge Cases 驗收案例",
+        "blocks": "可與 #01 平行",
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "寫驗收測試"
+        }
       }
     ]
   },
@@ -105,16 +465,49 @@
     "phases": [
       {
         "title": "Phase 1：考古與資料邊界",
-        "description": "產出永久事實文檔",
-        "risk": "🔥 風險控制點：與 PM 發動技術變更討論"
+        "description": "四角色 Skills 產出 Main Docs，達成 100% survey-checklist",
+        "risk": "🔥 風險控制點：凍結後與 PM 發動技術變更討論",
+        "deliverables": [
+          "flow.md × N domains",
+          "contract-schemas/",
+          "e2e-cases.feature",
+          "context.md"
+        ],
+        "ai_recommendation": {
+          "tool": "claude",
+          "model": "Opus+Sonnet",
+          "tier": "required",
+          "hint": "規劃階段"
+        }
       },
       {
         "title": "Phase 2：Figma 系統重組",
-        "description": "100% 還原 As-is 畫面與變數導入"
+        "description": "中央範本複製 + Local Semantic 覆寫 + 100% As-is 畫面還原",
+        "deliverables": [
+          "Design System File",
+          "i18n-key 對齊備註",
+          "翻譯 JSON → Google Sheet"
+        ],
+        "ai_recommendation": {
+          "tool": "human",
+          "tier": "human",
+          "hint": "Figma 手動作業"
+        }
       },
       {
         "title": "Phase 3：開發與重構啟動",
-        "description": "TDD 執行流水線，PRD 轉 Issues 開發"
+        "description": "Claude 完成 To-Issues 後，Cursor Agent + 新人執行 TDD 翻新流水線",
+        "deliverables": [
+          "垂直切片 PR",
+          "CHANGELOG.md",
+          "測試覆蓋達標"
+        ],
+        "ai_recommendation": {
+          "tool": "cursor",
+          "model": "Composer 2.5",
+          "tier": "context",
+          "hint": "開發與重構"
+        }
       }
     ]
   },
