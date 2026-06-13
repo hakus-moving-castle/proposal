@@ -3,512 +3,280 @@
     "title": "プロジェクト全面刷新：AI駆動のアジャイル考古学とリファクタリング計画"
   },
   "common": {
-    "fold_docflow": "文書フロー図",
-    "fold_iof": "Input / Output / Format 詳細",
-    "fold_output_tree": "Outputディレクトリ構造",
-    "fold_note": "棚卸備考",
-    "fold_steps": "翻訳準備ステップ（全{n}ステップ）",
-    "fold_skills_table": "Skills対照表",
-    "fold_deliverables": "成果物一覧",
     "label_input": "Input",
     "label_output": "Output",
-    "label_format": "Format",
+    "fold_specs": "詳細仕様を展開",
+    "fold_doc_tree": "📂 クリックして展開：構造化ディレクトリツリー規範 (Docusaurus Output)",
+    "fold_figma_org": "組織構造：中央テンプレート、ローカルカスタマイズ",
+    "fold_figma_pattern": "ビジネスモジュール保守境界",
+    "fold_figma_align": "画面再構築と EN ロケール文脈アライメント",
+    "fold_i18n_json": "🔍 表示：i18n データ型とスクリプト規範詳細",
+    "fold_i18n_steps": "翻訳準備完全ステップ（全 {n} ステップ）",
+    "fold_deliverables": "成果物一覧",
     "tier_budget": "節約可",
     "tier_required": "必須",
     "tier_context": "要コンテキスト",
     "tier_human": "人手",
-    "tier_budget_desc": "安価なモデル可",
-    "tier_required_desc": "ダウングレード非推奨",
-    "tier_context_desc": "codebase全体が必要",
-    "tier_human_desc": "AI不要",
     "tool_claude": "Claude",
     "tool_cursor": "Cursor",
     "tool_human": "人手"
-  },
-  "nav": {
-    "toc": "目次"
   },
   "hero": {
     "title": "プロジェクト全面刷新：AI駆動のアジャイル考古学とリファクタリング計画",
     "subtitle": "AI考古学、データ境界の分離、Figmaデザインシステム再構築、Matt Pocock Skillsパイプラインにより、デザイン乖離と技術的負債を根本から解消します。"
   },
   "toc": [
-    {
-      "id": "problems",
-      "label": "前情提要"
-    },
-    {
-      "id": "vision",
-      "label": "現状とビジョン"
-    },
-    {
-      "id": "roles",
-      "label": "4ロール"
-    },
-    {
-      "id": "docflow",
-      "label": "文書フロー"
-    },
-    {
-      "id": "survey",
-      "label": "棚卸優先順位"
-    },
-    {
-      "id": "freeze",
-      "label": "凍結と変更管理"
-    },
-    {
-      "id": "figma",
-      "label": "Figma"
-    },
-    {
-      "id": "i18n",
-      "label": "翻訳準備"
-    },
-    {
-      "id": "dev",
-      "label": "開発分担"
-    },
-    {
-      "id": "pipeline",
-      "label": "実行ファクトリー"
-    },
-    {
-      "id": "roadmap",
-      "label": "ロードマップ"
-    }
+    { "id": "s1", "label": "前情提要" },
+    { "id": "s2", "label": "トップアーキテクチャ" },
+    { "id": "s3", "label": "4ロール Workflow" },
+    { "id": "s4", "label": "考古棚卸" },
+    { "id": "s5", "label": "凍結管理" },
+    { "id": "s6", "label": "Figma DS" },
+    { "id": "s7", "label": "多言語" },
+    { "id": "s8", "label": "刷新開始" }
   ],
-  "problems": {
-    "heading": "前情提要：現在の課題",
-    "groups": [
+  "s1": {
+    "emoji": "🛑",
+    "heading": "前情提要と現状の痛点棚卸",
+    "table_cols": ["痛点", "影響", "根本原因"],
+    "table_rows": [
       {
-        "title": "フロントエンドコードの混乱",
-        "items": [
-          "非推奨パターンが多く、Framework Bugに遭遇しやすく排查が困難"
-        ]
+        "pain": "フロントエンドコード混乱",
+        "impact": "修正コスト極大",
+        "cause": "非推奨パターンが多く、Framework Bug 発生時の調査が困難です。"
       },
       {
-        "title": "バックエンド仕様書の欠如",
-        "items": [
-          "フロントエンドコードだけではAPIレスポンス形式を正確に判断できず、暫定対応の分岐が増加",
-          "エラー形式が統一されておらず、異なる形式への対応ロジックが散在",
-          "命名・形式が混乱し、transformが各所に分散し元のvalueを追跡困難"
-        ]
+        "pain": "バックエンド仕様なし",
+        "impact": "フロント通霊判断",
+        "cause": "仕様書がなく、フロントコードからレスポンス形式を正確に判断できず、暫定対応の追加判断が発生しています。"
+      },
+      {
+        "pain": "Error 形式不統一",
+        "impact": "汚いロジック蓄積",
+        "cause": "error 形式が不統一で、各形式に対応する汚いロジックがフロントに蓄積されています。"
+      },
+      {
+        "pain": "データ命名混乱",
+        "impact": "リファクタ追跡困難",
+        "cause": "transform 層が各所に分散し、リファクタ時に元の value を素早く見つけられません。"
       }
-    ]
-  },
-  "vision": {
-    "heading": "現状の課題 vs 刷新ビジョン",
-    "as_is_title": "As-is 現状の課題",
+    ],
+    "vision_heading": "現状痛点 vs 刷新ビジョン",
+    "as_is_title": "As-is 現状痛点",
     "to_be_title": "To-be 刷新ビジョン",
     "as_is_items": [
       "デザイン稿と本番環境の乖離",
-      "コード劣化・技術的負債の蓄積",
-      "新人オンボーディング困難・属人化",
-      "バックエンド形式混乱・transform分散"
+      "コード劣化、技術的負債の蓄積",
+      "新人オンボーディング困難、通霊コスト高",
+      "バックエンド形式混乱、transform 分散"
     ],
     "to_be_items": [
-      "100%テストカバレッジでリファクタリング時の機能漏れ防止",
-      "Figmaデザインシステムとコードの同期",
-      "AI Agent自動配分＋人とAIの協業境界明確化",
-      "データ境界分離によるクリーンな型定義"
+      "100% テストカバレッジ、リファクタで機能漏れなし",
+      "Figma デザインシステムとコード同期",
+      "AI Agent 自動化 + 人機協業境界の明確化",
+      "データ境界分離、クリーン型で汚データ置換"
     ]
   },
-  "roles": {
-    "heading": "仕様書構築：4ロール Skills Workflow",
-    "subheading": "人とAIの協業境界を明確にし、混乱したコードを凍結可能な事実文書に昇華します。",
-    "cards": [
+  "s2": {
+    "emoji": "🗺️",
+    "heading": "トップアーキテクチャ、文書フローとディレクトリ規範",
+    "subheading": "旧 Codebase から凍結可能な Main Docs への完全産出チェーン。コアナビは必ず表示します。",
+    "diagram": "graph TD\n    Code[\"旧ソースコード\"] -->|Repomix/Cursor| R1[\"🕵️ 1.コード考古学者\"]\n    R1 -->|As-is 業務行為| Flow[\"docs/records/domain/flow.md\"]\n    Payload[\"旧API Raw JSON\"] --> R2[\"📐 2.データ境界プランナー\"]\n    Flow --> R2\n    Comp[\"Components\"] --> R2\n    R2 -->|To-be クリーン型| Schema[\"docs/main/contract-schemas/\"]\n    R2 --> Ctx[\"context.md Terminology\"]\n    Flow --> R3[\"✍️ 3.行為テストアーキテクト\"]\n    Schema --> R3\n    R3 -->|BDD案例| BDD[\"docs/records/domain/e2e-cases.feature\"]\n    Flow --> R4[\"⚖️ 4.文書棚卸員\"]\n    Schema --> R4\n    BDD --> R4\n    R4 -->|Cover審査| Check[\"docs/survey-checklist.md\"]\n    Check -->|100% Check| Final[\"第一段階凍結\"]",
+    "doc_tree_cols": ["パス", "用途"],
+    "doc_tree_rows": [
+      { "path": "context.md", "desc": "グローバル辞書（常駐）。新定義の業務領域辞書（terminology.md）を採用。" },
+      { "path": "survey-checklist.md", "desc": "ファイル級考古進度追跡表。" },
+      { "path": "records/", "desc": "考古仮置き場（checklist 100% 完了後 main へ移行、本区全削除）。" },
+      { "path": "records/[domain]/flow.md", "desc": "As-is 現状業務規則（booking, coupon 等）。" },
+      { "path": "records/[domain]/e2e-cases.feature", "desc": "BDD テスト案例。" },
+      { "path": "docs/main/flows/", "desc": "新プロジェクト永久 SSOT — フロー基石。" },
+      { "path": "docs/main/pages/", "desc": "ページロジック。" },
+      { "path": "docs/main/contract-schemas/shared/", "desc": "グローバル Entities。" },
+      { "path": "docs/main/contract-schemas/endpoints/", "desc": "API 仕様。" }
+    ]
+  },
+  "s3": {
+    "emoji": "🛠️",
+    "heading": "Skills Workflow によるデータ産出",
+    "subheading": "4ロールのコアタスクと精確 I/O。技術仕様は各折りたたみに格納。",
+    "roles": [
       {
-        "title": "1. コード考古学者",
-        "ai_recommendation": {
-          "tool": "claude",
-          "model": "Sonnet 4.5",
-          "tier": "budget",
-          "hint": "大量ファイル分割考古"
-        },
-        "task": "As-isを把握し、純粋なビジネスロジックを抽出し、デッドコードを除去します。",
-        "inputs": [
-          "レガシーの特定ルート/コンポーネント（Repomixバンドル）"
-        ],
+        "emoji": "🕵️",
+        "title": "コード考古学者 (Code Archaeologist)",
+        "task": "旧システムの「現況（As-is）」を把握し、混乱コードから純粋な業務行為を抽出、デッドコードを排除します。",
+        "input": "旧プロジェクト特定ルート/コンポーネントソース（Repomix 打包）",
         "output": "docs/records/[domain]/flow.md",
-        "format": [
-          "### Happy Path",
-          "### Edge Cases（業務分岐のみ）",
-          "### Unverified Logic"
+        "ai_recommendation": { "tool": "claude", "model": "Sonnet 4.5", "tier": "budget", "hint": "大量ファイル分批考古" },
+        "spec_summary": "詳細仕様を展開",
+        "spec_sections": [
+          { "title": "### Happy Path", "desc": "極簡のユーザー成功操作ステップ。" },
+          { "title": "### Edge Cases", "desc": "コード内の全業務ロジック分岐（ネットワーク断等の基建エラー除外）。" },
+          { "title": "### Unverified Logic", "desc": "コードに存在するが未実行/説明不能なデッドコード（後続議論用）。" }
         ]
       },
       {
-        "title": "2. データ境界プランナー",
-        "ai_recommendation": {
-          "tool": "claude",
-          "model": "Opus 4.6",
-          "tier": "required",
-          "hint": "型精度が重要"
-        },
-        "task": "不良なバックエンド形式を遮断し、クリーンなInterfaceとTransformerを定義します。",
-        "inputs": [
-          "Raw API JSON",
-          "flow.md",
-          "コンポーネント変換ロジック",
-          "Storeトリガーと派生状態"
+        "emoji": "📐",
+        "title": "データ境界プランナー (Data Boundary Planner)",
+        "task": "旧バックエンドの不良形式を拒絶。新クリーン Frontend Interface を定義し、コンポーネントと Store の変換ロジックを Transformer に集約。",
+        "input": "旧 API Raw JSON payload、flow.md 業務ロジック、旧コンポーネント衍生計算、旧 Store Mutations/Selectors",
+        "output": "docs/main/contract-schemas/endpoints/[endpoint-name].md",
+        "ai_recommendation": { "tool": "claude", "model": "Opus 4.6", "tier": "required", "hint": "型精度要求高" },
+        "spec_summary": "詳細仕様を展開",
+        "spec_sections": [
+          { "title": "Upstream Raw JSON Schema (TypeScript Type)", "desc": "バックエンド原始形式。" },
+          { "title": "Target TypeScript Interface", "desc": "新フロントエンド純粋型。JSDoc @upstream_source と @old_logic_location 标注。" },
+          { "title": "Transformer Pure Functions", "desc": "複雑衍生計算（金額、距離等）は完全型付き実行可能 TS 変換関数原型を記述。" }
         ],
-        "output": "docs/main/contract-schemas/endpoints/[name].md",
-        "format": [
-          "Upstream Raw JSON Schema",
-          "Target Interface（JSDoc付き）",
-          "Transformer純関数プロトタイプ"
-        ]
+        "spec_code": "/** @upstream_source GET /api/booking/{id} */\ninterface BookingViewModel {\n  /** @old_logic_location src/pages/booking/transform.ts:42 */\n  displayAmount: string;\n}\n\nfunction transformBookingAmount(raw: RawBooking): string {\n  return (raw.amount_cents / 100).toFixed(2);\n}"
       },
       {
-        "title": "3. 振る舞いテストアーキテクト",
-        "ai_recommendation": {
-          "tool": "claude",
-          "model": "Sonnet 4.5",
-          "tier": "budget",
-          "hint": "構造化BDD"
-        },
-        "task": "flow.mdとschemasをBDD受入テストに変換します。",
-        "inputs": [
-          "flow.md",
-          "contract-schemas/"
-        ],
+        "emoji": "✍️",
+        "title": "行為テストアーキテクト (Behavior Test Architect)",
+        "task": "flow.md 業務ロジックを実装解耦の BDD テスト案例に変換します。",
+        "input": "docs/records/[domain]/flow.md + docs/main/contract-schemas/",
         "output": "docs/records/[domain]/e2e-cases.feature",
-        "format": [
-          "Gherkin Given-When-Then",
-          "全業務Edge Cases",
-          "インフラエラー（404/500/オフライン）除外"
-        ]
+        "ai_recommendation": { "tool": "claude", "model": "Sonnet 4.5", "tier": "budget", "hint": "構造化 BDD 出力" },
+        "spec_summary": "詳細仕様を展開",
+        "spec_sections": [
+          { "title": "Gherkin 構文", "desc": "Given-When-Then 構文必須。" },
+          { "title": "業務 Edge Cases", "desc": "全業務層 Edge Cases を網羅（例：予約コード該当なし）。" },
+          { "title": "基建エラー除外", "desc": "404/500/ネット断はグローバル Client 処理、Feature ファイルに記載しない。" }
+        ],
+        "spec_code": "Scenario: 予約コード該当なし\n  Given ユーザーが存在しない予約コードを入力\n  When ユーザーが照会を送信\n  Then 「予約が見つかりません」エラーを表示"
       },
       {
-        "title": "4. ドキュメント監査員",
-        "ai_recommendation": {
-          "tool": "human",
-          "tier": "human",
-          "hint": "最終防衛線"
-        },
-        "task": "コードカバレッジ視点で考古進捗を客観的に監査します。",
-        "inputs": [
-          "レガシーファイル一覧",
-          "docs/records/ 産出物"
-        ],
+        "emoji": "⚖️",
+        "title": "文書棚卸員 (Documentation Auditor)",
+        "task": "最厳格な「コードカバレッジ視点」で考古進度を客観審査、既存ファイル漏れを防止。",
+        "input": "旧プロジェクトフォルダ実体リスト、docs/records/ 産出文書",
         "output": "docs/survey-checklist.md",
-        "format": [
-          "全.ts/.tsxの棚卸完了",
-          "全APIにschema+BDD",
-          "100%チェック＝Main Docs凍結点"
+        "ai_recommendation": { "tool": "human", "tier": "human", "hint": "最終防衛線" },
+        "spec_summary": "詳細仕様を展開",
+        "spec_sections": [
+          { "title": "Check 物理基準", "desc": "旧フォルダ/モジュール下の全 .tsx/.ts が棚卸完了し、各 API に contract-schemas と BDD 案例がある場合のみチェック可能。" }
         ]
       }
     ]
   },
-  "docflow": {
-    "heading": "トップレベルアーキテクチャと文書フロー",
-    "subheading": "レガシーCodebaseから凍結可能なMain Docsまでの完全な産出チェーン。",
-    "diagram": "graph TD\n    Code[\"レガシーコードベース\"] -->|Repomix / Cursor| R1[\"1. コード考古学者\"]\n    R1 -->|As-is業務行為| Flow[\"records/…/flow.md\"]\n    Payload[\"Raw API JSON\"] --> R2[\"2. データ境界プランナー\"]\n    Flow --> R2\n    Comp[\"レガシーコンポーネントとStore\"] --> R2\n    R2 -->|To-beクリーン型| Schema[\"main/contract-schemas/\"]\n    R2 --> Ctx[\"context.md\"]\n    R1 --> Ctx\n    Flow --> R3[\"3. 振る舞いテストアーキテクト\"]\n    Schema --> R3\n    R3 -->|BDD| BDD[\"records/…/e2e-cases.feature\"]\n    Flow --> R4[\"4. ドキュメント監査員\"]\n    Schema --> R4\n    BDD --> R4\n    R4 -->|カバレッジ監査| Check[\"survey-checklist.md\"]\n    Check -->|100%| Final[\"Main Docs凍結点\"]"
-  },
-  "docstructure": {
-    "heading": "Outputディレクトリ規範",
-    "tree": "docs/\n├── context.md               # グローバルTerminology（常駐）\n├── survey-checklist.md      # 考古進捗追跡\n├── records/                 # 考古ステージング（凍結後削除可）\n│   └── [domain]/\n│       ├── flow.md\n│       └── e2e-cases.feature\n└── main/                    # Single Source of Truth\n    ├── flows/\n    ├── pages/\n    └── contract-schemas/\n        ├── shared/\n        └── endpoints/"
-  },
-  "survey": {
-    "heading": "コア棚卸優先順位",
-    "categories": [
+  "s4": {
+    "emoji": "🔄",
+    "heading": "コア考古棚卸フローと実行 SUPPLEMENT",
+    "card_scope_label": "範囲",
+    "card_standard_label": "棚卸基準",
+    "table_cols": ["カテゴリ", "優先度", "範囲", "棚卸基準"],
+    "table_rows": [
       {
-        "title": "1. コアドメインフロー",
-        "priority": "最優先",
-        "items": [
-          "Booking Flow",
-          "Search & Filter",
-          "Coupon / Affiliate"
-        ],
-        "note": "ページ横断フロー — flow.md + contract-schemas + BDD必須。",
-        "ai_recommendation": {
-          "tool": "claude",
-          "model": "Opus 4.6",
-          "tier": "required",
-          "hint": "コアフロー"
-        }
+        "category": "コア業務フロー (Core Domain Flows)",
+        "priority": "最高優先",
+        "priority_type": "emerald",
+        "scope": "Booking Flow、Search & Filter（UI 隠し状態の逆方向棚卸）、Coupon / Affiliate",
+        "standard": "跨ページ連続動作、最優先処理。完全 flow.md + contract-schemas + BDD 必須。"
       },
       {
-        "title": "2. 静的・コンテンツページ",
+        "category": "静的・コンテンツページ (Static & Content)",
         "priority": "簡易棚卸",
-        "items": [
-          "ナビ、FAQ、Top Pageブロック等"
-        ],
-        "note": "i18nファイルに格納（CMSなし）。docs/main/pages/にブロックとi18n keyをリスト即可。",
-        "ai_recommendation": {
-          "tool": "claude",
-          "model": "Sonnet 4.5",
-          "tier": "budget",
-          "hint": "静的ページ棚卸"
-        }
+        "priority_type": "blue",
+        "scope": "ナビページ、FAQ、Top Page ブロック等。フロント翻訳ファイル保存（CMS なし）。",
+        "standard": "schemas と BDD 不要。docs/main/pages/ にページブロックと翻訳 Key 構造を Markdown リスト。"
       },
       {
-        "title": "3. グローバルインフラ",
-        "priority": "global-constraints",
-        "items": [
-          "検証状態の有効期限",
-          "エラー試行回数制限（防刷）",
-          "グローバル状態とURL同期（言語・通貨）"
-        ],
-        "note": "docs/records/global-constraints/e2e-cases.featureに統合。",
-        "ai_recommendation": {
-          "tool": "claude",
-          "model": "Sonnet 4.5",
-          "tier": "budget",
-          "hint": "横断モジュール統合"
-        }
+        "category": "グローバル施設・制約 (Global Infrastructure)",
+        "priority": "global-constraints 集約",
+        "priority_type": "indigo",
+        "scope": "認証状態有効期限（Session 生存周期）、エラー試行回数制限（防刷）、グローバル状態と URL 同期（言語・通貨）",
+        "standard": "強い業務行為だが跨ページ。行為テストアーキテクトが docs/records/global-constraints/e2e-cases.feature に集約。"
       }
     ]
   },
-  "freeze": {
-    "heading": "変更管理とMain Docs凍結",
-    "phase1_title": "第一段階：考古期",
+  "s5": {
+    "emoji": "🔒",
+    "heading": "変更管理 ＆ Main Docs 凍結",
+    "freeze_callout": "survey-checklist.md が 100% チェック → Main Docs 凍結点。この main/ バージョンで PM と技術・業務変更を議論。",
+    "phase1_title": "第一段階（考古期）",
     "phase1_items": [
-      "records/にAs-isを記録",
-      "main/flows/に確認済みAs-isロジック",
-      "main/contract-schemas/にTo-beクリーン型",
-      "survey-checklist.md 100% → 凍結点、PMと技術変更討論"
+      "records/ に As-is を記録。",
+      "main/flows/ に確認済み As-is ロジックを先行記述。",
+      "main/contract-schemas/ に新 To-be 純粋型を直接産出。",
+      "checklist 100% → Main Docs 凍結点、PM と技術変更議論。"
     ],
-    "phase2_title": "第二段階：リファクタリングと新規開発",
+    "phase2_title": "第二段階（リファクタ・開発期）",
     "phase2_items": [
-      "Feature Branchでdocs/main/を修正（常にTo-be終点状態）",
-      "PRにCHANGELOG.md（Ticket link付き）",
-      "コードと文書を同時Merge — コード即文書"
+      "議論通過の大改と新要件は Feature Branch で docs/main/ を修正、常に To-be 状態を維持。",
+      "PR に CHANGELOG.md 必須（Ticket Link + 変更ファイル記録）。",
+      "コードリリース時に文書も Merge。「コード即文書、文書即コード」。"
     ]
   },
-  "figma": {
-    "heading": "Figmaデザインシステム",
-    "org_heading": "組織構造：中央テンプレート、ローカルカスタマイズ",
-    "org_desc": "Figma Professionalはファイル間Variable連動不可 — Standard Recipeアーキテクチャを採用。",
-    "variables_note": "⚠️ Figma Variablesの作成には、Pro planのFull seat（Collab seat不可）が必要です。",
-    "org_central": "中央Workspace → Core shadcn Template（Primitive + Standard Components）",
-    "org_local": "各プロジェクト → テンプレート複製 + Local Semantic上書き + As-is画面100%復元",
-    "pattern_heading": "業務モジュール維持境界",
-    "pattern_central": "中央維持：100%同一ロジック・視覚、カスタマイズ不可（日本地図選択等）→ Copy-Paste",
-    "pattern_local": "ローカル維持：製品線で語意が変わる複合コンポーネント → 中央shadcn基礎 + ローカル組立",
-    "token_heading": "Token三層物理分離防衛線",
-    "token_subheading": "デザイナーはキャンバスで第三層Semantic Tokenのみ使用可能。",
-    "tiers": [
-      {
-        "layer": "1. Primitive",
-        "example": "primitive/neutral/100, primitive/blue/500",
-        "css": "--nv-primitive-neutral-100",
-        "access": "🔒 デザイナー使用禁止",
-        "locked": true
-      },
-      {
-        "layer": "2. Brand",
-        "example": "brand/primary, brand/secondary",
-        "css": "--nv-brand-primary",
-        "access": "🔒 デザイナー使用禁止",
-        "locked": true
-      },
-      {
-        "layer": "3. Semantic",
-        "example": "semantic/bg/base",
-        "css": "--nv-semantic-bg-base",
-        "access": "🔓 キャンバス唯一の合法層",
-        "locked": false
-      }
+  "s6": {
+    "emoji": "🧱",
+    "heading": "Figma デザインシステムと三層 Token アーキテクチャ",
+    "intro_p1": "マルチプロダクト「孤島式保守」：跨ファイル Variables 連動不可のため、「中央テンプレート、ローカルカスタマイズ」実務アーキテクチャを採用。",
+    "intro_p2": "中央 Core shadcn Template が Primitive 定義とコンポーネント原型を保守。各刷新プロジェクトはローカル複製、Semantic Tokens 手動上書き、As-is キャンバス 100% 還元。",
+    "pro_warning": "⚠️ Figma Variables 作成には Pro plan の Full seat が必要（Collab seat 不可）。",
+    "token_rule": "三層 Token 物理隔離鉄則：キャンバスは第三層（Semantic）Token のみ使用可能。",
+    "token_cols": ["層級 (Layer)", "Figma Variable 命名規範", "コード端 Namespace 変数対照", "デザイナー使用権限"],
+    "token_rows": [
+      { "layer": "1. Primitive 🔒", "figma": "primitive/neutral/100", "css": "--nv-primitive-neutral-100", "access": "❌ キャンバスバインド全面禁止。色彩大辞書。" },
+      { "layer": "2. Brand 🔒", "figma": "brand/primary", "css": "--nv-brand-primary", "access": "❌ キャンバスバインド全面禁止。" },
+      { "layer": "3. Semantic 🔓", "figma": "semantic/bg/base", "css": "--nv-semantic-bg-base", "access": "🔓 唯一合法 Token。この層で命名必須。" }
     ],
-    "align_heading": "画面再構築とi18n-key脈絡整合",
-    "align_desc": "本番環境と100%構造整合。FigmaコンポーネントDescriptionにi18n key必須。",
-    "align_example": "キャンバス \"Please enter your booking code\" → Description: [i18n-key] booking.field.code_placeholder"
+    "fold_org_content": "中央 Workspace → Core shadcn Template（Primitive Tokens + Standard Components）。各プロジェクトローカル → テンプレ複製 + Local Semantic 上書き + As-is 100% 還元。",
+    "fold_pattern_central": "中央保守：100% 業務ロジック視覚一致、カスタマイズ不可（日本地図選区等）→ Copy-Paste。",
+    "fold_pattern_local": "ローカル保守：プロダクト線で意味が変わる複合コンポーネント（BookingCard 等）→ 中央 shadcn 基礎 + ローカル組立。",
+    "fold_align_desc": "Figma コンポーネント備考規範：組立時 Description に frontend i18n key を手動備考。",
+    "fold_align_example": "キャンバス \"Please enter your booking code\" → Description: [i18n-key] booking.field.code_placeholder。EN 文案変更後もフロントが同一フィールドを確認可能。"
   },
-  "i18n_prep": {
-    "heading": "翻訳準備フロー",
-    "note": "考古文書はClaude Webで産出。刷新実装はCursorに委任。",
+  "s7": {
+    "emoji": "🌍",
+    "heading": "多言語 (i18n) 全自動パイプライン",
+    "toolchain_note": "ツールチェーンデータ清洗：文書産出は Claude Web（考古）、刷新は Cursor。モデルに奇怪フォーマット修正、status で unused 标注を要求。",
+    "gemini_rule": "Gemini 自動翻訳鉄則：Gemini が Sheets を直接操作可能。Sheet 第一行 instruction sheet に Tone & Style Guide を配置。新プロジェクトは unused フィルタ、SKILL.md 参照作成。",
+    "iron_rule": "System Prompt 級グローバル鉄則：JSON に翻訳が存在しない場合、新 Key 創作禁止。Hardcode + // TODO: i18n-missing でバッチ抽出。",
+    "fold_json_content": "JSON 形式例：status, key, legacy_key, zh_TW を含む。\n\n自動化 script が legacy_key と元 translations を比対し key 欠落をチェック。JSON を sheet に書き戻し（namespace 列で対照管理）。",
     "steps": [
-      "AIがレガシー翻訳をJSONに整理（status: active | unused | in-progress）",
-      "Scriptでlegacy_keyと元translationsを比較（動的keyは手動でactive指定）",
-      "ScriptでGoogle Spreadsheetに書き込み（単一sheet + namespace、Instruction SheetにTone Guide）",
-      "Geminiが初版翻訳委託を代行可能（日本語は敬體統一）",
-      "新プロジェクトscriptでSheet→コード同期（unused除外、in-progressは🚧表示）",
-      "SKILL.md鉄則：key不足時はhardcode + // TODO: i18n-missing、新key禁止"
+      "AI が legacy 翻訳を JSON に整理（status: active | unused | in-progress、namespace + legacy_key 含む）",
+      "Script が legacy_key と元 translations を比対、欠落チェック（動的 key は手動 active 标注）",
+      "Script が Google Spreadsheet に書き込み（単一 sheet + namespace 列、Instruction Sheet に Tone Guide）",
+      "Gemini が初版翻訳を代行（日本語統一敬体）",
+      "新プロジェクト script が Sheet からコードに同期（unused フィルタ、in-progress は 🚧 表示）",
+      "SKILL.md 鉄則：key 欠落時は創作禁止、hardcode + // TODO: i18n-missing"
+    ]
+  },
+  "s8": {
+    "emoji": "🏁",
+    "heading": "棚卸、校対と刷新開始",
+    "validation_heading": "平行対照と検収",
+    "validation_items": [
+      "新旧プロジェクトを同一 workspace に配置し前後対照。",
+      "\\n はフロントで CSS whitespace-pre-line で処理。",
+      "独立 Docusaurus サイト repo で PM と確認。"
     ],
-    "step_details": [
-      {
-        "ai_recommendation": {
-          "tool": "claude",
-          "model": "Haiku 4.5",
-          "tier": "budget",
-          "hint": "フォーマット整理"
-        }
-      },
-      {},
-      {},
-      {},
-      {},
-      {}
-    ]
-  },
-  "dev": {
-    "heading": "開発段階：Matt Pocock Agent Skills分担",
-    "subheading": "Matt Pocockの5ステップSkillsパイプラインでClaudeとCursorの役割を明確化。",
-    "ref_label": "参考",
-    "ref_url": "https://www.aihero.dev/5-agent-skills-i-use-every-day",
-    "claude_title": "Claude担当（考古 → To-Issues）",
-    "claude_desc": "文書産出、要件明確化、PRD作成、Issue原子化分解。厳格なプロセスが必要な計画段階に最適。",
-    "cursor_title": "Cursor Agent + 新人練習（TDD → 刷新実装）",
-    "cursor_desc": "TDD赤緑リファクタリング、アーキテクチャ深化、実際のコード刷新。一部Issueは新人練習、シニアがCursor Agentで品質管理。",
-    "table_skill": "Skill",
-    "table_desc": "説明",
-    "table_ai": "推奨AI",
-    "table_phase": "段階",
-    "skills": [
-      {
-        "name": "Grill-with-Docs",
-        "desc": "考古文書を活用し設計ツリーを逐次明確化",
-        "tool": "Claude",
-        "phase": "計画",
-        "ai_recommendation": {
-          "tool": "claude",
-          "model": "Opus 4.6",
-          "tier": "required",
-          "hint": "決定ツリー推論"
-        }
-      },
-      {
-        "name": "To-PRD",
-        "desc": "合意からPRDを産出（User Stories + モジュール草案）",
-        "tool": "Claude",
-        "phase": "計画",
-        "ai_recommendation": {
-          "tool": "claude",
-          "model": "Sonnet 4.5",
-          "tier": "budget",
-          "hint": "構造化PRD"
-        }
-      },
-      {
-        "name": "To-Issues",
-        "desc": "PRDを垂直スライスIssueに分解、blocking関係を設定",
-        "tool": "Claude",
-        "phase": "計画",
-        "ai_recommendation": {
-          "tool": "claude",
-          "model": "Sonnet 4.5",
-          "tier": "budget",
-          "hint": "原子化分解"
-        }
-      },
-      {
-        "name": "TDD",
-        "desc": "赤緑リファクタリングループ、一行テスト一行実装",
-        "tool": "Cursor",
-        "phase": "開発",
-        "ai_recommendation": {
-          "tool": "cursor",
-          "model": "Composer 2.5",
-          "tier": "context",
-          "hint": "赤緑リファクタ"
-        }
-      },
-      {
-        "name": "Architecture-Refactor",
-        "desc": "浅いモジュールを深化、Agentが安定ナビゲーション可能に",
-        "tool": "Cursor",
-        "phase": "開発",
-        "ai_recommendation": {
-          "tool": "cursor",
-          "model": "Composer 2.5",
-          "tier": "context",
-          "hint": "ファイル横断リファクタ"
-        }
-      }
-    ]
-  },
-  "pipeline": {
-    "heading": "実行ファクトリー：原子化Issueサンプル",
-    "subheading": "To-Issuesが産出する垂直スライス — 各Issueが全統合層を貫通（Tracer Bullet）。",
-    "mock_issues": [
-      {
-        "id": "#01",
-        "tag": "Schema",
-        "title": "transformBookingAmount純関数を実装",
-        "blocks": "ブロッカーなし — 即開始可能",
-        "ai_recommendation": {
-          "tool": "cursor",
-          "model": "Composer 2.5",
-          "tier": "context",
-          "hint": "TDD純関数"
-        }
-      },
-      {
-        "id": "#02",
-        "tag": "UI",
-        "title": "Figmaに基づきBookingCard静的コンポーネントを実装",
-        "blocks": "#01にブロック",
-        "ai_recommendation": {
-          "tool": "cursor",
-          "model": "Composer 2.5",
-          "tier": "context",
-          "hint": "コンポーネント実装"
-        }
-      },
-      {
-        "id": "#03",
-        "tag": "BDD",
-        "title": "予約コード検証Edge Cases受入テストを作成",
-        "blocks": "#01と並行可能",
-        "ai_recommendation": {
-          "tool": "cursor",
-          "model": "Composer 2.5",
-          "tier": "context",
-          "hint": "受入テスト作成"
-        }
-      }
-    ]
-  },
-  "roadmap": {
-    "heading": "ロードマップ",
-    "phases": [
-      {
-        "title": "Phase 1：考古学とデータ境界",
-        "description": "4ロールSkillsでMain Docs産出、survey-checklist 100%達成",
-        "risk": "🔥 リスク管理：凍結後PMと技術変更討論",
-        "deliverables": [
-          "flow.md × N domains",
-          "contract-schemas/",
-          "e2e-cases.feature",
-          "context.md"
-        ],
-        "ai_recommendation": {
-          "tool": "claude",
-          "model": "Opus+Sonnet",
-          "tier": "required",
-          "hint": "計画段階"
-        }
-      },
-      {
-        "title": "Phase 2：Figmaシステム再編",
-        "description": "中央テンプレート複製 + Local Semantic + As-is画面100%復元",
-        "deliverables": [
-          "Design System File",
-          "i18n-key整合備考",
-          "翻訳JSON → Google Sheet"
-        ],
-        "ai_recommendation": {
-          "tool": "human",
-          "tier": "human",
-          "hint": "Figma手作業"
-        }
-      },
-      {
-        "title": "Phase 3：開発とリファクタリング開始",
-        "description": "Claude To-Issues完了後、Cursor Agent + 新人がTDD刷新パイプライン実行",
-        "deliverables": [
-          "垂直スライスPR",
-          "CHANGELOG.md",
-          "テストカバレッジ達成"
-        ],
-        "ai_recommendation": {
-          "tool": "cursor",
-          "model": "Composer 2.5",
-          "tier": "context",
-          "hint": "開発とリファクタ"
-        }
-      }
+    "log_rule": "鉄則境界：不明な旧ロジックには全て log を追加し本番実行を記録。一定期間データなしなら安全に削除可能。",
+    "skills_heading": "Issue 分割と Matt Pocock Agent Skills",
+    "skills_subheading": "Issues を 5 大 Agent Skills に分割。monorepo 特性を活用。Issue 並行タスク。",
+    "skills_cols": ["Skill", "説明", "推奨 AI", "段階"],
+    "skills_rows": [
+      { "name": "Grill-with-Docs", "desc": "考古文書と設計ツリーに沿い決策分岐を明確化", "ai": "Claude Opus 4.6", "phase": "計画" },
+      { "name": "To-PRD", "desc": "合意から PRD 産出、User Stories とモジュール草案含む", "ai": "Claude Sonnet 4.5", "phase": "計画" },
+      { "name": "To-Issues", "desc": "PRD を垂直スライス Issue に分解、blocking 関係構築", "ai": "Claude Sonnet 4.5", "phase": "計画" },
+      { "name": "TDD", "desc": "赤緑リファクタ循環、一行テスト一行実装、機能漏れ防止", "ai": "Cursor Composer 2.5", "phase": "開発" },
+      { "name": "Architecture-Refactor", "desc": "浅いモジュール深化、テスト境界明確化、Agent 安定ナビ", "ai": "Cursor Composer 2.5", "phase": "開発" }
+    ],
+    "refs_heading": "技術参考リンク",
+    "refs": [
+      { "label": "Stop writing docs by hand", "url": "https://www.aihero.dev/5-agent-skills-i-use-every-day" },
+      { "label": "Playwright BDD", "url": "https://playwright.dev/docs/test-agents" }
+    ],
+    "issues_heading": "原子化 Issue 例",
+    "issues": [
+      { "id": "#01", "tag": "Schema", "title": "transformBookingAmount 純関数を実装", "blocks": "ブロッカーなし、即開始可" },
+      { "id": "#02", "tag": "UI", "title": "Figma に基づく新版 BookingCard 静的コンポーネント実装", "blocks": "#01 にブロック" },
+      { "id": "#03", "tag": "BDD", "title": "予約コード検証 Edge Cases 検収案例を記述", "blocks": "#01 と並行可" }
+    ],
+    "roadmap_heading": "Roadmap",
+    "roadmap": [
+      { "title": "Phase 1：考古とデータ境界", "desc": "4ロール Skills が Main Docs 産出、100% survey-checklist 達成", "risk": "🔥 リスク管理：凍結後 PM と技術変更議論" },
+      { "title": "Phase 2：Figma システム再編", "desc": "中央テンプレ複製 + Local Semantic 上書き + As-is キャンバス 100% 還元" },
+      { "title": "Phase 3：開発とリファクタ開始", "desc": "Claude To-Issues 完了後、Cursor Agent + 新人が TDD 刷新パイプライン実行" }
     ]
   },
   "footer": {
