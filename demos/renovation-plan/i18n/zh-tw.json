@@ -6,10 +6,10 @@
     "label_input": "Input",
     "label_output": "Output",
     "fold_specs": "展開詳細規格要求",
-    "fold_doc_tree": "📂 點擊展開查看：結構化目錄樹狀規範 (Docusaurus Output)",
+    "fold_doc_tree": "📂 點擊展開：考古期工作目錄（records/ + main/，Agent 寫入）",
     "fold_figma_org": "組織架構：中央範本，本地清洗",
     "fold_figma_pattern": "業務模組維護邊界",
-    "fold_figma_align": "畫面重建與 EN 語系脈絡對齊",
+    "fold_figma_align": "Figma 文案與 i18n 分界",
     "fold_i18n_json": "🔍 查看：i18n 數據型別與腳本規範細節",
     "fold_i18n_steps": "翻譯準備完整步驟（共 {n} 步）",
     "fold_deliverables": "產出物清單",
@@ -19,11 +19,29 @@
     "tier_human": "人工",
     "tool_claude": "Claude",
     "tool_cursor": "Cursor",
-    "tool_human": "人工"
+    "tool_human": "人工",
+    "audit_layers_label": "考古驗證三層級（Role 4）",
+    "issue_tag_legend_heading": "Issue 類型標籤",
+    "issue_tag_legend": [
+      { "tag": "Schema", "meaning": "資料邊界／Transformer／純函數" },
+      { "tag": "UI", "meaning": "元件或頁面，需 Figma To-be" },
+      { "tag": "BDD", "meaning": "Flow 驗收案例，合併前須全綠" }
+    ],
+    "glossary": {
+      "L1": { "short": "覆蓋地圖", "tip": "比對 flow.md § Scoped Files：scope 內每個 .ts/.tsx 皆有歸屬。AI 自動驗證，未歸屬檔案 = 0。" },
+      "L2": { "short": "結構閘門", "tip": "flow 七章節、endpoint 閉環、BDD 對齊、transform 收攏。AI 產 gap report，全綠即過。" },
+      "L3": { "short": "人工抽樣", "tip": "隨機對照原始碼，確認考古內容寫對而非只寫齊。人類簽核，核心 flow 建議 5 項。" },
+      "四區": { "short": "survey-checklist 四區塊", "tip": "Flows、Endpoints、Static Pages、Global Constraints——盤點凍結需四區 100% 勾選。" },
+      "可先翻修": { "short": "Scope 標記", "tip": "Phase 2 PM 對齊後標記為可立即開工的 flow／頁面；Phase 3 僅此類進開工池。" },
+      "待後續對齊": { "short": "Scope 標記", "tip": "spec + Figma As-is 仍須就緒，但 refactor 第一輪不動；其餘翻修告一段落後再與 PM 更新 To-be。" },
+      "As-is": { "short": "現況還原稿", "tip": "100% 對正式環境的 Figma 畫布；Phase 2 PM 對齊硬性前置。" },
+      "To-be": { "short": "目標設計稿", "tip": "重構開工後，僅「可先翻修」項目增量更新；UI Issue 開工前需對應區塊 To-be。" }
+    },
+    "s9_layers_note": "此「三層防線」指 API 資料流（Upstream → Contract → Runtime），與考古驗證的 L1／L2／L3 不同。"
   },
   "hero": {
     "title": "專案全面翻新：AI 驅動的敏捷考古與重構計畫",
-    "subtitle": "透過 AI 考古、資料邊界隔離、Figma 設計系統重建與 Matt Pocock Skills 流水線，徹底終結設計脫鉤與技術債。"
+    "subtitle": "透過 AI 考古補齊缺失的 Specification（步驟、頁面、流程）、從前端視角釐清 API Schema 並建立穩定 Transformer、重建 Figma 設計系統，並以 Agent Skills 流水線驅動文件化驗收，系統性降低設計脫鉤與技術債。"
   },
   "toc": [
     { "id": "s1", "label": "前情提要" },
@@ -33,7 +51,8 @@
     { "id": "s5", "label": "凍結管理" },
     { "id": "s6", "label": "Figma 設計系統" },
     { "id": "s7", "label": "多國語系" },
-    { "id": "s8", "label": "開始翻新" }
+    { "id": "s8", "label": "開始翻新" },
+    { "id": "s9", "label": "API 邊界與 Zod" }
   ],
   "s1": {
     "emoji": "🛑",
@@ -41,14 +60,19 @@
     "table_cols": ["痛點", "影響", "根因描述"],
     "table_rows": [
       {
+        "pain": "缺乏規格書",
+        "impact": "商業邏輯無法核對、變更風險高",
+        "cause": "沒有標準文件能核對商業邏輯；步驟、頁面、流程全靠從程式碼通靈還原。"
+      },
+      {
         "pain": "前端程式碼混亂",
         "impact": "修復成本極高",
-        "cause": "出現許多不推薦的寫法，導致踩到某些 Framework Bug 時極不排查。"
+        "cause": "出現許多不推薦的寫法，導致踩到某些 Framework Bug 時極難排查。"
       },
       {
         "pain": "後端無規格",
         "impact": "前端通靈判斷",
-        "cause": "後端沒有規格書，單從前端程式碼中無法準確判斷回應格式，且為了暫時解決某些後端回傳的錯誤格式而前端加上的額外通靈判斷。"
+        "cause": "後端沒有規格書，單從前端程式碼中無法準確判斷回應格式，且為了暫時解決某些後端回傳的錯誤格式而前端加上的額外通靈判斷。此為後續 error 格式混亂與 transform 分散的上游根因。"
       },
       {
         "pain": "Error 格式不統一",
@@ -59,19 +83,26 @@
         "pain": "資料格式命名混亂",
         "impact": "重構難追溯",
         "cause": "前端目前自創了一層 transform，但因為分散在各處，重構時難以快速找到原始 value。"
+      },
+      {
+        "pain": "設計稿與正式環境脫鉤",
+        "impact": "UI 還原靠猜、設計迭代無法追溯",
+        "cause": "Figma 未與 codebase 同步維護，正式環境與設計稿長期分歧。"
       }
     ],
     "vision_heading": "現況痛點 vs 翻新願景",
     "as_is_title": "As-is 現況痛點",
     "to_be_title": "To-be 翻新願景",
     "as_is_items": [
+      "缺乏可核對商業邏輯的規格書",
       "設計稿與正式環境脫鉤",
       "程式碼劣化、技術債累積",
       "新人 Onboarding 困難、通靈成本高",
       "後端格式混亂，前端 transform 分散"
     ],
     "to_be_items": [
-      "100% 測試覆蓋，重構不漏功能",
+      "Specification 成為商業邏輯 SSOT",
+      "考古業務行為皆有 BDD 驗收案例",
       "Figma 設計系統與程式碼同步",
       "AI Agent 自動化派工 + 人機協作邊界清晰",
       "資料邊界隔離，乾淨型別取代髒資料"
@@ -80,87 +111,231 @@
   "s2": {
     "emoji": "🗺️",
     "heading": "頂層架構、文件流向與目錄規範",
-    "subheading": "從舊 Codebase 到可凍結 Main Docs 的完整產出鏈。核心導覽必須大方呈現。",
-    "diagram": "graph TD\n    Code[\"舊原始碼\"] -->|Repomix打包/Cursor檢索| R1[\"🕵️ 1.代碼考古學家\"]\n    R1 -->|產出 As-is 業務行為| Flow[\"docs/records/domain/flow.md\"]\n    Payload[\"舊API Raw JSON\"] --> R2[\"📐 2.資料邊界規劃師\"]\n    Flow --> R2\n    Comp[\"Components\"] --> R2\n    R2 -->|產出 To-be 乾淨型別| Schema[\"docs/main/contract-schemas/\"]\n    R2 --> Ctx[\"context.md Terminology\"]\n    Flow --> R3[\"✍️ 3.行為測試架構師\"]\n    Schema --> R3\n    R3 -->|產出 BDD案例| BDD[\"docs/records/domain/e2e-cases.feature\"]\n    Flow --> R4[\"⚖️ 4.文件盤點員\"]\n    Schema --> R4\n    BDD --> R4\n    R4 -->|Cover審查| Check[\"docs/survey-checklist.md\"]\n    Check -->|100% Check| Final[\"第一階段凍結\"]",
+    "subheading": "從舊 Codebase 到盤點凍結的完整產出鏈。考古期工作資料寫入 records/ 與 main/；盤點完成後另產 Docusaurus 供 PM 對齊。",
+    "example_callout": "⚠️ 本區 `[flow-name]`、`[endpoint-name]` 及下方範例清單僅為說明目錄結構與切分粒度，並非本專案真實 flow 或 API。實際名稱與邊界於考古階段依現有 codebase 業務邏輯逐一定義。",
+    "taxonomy_heading": "考古產物三層分類",
+    "taxonomy_intro": "Flow 不是唯一分類軸。Endpoint 規格與 Flow 正交——一個 flow 可引用多個 endpoint，一個 endpoint 也可被多個 flow 共用。",
+    "taxonomy_cols": ["層級", "路徑", "顆粒度", "考古深度"],
+    "taxonomy_rows": [
+      {
+        "tier": "User Flow（Record）",
+        "path": "docs/records/flows/[flow-name]/",
+        "granularity": "一條完整使用者任務（Entry → Terminal State）",
+        "depth": "flow.md + BDD + 引用 endpoints"
+      },
+      {
+        "tier": "靜態／內容",
+        "path": "docs/main/pages/",
+        "granularity": "一頁或一區塊",
+        "depth": "只列區塊結構 + i18n key，不寫 schema / BDD"
+      },
+      {
+        "tier": "全域約束",
+        "path": "docs/records/global-constraints/",
+        "granularity": "跨 flow 的橫切邏輯",
+        "depth": "只有 BDD，無獨立 flow.md"
+      }
+    ],
+    "taxonomy_endpoint_note": "Endpoint 規格（docs/records/endpoints/）為另一條正交軸：一 endpoint 一檔，考古期推測 upstream 結構，規劃師產出 Frontend Interface + Transformer 至 main/contract-schemas/endpoints/。",
+    "flow_granularity_heading": "Flow 切分準則（Highway Bus 服務 — 範例示意）",
+    "flow_granularity_rules": [
+      "以使用者任務（User Journey）為單位，不以頁面或路由切分。",
+      "一 Record = 一條可獨立封檔的完整旅程（Entry Point → Terminal State）。",
+      "Endpoint 規格（endpoints/）與 Flow（flows/）正交：一 flow 可引用多個 endpoint，endpoint 可跨 flow 共用。",
+      "有獨立 Entry Point 與完整旅程者另開 flow（如 Email 深連結的 Coupon 流程）；僅在另一 flow 途中觸發的邏輯（如訂票途中的 Coupon 套用）寫入該 flow 的 Edge Cases。",
+      "導向外部表單、站內無完整任務的介紹頁（如 Affiliate）→ 靜態頁盤點，不開 flow。",
+      "跨 flow 橫切邏輯（Session 時效、防刷、URL 語系同步）收攏至 global-constraints/。"
+    ],
+    "flow_examples_note": "以下僅示範切分粒度類型，[flow-name] 為 placeholder，非本專案真實 flow 名稱：",
+    "flow_examples": [
+      { "name": "[search-flow]", "desc": "搜尋與篩選（含 status 驅動的隱藏 UI 狀態）" },
+      { "name": "[booking-flow]", "desc": "訂票主流程（跨頁面完整旅程）" },
+      { "name": "[coupon-email-flow]", "desc": "Email 深連結入口的 Coupon 流程（獨立 Entry Point）" },
+      { "name": "[lookup-flow]", "desc": "預約查詢／變更類流程" }
+    ],
+    "endpoint_examples_note": "Endpoint 檔名同為範例，考古時依實際 API 命名：",
+    "endpoint_examples": [
+      "search-routes.ts",
+      "get-seat-map.ts",
+      "post-reservation.ts",
+      "get-reservation.ts"
+    ],
+    "diagram": "graph TD\n    Code[\"舊原始碼\"] -->|Repomix 打包 + Agent 探索| R1[\"🕵️ 1.代碼考古學家\"]\n    R1 -->|As-is 業務行為| Flow[\"docs/records/flows/[flow-name]/flow.md\"]\n    R1 -->|推測 endpoint 回傳結構| Upstream[\"docs/records/endpoints/[endpoint-name].ts\"]\n    Flow --> R2[\"📐 2.資料邊界規劃師\"]\n    Upstream --> R2\n    Comp[\"Components / Store 衍生邏輯\"] --> R2\n    R2 -->|Frontend Interface + Transformer| Schema[\"docs/main/contract-schemas/endpoints/\"]\n    R2 --> Ctx[\"CONTEXT.md\"]\n    Flow --> R3[\"✍️ 3.行為測試架構師\"]\n    Schema --> R3\n    R3 -->|BDD 案例| BDD[\"docs/records/flows/[flow-name]/e2e-cases.feature\"]\n    Flow --> R4[\"⚖️ 4.文件盤點員\"]\n    Schema --> R4\n    BDD --> R4\n    R4 -->|Cover 審查| Check[\"docs/survey-checklist.md\"]\n    Check -->|100% Check| Freeze[\"盤點凍結\"]\n    Freeze -->|整理盤點文件| Docs[\"Docusaurus 文件網站\"]\n    Docs -->|PM 對齊| PM[\"業務／技術變更討論\"]\n    Freeze -.->|開發者 reference| Ref[\"records/ + main/ 留存\"]",
+    "doc_tree_note": "以下為考古與重構期的工作目錄，供 Agent 寫入與開發者查閱、refactor 引用；非 PM 直接閱讀格式。",
+    "docusaurus_heading": "盤點完成後：Docusaurus 產出",
+    "docusaurus_intro": "survey-checklist 達 100% 後，依盤點文件（records/ + main/ + CONTEXT.md）整理為 Docusaurus 格式，於獨立 repo 建置文件網站，作為與 PM 對齊認知的正式介面。main/ 與 records/ 仍留存，供開發者自用與重構 reference。",
+    "docusaurus_steps": [
+      "以凍結後的盤點文件為 source（非考古期即寫 Docusaurus）",
+      "Skill / Script 轉換為 Docusaurus 結構（MDX、sidebar、Admonitions 等）",
+      "彙整各 flow.md § 待 PM 釐清 至 Open Questions 專區",
+      "獨立 repo 部署文件網站",
+      "以此網站與 PM 進行技術與業務變更討論"
+    ],
     "doc_tree_cols": ["路徑", "用途"],
     "doc_tree_rows": [
-      { "path": "context.md", "desc": "全域字典（常駐）。採用全新定義的業務領域字典（terminology.md）。" },
-      { "path": "survey-checklist.md", "desc": "檔案級考古進度追蹤表。" },
-      { "path": "records/", "desc": "考古暫存區（checklist 100% 完成後移入 main，本區全數刪除）。" },
-      { "path": "records/[domain]/flow.md", "desc": "As-is 現況業務規則（如 booking, coupon）。" },
-      { "path": "records/[domain]/e2e-cases.feature", "desc": "BDD 測試案例。" },
-      { "path": "docs/main/flows/", "desc": "新專案永久 SSOT — 流程基石。" },
-      { "path": "docs/main/pages/", "desc": "頁面邏輯。" },
-      { "path": "docs/main/contract-schemas/shared/", "desc": "全域 Entities。" },
-      { "path": "docs/main/contract-schemas/endpoints/", "desc": "API 規格。" }
+      { "path": "CONTEXT.md", "desc": "全域 glossary（常駐）。考古期持續更新，grill-with-docs 沿用。" },
+      { "path": "docs/survey-checklist.md", "desc": "考古進度追蹤表。四區 + 每條 Record 的 L1/L2/L3 子勾選。" },
+      { "path": "docs/records/", "desc": "As-is 考古工作區。開發者查閱與 refactor reference；盤點凍結後留存，不作 PM 對外介面。" },
+      { "path": "docs/records/flows/[flow-name]/flow.md", "desc": "As-is 現況業務流程。名稱於考古階段依 codebase 定義（placeholder: [flow-name]）。" },
+      { "path": "docs/records/endpoints/[endpoint-name].ts", "desc": "考古期從 codebase 推測的單一 endpoint 原始回傳結構（TypeScript type）。名稱於考古階段定義。" },
+      { "path": "docs/records/flows/[flow-name]/e2e-cases.feature", "desc": "BDD 測試案例。" },
+      { "path": "docs/main/flows/", "desc": "確認過的 As-is 流程；重構期 To-be SSOT 基石。開發者 reference。" },
+      { "path": "docs/main/pages/", "desc": "頁面邏輯盤點。開發者 reference。" },
+      { "path": "docs/main/contract-schemas/shared/", "desc": "全域 Entities（To-be）。開發者 reference。" },
+      { "path": "docs/main/contract-schemas/endpoints/", "desc": "Frontend Interface + Transformer（To-be）。開發者 reference。" }
     ]
   },
   "s3": {
     "emoji": "🛠️",
     "heading": "透過 Skills Workflow 產出資料",
-    "subheading": "四角色核心任務與精準 I/O。技術規格收進各自折疊抽屜。",
+    "subheading": "四角色核心任務與精準 I/O。技術規格收進各自折疊抽屜；Role 4 的三層檢核流程見下方專節。",
+    "auditor_heading": "文件盤點三層檢核流程",
+    "auditor_intro": "Role 4 不重新考古，而是驗證 Role 1–3 的模板契約是否履行。「不漏檔案」與「不漏細節」分開處理：L1/L2 可自動驗證，L3 由人工抽樣對照原始碼。",
+    "auditor_diagram": "flowchart TD\n    Draft[\"① AI 草稿 checklist\"] --> L1[\"② L1 覆蓋地圖<br/>未歸屬檔案 = 0\"]\n    L1 --> L2[\"③ L2 結構閘門<br/>模板 + 交叉引用\"]\n    L2 --> Gap[\"④ gap report\"]\n    Gap --> L3[\"⑤ L3 人工抽樣<br/>對照原始碼\"]\n    L3 --> Check[\"⑥ survey-checklist 勾選\"]\n    Check --> Freeze[\"四區 100% → 凍結\"]",
+    "auditor_workflow_heading": "每條 Record 的實際執行步驟",
+    "auditor_workflow_steps": [
+      "AI 依 legacy 檔案樹與已產出物，草稿更新 survey-checklist.md 四區項目。",
+      "AI 跑 L1：比對 flow.md § Scoped Files，確認 scope 內每個 .ts/.tsx 有歸屬，未歸屬檔案 = 0。",
+      "AI 跑 L2：檢查 flow 七章節齊全、Referenced Endpoints 閉環（upstream .ts + contract-schema .md）、BDD Scenario 與 flow.md 對齊、@old_logic_location 出現在 Scoped Files。",
+      "產出 gap report，列出未通過項；未全綠則退回對應 Role 補件。",
+      "人類審 gap report，對該 Record 執行 L3 抽樣（見下方清單）。",
+      "L1 + L2 + L3 全過 → 勾選該 Record；四區全部勾選 → 第一階段凍結。"
+    ],
+    "auditor_layers_heading": "三層檢核定義",
+    "auditor_layers_cols": ["層級", "檢查什麼", "執行者", "過關條件"],
+    "auditor_layers_rows": [
+      { "layer": "L1 覆蓋地圖", "checks": "scope 內 legacy 檔案是否皆有歸屬", "who": "AI", "pass": "未歸屬檔案 = 0" },
+      { "layer": "L2 結構閘門", "checks": "flow 模板、endpoint 閉環、BDD 對齊、transform 收攏", "who": "AI", "pass": "gap report 全綠" },
+      { "layer": "L3 人工抽樣", "checks": "隨機對照原始碼，確認內容寫對而非只寫齊", "who": "Human", "pass": "抽樣項全過（核心 flow 建議 5 項）" }
+    ],
+    "auditor_spotcheck_heading": "L3 人工抽樣清單（每條 Flow Record）",
+    "auditor_spotcheck_items": [
+      "隨機挑 1 個 Edge Case → 對照原始 component 的 if-else，確認 flow.md 描述正確。",
+      "隨機挑 1 個 @old_logic_location → 確認 transformer 邏輯有收攏、沒有漏算。",
+      "隨機挑 1 個 Unverified Logic → 確認確實無法從 code 解釋（非偷懶標記）。",
+      "（核心業務 flow 追加）再抽 1 個 Happy Path 步驟 + 1 個 Referenced Endpoint 欄位語意。"
+    ],
+    "checklist_heading": "survey-checklist.md 四區結構",
+    "checklist_intro": "不同考古產物類型過關標準不同。每格勾選前必須附 L1/L2/L3 子勾選，避免「有文件但沒驗過」。",
+    "checklist_cols": ["區塊", "勾選單位", "過關標準", "檢核深度"],
+    "checklist_rows": [
+      { "area": "Flows", "unit": "每條 [flow-name] Record", "standard": "flow.md（含待 PM 釐清）+ e2e-cases.feature + 引用的 endpoints 皆有 contract-schemas；BDD 與 flow.md 對齊", "depth": "L1 + L2 + L3" },
+      { "area": "Endpoints", "unit": "每個 [endpoint-name].ts", "standard": "對應 main/contract-schemas/endpoints/[name].md 存在且引用 upstream", "depth": "L2" },
+      { "area": "Static Pages", "unit": "每頁", "standard": "main/pages/ 有區塊 + i18n key 列表（不需 BDD）", "depth": "L1" },
+      { "area": "Global Constraints", "unit": "整包", "standard": "global-constraints/e2e-cases.feature 涵蓋 s4 列出的橫切邏輯", "depth": "L2 + L3" }
+    ],
+    "checklist_example_note": "以下為 checklist 條目格式範例（抽象示意）：",
     "roles": [
       {
         "emoji": "🕵️",
         "title": "代碼考古學家 (Code Archaeologist)",
-        "task": "摸清舊系統的「現況（As-is）」，將混亂的代碼提煉為純粹的業務行為，排除死碼。",
-        "input": "舊專案特定路由/組件原始碼（Repomix 打包）",
-        "output": "docs/records/[domain]/flow.md",
+        "task": "摸清舊系統的「現況（As-is）」：提煉純粹業務行為、從 codebase 推測相關 endpoint 回傳結構與所有可能性，排除死碼。",
+        "input": [
+          "Repomix 打包的 codebase",
+          "指定 flow 相關路由／組件 scope"
+        ],
+        "output": [
+          "docs/records/flows/[flow-name]/flow.md",
+          "docs/records/endpoints/[endpoint-name].ts",
+          "CONTEXT.md（增量更新 glossary）"
+        ],
         "ai_recommendation": { "tool": "claude", "model": "Sonnet 4.5", "tier": "budget", "hint": "大量檔案分批考古" },
-        "spec_summary": "展開詳細規格要求",
+        "spec_summary": "展開 flow.md 模板要求",
+        "spec_example_note": "以下為抽象範例，僅示範章節結構，非本專案真實 flow 或 endpoint。",
         "spec_sections": [
+          { "title": "### Entry Points", "desc": "哪些頁面／路由／首頁區塊可進入此 flow。首頁 spec 只註明引用，行為細節寫在此處。" },
+          { "title": "### Referenced Endpoints", "desc": "此 flow 涉及的 endpoints/[name].ts 清單，作為與 endpoint 正交軸的索引。" },
           { "title": "### Happy Path", "desc": "極簡的使用者成功操作步驟。" },
           { "title": "### Edge Cases", "desc": "程式碼內所有涉及業務邏輯的分支（排除網路斷線等基建錯誤）。" },
-          { "title": "### Unverified Logic", "desc": "程式碼有寫、但無踩到或無法解釋的死碼/神祕邏輯（留待後續討論）。" }
-        ]
+          { "title": "### 待 PM 釐清", "desc": "商務意圖或場景不明：code 看得懂行為，但不知「為什麼」或正確規則為何。標註來源位置與疑問，盤點凍結後經 Docusaurus Open Questions 與 PM 對齊。" },
+          { "title": "### Unverified Logic", "desc": "程式碼謎團：有寫但無踩到、無法 reproduce 或無法解釋的分支。標註來源檔案位置，留待上線 log 驗證或後端確認（非 PM 商務問題）。" },
+          { "title": "### Scoped Files（覆蓋地圖）", "desc": "Record 封檔前必填。scope 內每個 .ts/.tsx 必須有歸屬：被 flow 章節引用、Dead Code（附理由）、Unverified Logic、或交叉引用其他 flow。未歸屬檔案 = 0 方可交 Role 4。" }
+        ],
+        "spec_code": "# [flow-name]\n\n### Entry Points\n- `/some-list-page` — 使用者從列表頁選項進入\n- `/landing#quick-action` — 首頁某區塊作為此 flow 的捷徑入口\n\n### Referenced Endpoints\n- `endpoints/search-items.ts` — 查詢與篩選\n- `endpoints/submit-action.ts` — 送出主要動作\n\n### Happy Path\n1. 使用者設定必要條件\n2. 系統顯示可選結果\n3. 使用者完成主要動作並看到成功狀態\n\n### Edge Cases\n- 查無結果時顯示空狀態提示\n- 條件不符時阻止進入下一步\n\n### 待 PM 釐清\n- 某身份是否應有不同折扣規則？code 有分支但無業務說明（`src/legacy/Pricing.tsx:120`）\n\n### Unverified Logic\n- `src/legacy/foo.ts:88` — 某分支從未觸發，原因不明\n\n### Scoped Files\n| 檔案 | 歸屬 |\n|---|---|\n| src/pages/Booking.tsx | Happy Path + Edge Cases |\n| src/utils/legacyCoupon.ts | Edge Cases: 優惠券過期 |\n| src/deprecated/oldFlow.ts | Dead Code（已確認無路由引用） |\n| src/hooks/useMystery.ts | → Unverified Logic |\n\n---\n# endpoints/submit-action.ts（同 Record 產出，抽象範例）\n\n/** @endpoint POST /api/some-action */\ninterface RawActionResponse {\n  /** 欄位語意待確認，可能非字面意思 */\n  status_code: string;\n  payload: unknown;\n}"
       },
       {
         "emoji": "📐",
         "title": "資料邊界規劃師 (Data Boundary Planner)",
-        "task": "嫌棄並阻絕舊後端的不良格式。定義全新乾淨 Frontend Interface，並將散落在組件與 Store 的計算/轉換邏輯收攏至 Transformer。",
-        "input": "舊 API Raw JSON payload、flow.md 業務邏輯、舊組件衍生計算片段、舊 Store 的 Mutations/Selectors 觸發源",
-        "output": "docs/main/contract-schemas/endpoints/[endpoint-name].md",
-        "ai_recommendation": { "tool": "claude", "model": "Opus 4.6", "tier": "required", "hint": "型別精度要求高" },
-        "spec_summary": "展開詳細規格要求",
-        "spec_sections": [
-          { "title": "Upstream Raw JSON Schema (TypeScript Type)", "desc": "後端原始格式。" },
-          { "title": "Target TypeScript Interface", "desc": "全新的前端純淨型別，使用 JSDoc 標註 @upstream_source 與 @old_logic_location。" },
-          { "title": "Transformer Pure Functions", "desc": "若涉及複雜衍生計算（如金額、距離），必須直接寫出具備完整型別、可執行的 TypeScript 轉換函數原型。" }
+        "task": "以考古產出的 upstream 為起點，定義 To-be Frontend Interface，並將散落在組件與 Store 的轉換邏輯收攏至 Transformer。不直接碰 live API。",
+        "input": [
+          "docs/records/flows/[flow-name]/flow.md",
+          "docs/records/endpoints/[endpoint-name].ts",
+          "舊 component／store 應收攏的 transform 片段",
+          "既有 docs/main/contract-schemas/shared/"
         ],
-        "spec_code": "/** @upstream_source GET /api/booking/{id} */\ninterface BookingViewModel {\n  /** @old_logic_location src/pages/booking/transform.ts:42 */\n  displayAmount: string;\n}\n\nfunction transformBookingAmount(raw: RawBooking): string {\n  return (raw.amount_cents / 100).toFixed(2);\n}"
+        "output": [
+          "docs/main/contract-schemas/endpoints/[endpoint-name].md",
+          "（若需）docs/main/contract-schemas/shared/[entity].md",
+          "CONTEXT.md（增量更新 glossary）"
+        ],
+        "ai_recommendation": { "tool": "claude", "model": "Opus 4.6", "tier": "required", "hint": "型別精度要求高" },
+        "spec_summary": "展開 contract-schema 模板要求",
+        "spec_example_note": "以下為抽象範例，非本專案真實 API 或欄位。",
+        "spec_sections": [
+          { "title": "Upstream Schema（引用 records/endpoints/）", "desc": "以 Role 1 產出的 .ts 為 SSOT，標註欄位語意疑義與已知後端怪癖。" },
+          { "title": "Target TypeScript Interface", "desc": "To-be 前端純淨型別。JSDoc 標註 @upstream_source 與 @old_logic_location。" },
+          { "title": "Transformer Pure Functions", "desc": "可執行的 TypeScript 轉換函數原型，收攏 component／store 中的衍生計算。" }
+        ],
+        "spec_code": "/** @upstream_source records/endpoints/submit-action.ts */\n\n// --- Upstream（引用考古產物，摘要） ---\n// status_code: string  — 非 HTTP status，為業務狀態碼\n\n// --- Target Interface ---\ninterface ActionViewModel {\n  /** @old_logic_location src/legacy/ConfirmPanel.tsx:42 */\n  isSuccess: boolean;\n  displayMessage: string;\n}\n\n// --- Transformer ---\nfunction transformActionResponse(raw: RawActionResponse): ActionViewModel {\n  return {\n    isSuccess: raw.status_code === 'OK',\n    displayMessage: raw.payload?.message ?? '',\n  };\n}"
       },
       {
         "emoji": "✍️",
         "title": "行為測試架構師 (Behavior Test Architect)",
-        "task": "將 flow.md 業務邏輯轉化為與實作解耦的 BDD 測試案例。",
-        "input": "docs/records/[domain]/flow.md + docs/main/contract-schemas/",
-        "output": "docs/records/[domain]/e2e-cases.feature",
+        "task": "將 flow.md 業務邏輯轉化為與實作解耦的 BDD 案例，並與 flow.md 章節保持可追溯對齊。",
+        "input": [
+          "docs/records/flows/[flow-name]/flow.md",
+          "docs/main/contract-schemas/endpoints/ + shared/"
+        ],
+        "output": ["docs/records/flows/[flow-name]/e2e-cases.feature"],
         "ai_recommendation": { "tool": "claude", "model": "Sonnet 4.5", "tier": "budget", "hint": "結構化 BDD 輸出" },
-        "spec_summary": "展開詳細規格要求",
+        "spec_summary": "展開 BDD 模板要求",
+        "spec_example_note": "以下為抽象範例，非本專案真實情境。",
         "spec_sections": [
           { "title": "Gherkin 語法", "desc": "必須使用 Given-When-Then 語法。" },
-          { "title": "業務 Edge Cases", "desc": "必須涵蓋所有的業務層 Edge Cases（例如：預約代碼查無此人）。" },
+          { "title": "覆蓋率對齊 flow.md", "desc": "Happy Path 至少一個 Scenario；每個 Edge Case 至少一個 Scenario。Scenario 上方以 comment 標註對應 flow.md 章節。" },
+          { "title": "待 PM 釐清 / Unverified Logic 不寫 Scenario", "desc": "商務待確認項與 code 謎團均不寫入 Scenario；於 feature 檔頂部 comment 分別列出，引用 flow.md 對應章節。" },
           { "title": "排除基建錯誤", "desc": "404/500/網路斷線由全域 Client 處理，不寫入 Feature 檔。" }
         ],
-        "spec_code": "Scenario: 預約代碼查無此人\n  Given 使用者輸入不存在的預約代碼\n  When 使用者提交查詢\n  Then 顯示「查無此預約」錯誤訊息"
+        "spec_code": "# 待 PM 釐清（引用 flow.md § 待 PM 釐清）:\n# - 某身份折扣規則待確認\n\n# 待 log 驗證（引用 flow.md § Unverified Logic）:\n# - src/legacy/foo.ts:88 — 某分支從未觸發\n\n# 對應 flow.md § Happy Path\nScenario: 使用者完成主要動作\n  Given 使用者已設定有效條件\n  When 使用者提交主要動作\n  Then 畫面應顯示成功狀態\n\n# 對應 flow.md § Edge Cases: 查無結果\nScenario: 查詢條件無匹配結果\n  Given 使用者已設定有效查詢條件\n  When 系統回傳空結果集\n  Then 畫面應顯示空狀態提示"
       },
       {
         "emoji": "⚖️",
         "title": "文件盤點員 (Documentation Auditor)",
-        "task": "以最嚴格的「代碼覆蓋率視角」，客觀審查考古進度，確保不漏掉任何一個現存檔案。",
-        "input": "舊專案資料夾檔案實體清單、docs/records/ 已產出的文檔",
-        "output": "docs/survey-checklist.md",
-        "ai_recommendation": { "tool": "human", "tier": "human", "hint": "最終防線" },
-        "spec_summary": "展開詳細規格要求",
+        "task": "不重新考古，而是驗證 Role 1–3 的模板契約是否履行：AI 跑 L1 覆蓋地圖與 L2 結構閘門產出 gap report，人類做 L3 抽樣簽核後更新 survey-checklist.md。",
+        "input": [
+          "legacy 檔案樹",
+          "docs/records/ 與 docs/main/ 已產出物",
+          "每條 Record 的 flow.md § Scoped Files"
+        ],
+        "output": [
+          "docs/survey-checklist.md",
+          "四區 + 每條 Record 的 L1/L2/L3 子勾選"
+        ],
+        "ai_recommendation": { "tool": "claude", "model": "Sonnet 4.5", "tier": "budget", "hint": "L1/L2 自動驗證；L3 人工抽樣簽核" },
+        "spec_summary": "展開 L2 結構閘門細項",
         "spec_sections": [
-          { "title": "Check 物理標準", "desc": "只有當該舊資料夾/模組底下的所有 .tsx / .ts 檔案都盤點完畢，且裡面每隻 API 都有對應 contract-schemas 與 BDD 案例時，才能勾選。" }
-        ]
+          { "title": "L1 覆蓋地圖", "desc": "比對 flow.md § Scoped Files：scope 內每個 .ts/.tsx 落在「被 flow 引用 / Dead Code / Unverified / 交叉引用其他 flow」四格之一。未歸屬 = 0。" },
+          { "title": "L2 結構閘門 — flow.md", "desc": "七章節齊全：Entry Points、Referenced Endpoints、Happy Path、Edge Cases、待 PM 釐清、Unverified Logic、Scoped Files。" },
+          { "title": "L2 結構閘門 — endpoint 閉環", "desc": "Referenced Endpoints 每個都有 records/endpoints/*.ts + main/contract-schemas/endpoints/*.md。" },
+          { "title": "L2 結構閘門 — BDD 對齊", "desc": "Scenario 數 ≥ 1（Happy Path）+ Edge Cases 條數；每個 Scenario comment 有對應 flow.md 章節。" },
+          { "title": "L2 結構閘門 — transform 收攏", "desc": "contract-schema 的 @old_logic_location 指向的檔案，必須出現在 Scoped Files。" },
+          { "title": "L3 人工抽樣", "desc": "見本節下方「L3 人工抽樣清單」。靜態頁只需 L1；Endpoints 只需 L2。" }
+        ],
+        "spec_code": "## Flows\n- [ ] booking-flow\n  - [ ] L1 覆蓋地圖：0 未歸屬檔案\n  - [ ] L2 結構閘門：5/5 通過\n  - [ ] L3 抽樣：3/3 通過（YYYY-MM-DD by @reviewer）\n\n## Endpoints\n- [x] post-reservation.ts — L2 通過\n\n## Static Pages\n- [x] /faq — L1 通過\n\n## Global Constraints\n- [ ] session-expiry — L2 + L3 待驗"
       }
     ]
   },
   "s4": {
     "emoji": "🔄",
     "heading": "核心考古盤點流程與執行 SUPPLEMENT",
+    "subheading": "三類考古產物的優先序與盤點深度。商務不確定項於考古期標記，盤點凍結後經 Docusaurus 與 PM 對齊。",
+    "example_callout": "⚠️ 以下「已知例子」來自目前對專案的認知，實際 flow 清單與命名於考古階段依 codebase 定義。",
+    "pm_clarification_heading": "商務不確定項的三層處理",
+    "pm_clarification_items": [
+      "考古期：code 謎團 → flow.md § Unverified Logic；商務意圖／場景不明 → flow.md § 待 PM 釐清",
+      "盤點凍結 → Docusaurus：彙整所有「待 PM 釐清」至 Open Questions 專區",
+      "PM 對齊後：討論通過寫入 main/ To-be；仍不確定者留 TODO + 上線 log"
+    ],
     "card_scope_label": "範圍",
     "card_standard_label": "盤點標準",
     "table_cols": ["類別", "優先級", "範圍", "盤點標準"],
@@ -169,88 +344,181 @@
         "category": "核心業務流程 (Core Domain Flows)",
         "priority": "最高優先",
         "priority_type": "emerald",
-        "scope": "Booking Flow、Search & Filter（逆向盤點 UI 組件所有隱藏狀態）、Coupon / Affiliate（優惠券與引流邏輯）",
-        "standard": "跨頁面的連續動作，必須優先處理。需完整 flow.md + contract-schemas + BDD。"
+        "scope": "跨頁面、有完整 User Journey 的流程（考古時依 codebase 定義）。已知例子：訂票主流程、搜尋篩選、Email 深連結入口的 Coupon 流程。",
+        "standard": "須跑完四角色 pipeline + Role 4 三層檢核。產出 flow.md + contract-schemas + BDD；商務不確定項標入「待 PM 釐清」。"
       },
       {
         "category": "靜態與內容頁面/區塊 (Static & Content)",
         "priority": "簡化盤點",
         "priority_type": "blue",
-        "scope": "導覽頁、FAQ、Top Page 區塊等。存於前端翻譯檔（無 CMS）。",
-        "standard": "不需要寫 schemas 與 BDD。考古直接在 docs/main/pages/ 中 Markdown 列表出頁面區塊與翻譯 Key 結構即可。"
+        "scope": "導覽頁、FAQ、Top Page 區塊等（無 CMS，存於前端翻譯檔）。Affiliate 介紹頁（導向外部表單，站內無完整任務）亦屬此類。",
+        "standard": "不需 schemas 與 BDD。於 docs/main/pages/ 列出頁面區塊與 i18n key 即可。"
       },
       {
         "category": "全域設施與約束 (Global Infrastructure)",
         "priority": "收攏 global-constraints",
         "priority_type": "indigo",
         "scope": "驗證狀態有效期限（Session 生存週期）、錯誤嘗試次數限制（防刷提示）、全域狀態與 URL 同步（語系貨幣在網址上的重新整理）",
-        "standard": "具備強烈業務行為但跨頁面。必須由「行為測試架構師」收攏至 docs/records/global-constraints/e2e-cases.feature 嚴防遺漏防刷與時效邏輯。"
+        "standard": "跨頁面橫切邏輯。收攏至 docs/records/global-constraints/e2e-cases.feature；須跑 Role 4 L2 + L3。"
       }
     ]
   },
   "s5": {
     "emoji": "🔒",
-    "heading": "變更管理 ＆ Main Docs 凍結",
-    "freeze_callout": "survey-checklist.md 達 100% 勾選 → 定義為 Main Docs 凍結點，以此版本的 main/ 與 PM 進行技術與業務變更討論。",
+    "heading": "變更管理 ＆ Scope 凍結",
+    "subheading": "兩道關卡：盤點凍結（技術完備）→ Scope 凍結（PM 決策）。帶 spec 與 Figma 與 PM 確認後，從「暫時不會改」的區塊開始翻修。",
+    "freeze_callout": "checklist 100% → 盤點凍結 → 產出 Docusaurus。帶 spec + Figma 找 PM 做 Scope 凍結：哪些區塊可先翻修、哪些待後續再對齊。開工從 PM 確認暫時不會修改的部分開始。",
+    "two_gates_heading": "兩道凍結關",
+    "two_gates_cols": ["關卡", "觸發條件", "產出"],
+    "two_gates_rows": [
+      { "gate": "盤點凍結", "trigger": "survey-checklist 100%", "output": "Docusaurus 可發布；Open Questions 彙整完畢" },
+      { "gate": "Scope 凍結", "trigger": "PM 對 spec + Figma 完成逐區塊決策", "output": "每條 flow／頁面標記「可先翻修」或「待後續對齊」" }
+    ],
     "phase1_title": "第一階段（考古期）",
     "phase1_items": [
-      "records/ 記錄 As-is。",
-      "main/flows/ 先行寫入確認過的 As-is 邏輯。",
-      "main/contract-schemas/ 直接產出新設計的 To-be 純淨型別。",
-      "checklist 達 100% → Main Docs 凍結點，與 PM 進行技術變更討論。"
+      "records/ 記錄 As-is；main/ 累積 To-be contract-schemas。",
+      "flow.md 標記「待 PM 釐清」與 Unverified Logic。",
+      "checklist 達 100% → 盤點凍結，整理 Docusaurus（含 Open Questions）。"
     ],
-    "phase2_title": "第二階段（重構與開發期）",
+    "phase2_title": "第二階段（PM 對齊期）",
     "phase2_items": [
-      "針對討論通過大改與新需求，直接在新 Repo 功能分支（Feature Branch）修改 docs/main/，使其永遠保持為 To-be。",
-      "該 PR 必須附帶一個 CHANGELOG.md，記錄 Ticket Link 修改了哪些文件。",
+      "帶 Docusaurus spec 與 Figma As-is 稿（詳見 s6）找 PM 逐區塊確認——含「待後續對齊」項目，兩者缺一不可。",
+      "討論：哪些維持現有邏輯、哪些要重構、哪些需要一起重想流程。",
+      "Open Questions 逐項結案，或升級為 Scope 決策。",
+      "每條 flow／頁面標記 Scope（見下方）。"
+    ],
+    "scope_decisions_heading": "Scope 決策標記",
+    "scope_decisions_intro": "PM 對齊的核心產出。決策記錄於 Docusaurus 各頁 badge，並回寫 main/ 檔案 frontmatter（scope: stable | pending）。",
+    "scope_decisions_cols": ["標記", "PM 的意思", "下一步"],
+    "scope_decisions_rows": [
+      { "label": "可先翻修", "meaning": "PM 確認此區塊暫時不會修改業務邏輯或流程", "next": "優先排入重構開工" },
+      { "label": "待後續對齊", "meaning": "PM 表示此區塊日後會調整、重構或重想流程", "next": "第一輪仍須 spec + Figma As-is 供 PM 決策；暫緩開工與 To-be 設計。待「可先翻修」完成後，第二輪再帶更新 spec + Figma 與 PM 討論" }
+    ],
+    "phase3_title": "第三階段（重構開工期）",
+    "phase3_items": [
+      "從 Scope 標記為「可先翻修」的區塊開始開發；不動「待後續對齊」項目。",
+      "「待後續對齊」項目：其餘翻修告一段落後，再與 PM 重新討論並更新 spec + Figma。",
+      "Feature Branch 修改 docs/main/（To-be）；PR 附 CHANGELOG.md（Ticket Link + 變更文件）。",
       "代碼上線時文件一併 Merge，確保「代碼即文件，文件即代碼」。"
     ]
   },
   "s6": {
     "emoji": "🧱",
     "heading": "Figma 設計系統與三層 Token 架構",
-    "intro_p1": "多產品「孤島式維護」方案：由於無法跨檔案 Variables 連動，放棄自動同步，改採「中央範本，本地清洗（Template）」務實架構。",
-    "intro_p2": "中央 Core shadcn Template 維護純 Primitive 定義與元件原型。各翻新專案本地複製基礎元件變數、手動覆寫 Semantic Tokens 換皮、並 100% 還原 As-is 畫布。",
-    "pro_warning": "⚠️ 建立 Figma Variables 至少需要 Pro plan 的 Full seat（非 Collab seat）。",
-    "token_rule": "三層 Token 物理隔離鐵律：畫布上只能且必須使用第三層（Semantic）Token。",
-    "token_cols": ["層級 (Layer)", "Figma Variable 命名規範", "代碼端 Namespace 變數對照", "設計師使用權限"],
-    "token_rows": [
-      { "layer": "1. Primitive 🔒", "figma": "primitive/neutral/100", "css": "--nv-primitive-neutral-100", "access": "❌ 全面禁止綁定於畫布。層色彩大字典。" },
-      { "layer": "2. Brand 🔒", "figma": "brand/primary", "css": "--nv-brand-primary", "access": "❌ 全面禁止綁定於畫布。" },
-      { "layer": "3. Semantic 🔓", "figma": "semantic/bg/base", "css": "--nv-semantic-bg-base", "access": "🔓 唯一合法 Token。必須在此層命名。" }
+    "subheading": "服務 s5 PM 對齊：spec 與 Figma As-is 成對出現。考古期不動 Figma；盤點凍結後建 As-is 畫布，Scope 凍結後「可先翻修」項目才更新 To-be。",
+    "timeline_heading": "Figma 四段時程（對齊 s5）",
+    "timeline_steps": [
+      "① 考古期：前端不碰 Figma。可選——請設計師以新 Token 架構先行同步 production site（As-is 還原），與 code 考古平行。",
+      "② 盤點凍結後：依 spec 建／補齊 Figma As-is 畫布（100% 對正式環境），與 Docusaurus 產出平行。",
+      "③ PM 對齊期：所有 flow／頁面（含待後續對齊）均需 spec + Figma As-is 一起找 PM 確認。",
+      "④ 重構開工：僅「可先翻修」項目更新 Figma To-be；「待後續對齊」維持 As-is，第二輪 PM 討論後再改。"
     ],
-    "fold_org_content": "中央 Workspace → Core shadcn Template（Primitive Tokens + Standard Components）。各專案本地 → 複製範本 + Local Semantic 覆寫 + 100% 還原 As-is 畫面。",
+    "pm_deliverable_callout": "PM 對齊的最低交付：每條 flow 關鍵畫面 + 靜態頁區塊，spec（Docusaurus）與 Figma As-is 缺一不可。",
+    "kit_callout": "Figma 起點：以 Obra shadcn/ui kit 為社區模板（https://obra.studio/work/figma-shadcn-ui-kit/），複製至各專案本地後覆寫 Token 與 As-is 畫布，不從零自建元件庫。Code 端搭配 shadcn/ui CLI。",
+    "intro_p1": "多產品「孤島式維護」：Figma Professional 無法跨檔案 Variables 連動，改採「中央範本（Obra kit + shadcn 組件），本地清洗」——複製模板、映射品牌色、還原 As-is 畫布。",
+    "intro_p2": "Token 三層與 Obra／shadcn 哲學一致：底層 Raw 用 Tailwind palette 命名；Brand 建 100–900 漸層；Semantic 對齊 shadcn 並收斂業務專用色。畫布只綁 Semantic。",
+    "pro_warning": "⚠️ 建立 Figma Variables 至少需要 Pro plan 的 Full seat（非 Collab seat）。",
+    "token_rule": "三層 Token 物理隔離：畫布上只能且必須使用 Semantic Token。Raw（Tailwind palette）與 Brand（100–900 漸層）禁止直接綁定畫布。",
+    "token_cols": ["層級 (Layer)", "命名規範", "代碼端對照", "設計師權限"],
+    "token_rows": [
+      { "layer": "1. Raw / Primitives 🔒", "figma": "Tailwind CSS palette 同名（如 slate-500、blue-600、neutral-100）", "css": "tailwind.config / @theme 底層色票", "access": "❌ 禁止直接綁定畫布。色彩大字典。" },
+      { "layer": "2. Brand 🔒", "figma": "網站品牌色 100–900 漸層（如 brand-blue-100、brand-orange-500）", "css": "theme 定義 brand scale；上畫布時經 Semantic alias 暴露（如 --brand-pink）", "access": "❌ 禁止直接綁定畫布。" },
+      { "layer": "3. Semantic 🔓", "figma": "shadcn 標準（background、primary、muted…）+ 業務語意（如 link、brand-pink）", "css": "globals.css :root — shadcn 內建（--background、--primary…）+ 自訂（--link、--brand-pink）", "access": "🔓 唯一合法。自 Raw 或 Brand 選色綁定。" }
+    ],
+    "token_semantic_heading": "Semantic 層規則",
+    "token_semantic_rules": [
+      "優先使用 shadcn 內建 semantic（background、foreground、primary、muted、destructive…）。",
+      "Semantic 色值來源：從 Raw（Tailwind palette）或 Brand（100–900）選取並建立 alias。",
+      "shadcn 未涵蓋的 brand／業務色：在 Semantic 層命名（如 link、brand-pink），於 globals.css :root 新增 CSS variable，值指向 Brand 或 Raw。",
+      "Figma Semantic Variables 與 :root 變數名 1:1 對齊（follow shadcn/ui CLI 慣例）。"
+    ],
+    "fold_org_content": "中央 Workspace → Obra shadcn/ui kit 範本（Raw Tailwind palette + shadcn 標準組件）。各專案本地 → 複製 kit、覆寫 Brand 漸層與 Semantic mapping、100% 還原 As-is 畫面。",
     "fold_pattern_central": "中央維護：100% 業務邏輯視覺一致、絕無客製化可能（如日本地圖選區）→ Copy-Paste。",
-    "fold_pattern_local": "本地維護：會因產品線改變語意的複合組件（BookingCard、CouponSelector）→ 中央 shadcn 基礎 + 本地組裝。",
-    "fold_align_desc": "Figma 組件備註規範：設計師組裝時必須在 Description 中手動備註 frontend i18n key。",
-    "fold_align_example": "畫布顯示 \"Please enter your booking code\" → Description: [i18n-key] booking.field.code_placeholder。效益：未來無論 EN 文案如何微調，前端一眼就能確認兩者代表同一個功能欄位。"
+    "fold_pattern_local": "本地維護：會因產品線改變語意的複合組件（如 BookingCard、CouponSelector 等）→ 中央 shadcn 基礎 + 本地組裝。",
+    "fold_align_desc": "Figma 畫布只放英文可讀文案（公司網站主語系為 EN），不放 i18n key，也不用 Variables Mode 維護翻譯。",
+    "fold_align_rules": [
+      "Description 可放設計備註（非 key）：動態文案（API 回傳）、占位符／字數上限、truncation 風險、PM 文案待定、或連結 Docusaurus spec 章節。",
+      "Sticky／Comment 僅供 PM 對齊期討論，不作長期 SSOT。",
+      "i18n key 與多語對照：legacy 考古 → JSON → Google Sheet → code（見 s7）；靜態頁另在 docs/main/pages/ 列區塊 + key。重構時以「畫面 + spec／Sheet」對照，不靠 Figma 反查 key。"
+    ],
+    "fold_align_example": "畫布：\"Please enter your booking code\" → Description：「預約碼 placeholder；靜態文案；詳見 booking flow spec §2」——而非 booking.field.code_placeholder。"
   },
   "s7": {
     "emoji": "🌍",
     "heading": "多國語系 (i18n) 全自動管線 (Pipeline)",
-    "toolchain_note": "工具鏈數據清洗與對照：建議用 Claude Web 去產出文件（考古），翻新才用 Cursor。整理過程會要求模型改掉奇怪格式、status 欄位標出 unused。",
-    "gemini_rule": "Gemini 自動翻譯與新專案鐵律：現在 Gemini 可以直接操控 Sheets 代勞翻譯。建議在 Sheet 第一列 instruction sheet 放上 Tone & Style Guide。新專案過濾 unused，建立 SKILL.md 做參照。",
+    "figma_boundary": "Figma 只展示英文可讀文案（主語系 EN），不作 i18n SSOT。key 與多語翻譯以考古 JSON → Sheet → code 為準；設計稿 Description 僅放設計語意備註（見 s6）。",
+    "sheet_ssot": "考古期 legacy 各語系翻譯已存在——整理只做格式清洗、namespace／key 重命名、status 標記，不重新翻譯。寫入 Sheet 時 en／ja／zh_TW 等欄位應已帶齊，Sheet 即完整對照表。",
+    "toolchain_note": "工具鏈：考古用 Claude Web 產出整理 JSON，翻新用 Cursor。目標框架 i18next → next-intl，格式依 next-intl 慣例調整；status 標 unused／in-progress。",
+    "gemini_rule": "Gemini 非考古必經步驟：Sheet 已含 legacy 全語系。僅在 refactor 新增 key（in-progress）或人工委託補譯時，可透過 Gemini 操控 Sheet；Instruction Sheet 放 Tone Guide 供補譯參考。",
     "iron_rule": "System Prompt 級別全域鐵律：若需要的翻譯在 JSON 中不存在，嚴禁自行發明新 Key。請先代碼中 Hardcode 並加上 // TODO: i18n-missing 標記批次提取。",
-    "fold_json_content": "JSON 格式範例：包含 status, key, legacy_key, zh_TW。\n\n自動化 script 去比對 legacy_key 和原本 translations 檢查是否少 key。JSON 寫回 sheet（namespace 欄位管理方便對照）。",
+    "migration_heading": "i18next → next-intl 整理規則",
+    "normalize_rules": [
+      "框架遷移：自 i18next 結構整理為 next-intl 慣例（namespace + key、JSON／message 格式依 next-intl 同步腳本輸出）。",
+      "多餘空白不主動清除——legacy 可能為排版刻意保留，整理時原樣帶入 Sheet。",
+      "換行合併：legacy 以陣列 [a, b, c] 分句再 map 渲染者，整理為單一 key 內 \\n 換行（例：\"Line one\\nLine two\\nLine three\"），方便譯者在同一欄位編輯。",
+      "插值語法：考古整理時 i18next {{var}} 直接轉 next-intl {var}，寫入 Sheet 即為終態；sync script 只做讀寫不負責格式轉換，以便未來可重複使用。",
+      "Code 端：含 \\n 的文案用 CSS whitespace-pre-line（或等效）渲染，不再在元件內 map 陣列分句。"
+    ],
+    "namespace_heading": "Namespace 切法",
+    "namespace_rules": [
+      "單一 domain 專案：以「頁面／畫面」為 namespace 單位，不加 -page 後綴（如 checkout、affiliate-intro）。",
+      "跨頁共用文案 → common；各頁只引用自己 namespace + common。Flow 不另設 namespace——flow 內各步驟畫面各自吃對應頁面的翻譯。",
+      "slug 對齊 docs/main/pages/、Figma frame 名稱與路由 Entry screen，整理時 legacy_key 保留舊名供比對。"
+    ],
+    "fold_json_content": "JSON 格式範例：status, namespace, key, legacy_key, en, ja, zh_TW, description。\n\n各語系值自 legacy translations 帶入（非空殼待翻）。例：namespace checkout + key coupon.btn.apply；legacy_key 供 script 比對缺漏。",
+    "sync_heading": "Sheet → code 輸出結構",
+    "sync_rules": [
+      "依 namespace 拆檔：messages/{locale}/{namespace}.json（如 messages/en/common.json、messages/en/checkout.json）。",
+      "檔內 JSON 巢狀（如 { \"coupon\": { \"btn\": { \"apply\": \"…\" } } }）。Sheet 的 key 欄仍用 dot notation（coupon.btn.apply）方便編輯；sync script 寫入 code 時展開為巢狀。",
+      "Sheet namespace 欄位與檔名 1:1；頁面用 useTranslations('{namespace}') + t('coupon.btn.apply')；common 跨頁共用。"
+    ],
     "steps": [
-      "AI 整理 legacy 翻譯為 JSON（status: active | unused | in-progress，含 namespace + legacy_key）",
+      "AI 整理 legacy 翻譯為 JSON（i18next → next-intl；{{var}} → {var}；陣列換行合併為 \\n；不 trim 多餘空白）",
       "Script 比對 legacy_key 與原 translations，檢查缺漏（動態 key 需手動標 active）",
-      "Script 寫入 Google Spreadsheet（單一 sheet + namespace 欄位；Instruction Sheet 放 Tone Guide）",
-      "Gemini 可代勞初版翻譯委託（日文統一敬體）",
-      "新專案 script 從 Sheet 同步回程式碼（unused 過濾、in-progress 顯示 🚧）",
-      "SKILL.md 鐵律：缺 key 禁止自創，hardcode + // TODO: i18n-missing"
+      "Script 寫入 Google Spreadsheet（單一 sheet + namespace 欄位；各語系欄位已帶齊）",
+      "新專案 sync script：Sheet → messages/{locale}/{namespace}.json（dot key 轉巢狀 JSON；unused 過濾、in-progress 顯示 🚧）",
+      "SKILL.md 鐵律：缺 key 禁止自創，hardcode + // TODO: i18n-missing；新增 key 標 in-progress 後再補譯"
     ]
   },
   "s8": {
     "emoji": "🏁",
     "heading": "盤點、校對與開始翻新",
-    "validation_heading": "平行對照與驗收",
+    "validation_heading": "平行對照與翻新門檻",
     "validation_items": [
       "新舊專案放同一個 workspace 方便前後對照。",
-      "遇到 \\n 前端用 CSS whitespace-pre-line 處理。",
-      "起獨立 Docusaurus 網站 repo 確認與 PM 確認。"
+      "含 \\n 的多行文案：前端用 CSS whitespace-pre-line（見 s7 換行合併規則），不再 map 陣列分句。",
+      "盤點凍結後，依 records/ + main/ 盤點文件整理 Docusaurus 格式，起獨立 repo 部署，與 PM 對齊（工作目錄本身不直接給 PM 看）。"
     ],
-    "log_rule": "鐵律邊界：為了不要壞掉邏輯全數對齊，針對不清楚的舊邏輯全數加上 log 去紀錄線上是否有執行到，若跑一陣子都沒有任何數據，即可放心刪除。",
+    "gate_heading": "Phase 3 開工與驗收（三段）",
+    "gate_project_heading": "1. 專案級（Phase 3 開工前，只做一次）",
+    "gate_project_items": [
+      "盤點凍結（survey-checklist 100%）",
+      "Docusaurus 已整理並部署",
+      "Figma As-is 100% 就緒（盤點凍結後與 Docusaurus 並行完成，Scope 凍結前置）",
+      "Scope 凍結完成：每條 flow／頁面標記可先翻修或待後續對齊",
+      "待後續對齊項目第一輪仍須 spec + Figma As-is，但不進入開工池"
+    ],
+    "gate_issue_heading": "2. 單一 Issue／垂直切片（僅可先翻修）",
+    "gate_issue_cols": ["Issue 類型", "開工前最低要求"],
+    "gate_issue_rows": [
+      { "type": "Schema / Transformer / 純函數", "requirement": "flow.md + main/contract-schemas/ 規格即可 → TDD 開工" },
+      { "type": "UI 元件／頁面", "requirement": "同上 + 該區塊 Figma To-be（可先翻修項目）" },
+      { "type": "Flow（有 BDD）", "requirement": "Happy Path Scenarios 已寫；待 PM 釐清／Unverified Logic 維持註解、不寫 Scenario" },
+      { "type": "Static Pages", "requirement": "docs/main/pages/ 區塊 + i18n key 列表即可，不要求 BDD" }
+    ],
+    "gate_merge_heading": "3. 合併／上線前（驗收，非開工門檻）",
+    "gate_merge_items": [
+      "該切片 BDD 全綠（有寫 Scenario 的 flow）",
+      "AI L1/L2 結構檢核 + 人工 L3 spot-check（見 s3）",
+      "PM 對該可先翻修區塊 sign-off（Docusaurus spec + Figma To-be 對照）"
+    ],
+    "log_rule_heading": "Unverified Logic 觀測鐵律",
+    "log_rule": "重構時邏輯行為須與 legacy 對齊。flow.md § Unverified Logic 所列分支，refactor 版必加 runtime log 觀測是否仍被觸發——禁止 silent 刪除或略過。",
+    "log_rule_items": [
+      "考古期已標記的 Unverified Logic：保留等價分支並加 log（引用 flow.md 檔案位置）。",
+      "觀測期跑一陣子無任何 hit → 可刪除分支，並更新 flow.md § Scoped Files。",
+      "refactor 中新發現無法解釋的分支：先補標 flow.md § Unverified Logic 再加 log，不得直接移除。"
+    ],
     "skills_heading": "Issue 拆分與 Matt Pocock Agent Skills",
     "skills_subheading": "拆 Issues 導入 5 大 Agent Skills。活用 monorepo 特性整合。Issue 並行任務。",
     "skills_cols": ["Skill", "說明", "建議 AI", "階段"],
@@ -268,16 +536,68 @@
     ],
     "issues_heading": "原子化 Issue 範例",
     "issues": [
-      { "id": "#01", "tag": "Schema", "title": "實作 transformBookingAmount 純函數", "blocks": "無阻塞，可立即開始" },
-      { "id": "#02", "tag": "UI", "title": "依據 Figma 實作新版 BookingCard 靜態元件", "blocks": "阻塞於 #01" },
-      { "id": "#03", "tag": "BDD", "title": "撰寫預約代碼驗證 Edge Cases 驗收案例", "blocks": "可與 #01 平行" }
+      { "id": "#01", "tag": "Schema", "title": "實作 transformBookingAmount 純函數", "blocks": "可先翻修 + flow.md／schema 到位即可開工" },
+      { "id": "#02", "tag": "UI", "title": "依據 Figma To-be 實作 BookingCard 靜態元件", "blocks": "阻塞於 #01；需該區塊 To-be 稿" },
+      { "id": "#03", "tag": "BDD", "title": "撰寫預約代碼驗證 Edge Cases 驗收案例", "blocks": "可與 #01 平行；合併前需 BDD 綠" }
     ],
     "roadmap_heading": "Roadmap",
     "roadmap": [
-      { "title": "Phase 1：考古與資料邊界", "desc": "四角色 Skills 產出 Main Docs，達成 100% survey-checklist", "risk": "🔥 風險控制點：凍結後與 PM 發動技術變更討論" },
-      { "title": "Phase 2：Figma 系統重組", "desc": "中央範本複製 + Local Semantic 覆寫 + 100% As-is 畫面還原" },
-      { "title": "Phase 3：開發與重構啟動", "desc": "Claude 完成 To-Issues 後，Cursor Agent + 新人執行 TDD 翻新流水線" }
-    ]
+      { "title": "Phase 1：考古與盤點凍結", "desc": "四角色 Skills → records/ + main/ → checklist 100%（盤點凍結）。接續並行產出 Docusaurus 與 Figma As-is（s6 ②，100% 對正式環境）——兩者皆就緒才進 Phase 2。考古期 ① 可選 kit 同步。" },
+      { "title": "Phase 2：Scope 凍結", "desc": "前置已滿足：Docusaurus spec + Figma As-is 雙齊。PM 成對確認每條 flow／頁面，標記可先翻修／待後續對齊（s6 ③）。", "risk": "🔥 風險控制點：Figma As-is 未完成不得進 PM 對齊" },
+      { "title": "Phase 3：重構開工", "desc": "專案級 + Issue 門檻通過後，僅可先翻修垂直切片開工；Figma To-be 隨 UI Issue 增量更新（s6 ④）。合併前 BDD + L3 + PM sign-off。" }
+    ],
+    "roadmap_note": "Figma As-is 不是 refactor 才做——是 Phase 2 PM 對齊的硬性前置，與 Docusaurus 在盤點凍結後並行完成。"
+  },
+  "s9": {
+    "emoji": "🛡️",
+    "heading": "API 資料邊界：不用 BFF，Zod + Transformers",
+    "subheading": "參考《前後端職責拆分與 BFF 設計》討論後的結論：不另建 BFF，前端 fetch Core API 後以 Zod 做 runtime 驗證與資料正規化（Parse, don't validate）。與 s3 資料邊界規劃師產出的 contract-schemas 對齊。",
+    "decision_callout": "不建 BFF 層——少一層 infra 與部署成本。前端 `httpClient` 直連後端，在 client 端用 Zod Schema + Transformer 收斂 legacy 怪格式，元件只接 Clean Type。",
+    "layers_heading": "三層防線",
+    "layers_cols": ["層級", "職責", "產物"],
+    "layers_rows": [
+      { "layer": "1. Upstream（考古）", "role": "Role 1 從 codebase 推測後端 Raw 結構", "artifact": "docs/records/endpoints/[endpoint-name].ts" },
+      { "layer": "2. Contract（規格 SSOT）", "role": "Role 2 定義 Frontend Interface + Transformer 原型", "artifact": "docs/main/contract-schemas/endpoints/[name].md" },
+      { "layer": "3. Runtime（程式碼）", "role": "refactor 實作 Zod parse + transform + handleResponse", "artifact": "lib/api/[endpoint-name]/{schema,transformer,index}.ts" }
+    ],
+    "runtime_heading": "Runtime 模式（client-side normalization）",
+    "runtime_steps": [
+      "httpClient fetch Core API → 取得 unknown",
+      "Zod Backend*Schema.safeParse — 攔截 HTML／非 JSON／欄位漂移（ApiProtocolError）",
+      ".transform() 轉成前端 Clean Type（snake_case、語意欄位、剔除冗餘）",
+      "統一 ApiResponseSuccess / ApiResponseError envelope — 業務錯誤抛 ApiBusinessError",
+      "React／Store 只 import Clean Type，禁止直接碰 Raw JSON"
+    ],
+    "error_heading": "Error 分類",
+    "error_cols": ["類型", "觸發", "處理"],
+    "error_rows": [
+      { "type": "ApiProtocolError", "trigger": "非 JSON、HTML 錯誤頁、Zod parse 失敗", "handling": "log + 統一錯誤 UI；對應 s1「error 格式不統一」根因" },
+      { "type": "ApiBusinessError", "trigger": "後端回 { error: { code, message } }", "handling": "依 code 分支；不再在元件內通靈判斷" }
+    ],
+    "proto_heading": "原型參考（backend/ — 已暫停）",
+    "proto_intro": "曾依上述模式實作多支 endpoint（get-bus-list、get-locations、submit-contact…），每支含 schema.ts（Backend + Clean）、transformer.ts、index.ts，共用 handleResponse 與 contract.ts。",
+    "proto_structure": [
+      "backend/[endpoint-name]/schema.ts — Backend*Schema（Zod）+ Clean Type",
+      "backend/[endpoint-name]/transformer.ts — request／response transform",
+      "backend/[endpoint-name]/index.ts — httpClient + handleResponse",
+      "backend/utils/handle-response.ts — safeParse 統一入口",
+      "backend/contract.ts — ApiResponseSuccess / ApiResponseError"
+    ],
+    "proto_pause_heading": "為何暫停",
+    "proto_pause_items": [
+      "endpoint 數量成長後，資料夾之間容易迷路——缺少與 flow／考古產物的命名對照 SSOT",
+      "Backend 命名（PascalCase、嵌套 XML 風格）與前端 Clean 命名難以跨 API 對齊",
+      "shared entity（如 BusFacilities）與各 endpoint 邊界不清，重複定義風險"
+    ],
+    "plan_bridge_heading": "翻新計畫如何接續",
+    "plan_bridge_items": [
+      "考古期：records/endpoints/[name].ts 與 flow.md § Referenced Endpoints 1:1 — endpoint 清單不再靠腦記",
+      "規劃期：contract-schemas/endpoints/[name].md 為命名與 Transformer 的 SSOT；shared/ 收斂跨 endpoint entity",
+      "code 目錄 slug 對齊 contract-schemas 檔名（如 get-bus-list），一 endpoint 一資料夾",
+      "第一條 vertical slice 定 golden sample（含 Zod + test）；後續 endpoint 複製結構不重複發明",
+      "Role 2 開工前必查 contract-schemas/shared/，禁止重複定義同一 entity"
+    ],
+    "bff_note": "BFF 討論中曾評估的地點搜尋、7k 筆快取等——多數可在前端 IndexedDB + 本地 filter 完成；僅少數地理運算場景才需後端。預設路線仍是 client-side transformer，非另開 BFF service。"
   },
   "footer": {
     "text": "Project Renovation & Refactor Plan"

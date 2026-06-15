@@ -1,17 +1,17 @@
 {
   "meta": {
-    "title": "Full Project Renovation: AI-Driven Agile Archaeology & Refactor Plan"
+    "title": "Full Project Renovation: AI-Driven Agile Archaeology & Refactoring Plan"
   },
   "common": {
     "label_input": "Input",
     "label_output": "Output",
-    "fold_specs": "Expand detailed specifications",
-    "fold_doc_tree": "📂 Click to expand: Structured directory tree (Docusaurus Output)",
+    "fold_specs": "Expand detailed specification requirements",
+    "fold_doc_tree": "📂 Click to expand: Archaeology working directory (records/ + main/, Agent writes here)",
     "fold_figma_org": "Organization: Central template, local customization",
     "fold_figma_pattern": "Business module maintenance boundaries",
-    "fold_figma_align": "Screen rebuild & EN locale contextual alignment",
-    "fold_i18n_json": "🔍 View: i18n data types & script specifications",
-    "fold_i18n_steps": "Full translation prep steps ({n} steps)",
+    "fold_figma_align": "Figma copy vs. i18n boundary",
+    "fold_i18n_json": "🔍 View: i18n data types & script specification details",
+    "fold_i18n_steps": "Full translation prep steps ({n} steps total)",
     "fold_deliverables": "Deliverables",
     "tier_budget": "Budget",
     "tier_required": "Required",
@@ -19,21 +19,40 @@
     "tier_human": "Human",
     "tool_claude": "Claude",
     "tool_cursor": "Cursor",
-    "tool_human": "Human"
+    "tool_human": "Human",
+    "audit_layers_label": "Archaeology verification three layers (Role 4)",
+    "issue_tag_legend_heading": "Issue type tags",
+    "issue_tag_legend": [
+      { "tag": "Schema", "meaning": "Data boundary / Transformer / pure function" },
+      { "tag": "UI", "meaning": "Component or page; requires Figma To-be" },
+      { "tag": "BDD", "meaning": "Flow acceptance cases; must be all green before merge" }
+    ],
+    "glossary": {
+      "L1": { "short": "Coverage map", "tip": "Compare flow.md § Scoped Files: every .ts/.tsx in scope has an assignment. AI auto-verifies; unassigned files = 0." },
+      "L2": { "short": "Structure gate", "tip": "Flow seven sections, endpoint closure, BDD alignment, transform consolidation. AI produces gap report; all green to pass." },
+      "L3": { "short": "Manual spot-check", "tip": "Randomly compare against source code to confirm archaeology content is correct, not just complete. Human sign-off; core flows recommend 5 items." },
+      "Four zones": { "short": "survey-checklist four zones", "tip": "Flows, Endpoints, Static Pages, Global Constraints — survey freeze requires all Four zones 100% checked." },
+      "Refactor-first": { "short": "Scope tag", "tip": "After Phase 2 PM alignment, marked as flows/pages ready to start immediately; Phase 3 only these enter the work pool." },
+      "Align later": { "short": "Scope tag", "tip": "spec + Figma As-is must still be ready, but refactor round one does not touch them; update To-be with PM after other renovation wraps up." },
+      "As-is": { "short": "Current-state canvas", "tip": "Figma canvas 100% matching production; hard prerequisite for Phase 2 PM alignment." },
+      "To-be": { "short": "Target design", "tip": "After refactor kickoff, only Refactor-first items get incremental updates; UI Issues need corresponding block To-be before starting." }
+    },
+    "s9_layers_note": "This \"three-layer defense\" refers to API data flow (Upstream → Contract → Runtime), distinct from archaeology verification L1/L2/L3."
   },
   "hero": {
-    "title": "Full Project Renovation: AI-Driven Agile Archaeology & Refactor Plan",
-    "subtitle": "End design drift and technical debt through AI archaeology, data boundary isolation, Figma design system rebuild, and the Matt Pocock Skills pipeline."
+    "title": "Full Project Renovation: AI-Driven Agile Archaeology & Refactoring Plan",
+    "subtitle": "Use AI archaeology to fill missing Specifications (steps, pages, flows), clarify API Schema from a frontend perspective and build stable Transformers, rebuild the Figma design system, and drive documented acceptance through an Agent Skills pipeline — systematically reducing design drift and technical debt."
   },
   "toc": [
     { "id": "s1", "label": "Background" },
-    { "id": "s2", "label": "Architecture" },
+    { "id": "s2", "label": "Top-Level Architecture" },
     { "id": "s3", "label": "4-Role Workflow" },
-    { "id": "s4", "label": "Survey Strategy" },
-    { "id": "s5", "label": "Freeze Policy" },
-    { "id": "s6", "label": "Figma System" },
-    { "id": "s7", "label": "i18n Pipeline" },
-    { "id": "s8", "label": "Kickoff" }
+    { "id": "s4", "label": "Archaeology Survey" },
+    { "id": "s5", "label": "Freeze Management" },
+    { "id": "s6", "label": "Figma Design System" },
+    { "id": "s7", "label": "i18n" },
+    { "id": "s8", "label": "Kickoff" },
+    { "id": "s9", "label": "API Boundary & Zod" }
   ],
   "s1": {
     "emoji": "🛑",
@@ -41,243 +60,544 @@
     "table_cols": ["Pain Point", "Impact", "Root Cause"],
     "table_rows": [
       {
+        "pain": "No specification docs",
+        "impact": "Business logic cannot be verified; high change risk",
+        "cause": "No standard documents to verify business logic; steps, pages, and flows are reverse-engineered entirely from code."
+      },
+      {
         "pain": "Messy frontend code",
         "impact": "Extremely high fix cost",
-        "cause": "Many anti-patterns make framework bugs hard to trace and debug."
+        "cause": "Many anti-patterns make certain framework bugs extremely hard to trace and debug."
       },
       {
         "pain": "No backend specs",
         "impact": "Frontend guesswork",
-        "cause": "No spec docs — response formats inferred from frontend code, with extra hacks for malformed backend responses."
+        "cause": "Backend has no spec docs — response formats cannot be accurately determined from frontend code alone, plus extra guesswork added to temporarily handle malformed backend responses. This is the upstream root cause of inconsistent error formats and scattered transforms."
       },
       {
         "pain": "Inconsistent error formats",
         "impact": "Dirty logic accumulation",
-        "cause": "Multiple error formats force frontend to add messy handling logic for each variant."
+        "cause": "Inconsistent error response formats force the frontend to add messy handling logic for each variant."
       },
       {
         "pain": "Chaotic data naming",
         "impact": "Hard to trace on refactor",
-        "cause": "Custom transform layer scattered everywhere — original values hard to find during refactors."
+        "cause": "The frontend created its own transform layer, but because it is scattered everywhere, original values are hard to find quickly during refactors."
+      },
+      {
+        "pain": "Design files drift from production",
+        "impact": "UI restoration by guesswork; design iterations untraceable",
+        "cause": "Figma is not maintained in sync with the codebase; production and design files have long diverged."
       }
     ],
-    "vision_heading": "As-is Pain Points vs To-be Vision",
+    "vision_heading": "As-is Pain Points vs. To-be Vision",
     "as_is_title": "As-is Pain Points",
     "to_be_title": "To-be Vision",
     "as_is_items": [
+      "No spec docs to verify business logic",
       "Design files drift from production",
-      "Code degradation and tech debt",
+      "Code degradation and accumulated tech debt",
       "Difficult onboarding, high psychic cost",
-      "Chaotic backend formats, scattered transforms"
+      "Chaotic backend formats, scattered frontend transforms"
     ],
     "to_be_items": [
-      "100% test coverage, refactor without feature loss",
+      "Specification becomes business logic SSOT",
+      "All archaeologized business behavior has BDD acceptance cases",
       "Figma design system synced with code",
-      "Clear AI Agent automation + human-AI boundaries",
-      "Data boundary isolation, clean types replace dirty data"
+      "AI Agent automated dispatch + clear human-AI collaboration boundaries",
+      "Data boundary isolation; clean types replace dirty data"
     ]
   },
   "s2": {
     "emoji": "🗺️",
     "heading": "Top-Level Architecture, Doc Flow & Directory Spec",
-    "subheading": "Complete output chain from legacy codebase to freezable Main Docs. Core navigation must be visible.",
-    "diagram": "graph TD\n    Code[\"Legacy Source\"] -->|Repomix/Cursor| R1[\"🕵️ 1.Code Archaeologist\"]\n    R1 -->|As-is behavior| Flow[\"docs/records/domain/flow.md\"]\n    Payload[\"Legacy API Raw JSON\"] --> R2[\"📐 2.Data Boundary Planner\"]\n    Flow --> R2\n    Comp[\"Components\"] --> R2\n    R2 -->|To-be clean types| Schema[\"docs/main/contract-schemas/\"]\n    R2 --> Ctx[\"context.md Terminology\"]\n    Flow --> R3[\"✍️ 3.Behavior Test Architect\"]\n    Schema --> R3\n    R3 -->|BDD cases| BDD[\"docs/records/domain/e2e-cases.feature\"]\n    Flow --> R4[\"⚖️ 4.Documentation Auditor\"]\n    Schema --> R4\n    BDD --> R4\n    R4 -->|Coverage review| Check[\"docs/survey-checklist.md\"]\n    Check -->|100% Check| Final[\"Phase 1 Freeze\"]",
+    "subheading": "Complete output chain from legacy codebase to survey freeze. Archaeology working data writes to records/ and main/; after survey completion, Docusaurus is produced separately for PM alignment.",
+    "example_callout": "⚠️ `[flow-name]`, `[endpoint-name]` in this section and the example lists below illustrate directory structure and split granularity only — not real flows or APIs for this project. Actual names and boundaries are defined one by one during archaeology based on existing codebase business logic.",
+    "taxonomy_heading": "Three-tier archaeology artifact taxonomy",
+    "taxonomy_intro": "Flow is not the only classification axis. Endpoint specs are orthogonal to Flow — one flow can reference multiple endpoints, and one endpoint can be shared across flows.",
+    "taxonomy_cols": ["Tier", "Path", "Granularity", "Archaeology depth"],
+    "taxonomy_rows": [
+      {
+        "tier": "User Flow (Record)",
+        "path": "docs/records/flows/[flow-name]/",
+        "granularity": "One complete user task (Entry → Terminal State)",
+        "depth": "flow.md + BDD + referenced endpoints"
+      },
+      {
+        "tier": "Static / Content",
+        "path": "docs/main/pages/",
+        "granularity": "One page or block",
+        "depth": "Block structure + i18n keys only; no schema / BDD"
+      },
+      {
+        "tier": "Global Constraints",
+        "path": "docs/records/global-constraints/",
+        "granularity": "Cross-flow cross-cutting logic",
+        "depth": "BDD only; no standalone flow.md"
+      }
+    ],
+    "taxonomy_endpoint_note": "Endpoint specs (docs/records/endpoints/) are another orthogonal axis: one endpoint per file; archaeology infers upstream structure; planner produces Frontend Interface + Transformer to main/contract-schemas/endpoints/.",
+    "flow_granularity_heading": "Flow split criteria (Highway Bus service — illustrative example)",
+    "flow_granularity_rules": [
+      "Split by user task (User Journey), not by page or route.",
+      "One Record = one independently archivable complete journey (Entry Point → Terminal State).",
+      "Endpoint specs (endpoints/) and Flow (flows/) are orthogonal: one flow can reference multiple endpoints; endpoints can be shared across flows.",
+      "Independent Entry Point with complete journey → separate flow (e.g. Coupon flow via email deep link); logic triggered mid-journey in another flow (e.g. Coupon apply during booking) → write into that flow's Edge Cases.",
+      "Pages linking to external forms with no complete in-site task (e.g. Affiliate) → static page survey, no flow.",
+      "Cross-flow cross-cutting logic (session expiry, anti-abuse, URL locale sync) → consolidate to global-constraints/."
+    ],
+    "flow_examples_note": "Below illustrates split granularity types only; [flow-name] is a placeholder, not a real flow name for this project:",
+    "flow_examples": [
+      { "name": "[search-flow]", "desc": "Search & filter (including status-driven hidden UI states)" },
+      { "name": "[booking-flow]", "desc": "Main booking flow (cross-page complete journey)" },
+      { "name": "[coupon-email-flow]", "desc": "Coupon flow via email deep link (independent Entry Point)" },
+      { "name": "[lookup-flow]", "desc": "Reservation lookup / change flows" }
+    ],
+    "endpoint_examples_note": "Endpoint filenames below are examples; name per actual API during archaeology:",
+    "endpoint_examples": [
+      "search-routes.ts",
+      "get-seat-map.ts",
+      "post-reservation.ts",
+      "get-reservation.ts"
+    ],
+    "diagram": "graph TD\n    Code[\"Legacy source\"] -->|Repomix bundle + Agent exploration| R1[\"🕵️ 1. Code Archaeologist\"]\n    R1 -->|As-is business behavior| Flow[\"docs/records/flows/[flow-name]/flow.md\"]\n    R1 -->|Infer endpoint response structure| Upstream[\"docs/records/endpoints/[endpoint-name].ts\"]\n    Flow --> R2[\"📐 2. Data Boundary Planner\"]\n    Upstream --> R2\n    Comp[\"Components / Store derived logic\"] --> R2\n    R2 -->|Frontend Interface + Transformer| Schema[\"docs/main/contract-schemas/endpoints/\"]\n    R2 --> Ctx[\"CONTEXT.md\"]\n    Flow --> R3[\"✍️ 3. Behavior Test Architect\"]\n    Schema --> R3\n    R3 -->|BDD cases| BDD[\"docs/records/flows/[flow-name]/e2e-cases.feature\"]\n    Flow --> R4[\"⚖️ 4. Documentation Auditor\"]\n    Schema --> R4\n    BDD --> R4\n    R4 -->|Coverage review| Check[\"docs/survey-checklist.md\"]\n    Check -->|100% Check| Freeze[\"Survey freeze\"]\n    Freeze -->|Organize survey docs| Docs[\"Docusaurus doc site\"]\n    Docs -->|PM alignment| PM[\"Business / technical change discussion\"]\n    Freeze -.->|Developer reference| Ref[\"records/ + main/ retained\"]",
+    "doc_tree_note": "Below is the working directory for archaeology and refactor — for Agent writes and developer reference during refactor; not a PM-facing format.",
+    "docusaurus_heading": "After survey completion: Docusaurus output",
+    "docusaurus_intro": "After survey-checklist reaches 100%, organize survey docs (records/ + main/ + CONTEXT.md) into Docusaurus format, build a doc site in a separate repo as the formal interface for PM alignment. main/ and records/ remain for developer use and refactor reference.",
+    "docusaurus_steps": [
+      "Use frozen survey docs as source (not writing Docusaurus during archaeology)",
+      "Skill / Script converts to Docusaurus structure (MDX, sidebar, Admonitions, etc.)",
+      "Consolidate each flow.md § Pending PM Clarification to Open Questions section",
+      "Deploy doc site in separate repo",
+      "Use this site for technical and business change discussions with PM"
+    ],
     "doc_tree_cols": ["Path", "Purpose"],
     "doc_tree_rows": [
-      { "path": "context.md", "desc": "Global dictionary (permanent). Uses newly defined business domain terminology." },
-      { "path": "survey-checklist.md", "desc": "File-level archaeology progress tracker." },
-      { "path": "records/", "desc": "Archaeology staging area (deleted after checklist 100%, moved to main)." },
-      { "path": "records/[domain]/flow.md", "desc": "As-is business rules (e.g. booking, coupon)." },
-      { "path": "records/[domain]/e2e-cases.feature", "desc": "BDD test cases." },
-      { "path": "docs/main/flows/", "desc": "Permanent SSOT — flow foundations." },
-      { "path": "docs/main/pages/", "desc": "Page logic." },
-      { "path": "docs/main/contract-schemas/shared/", "desc": "Global entities." },
-      { "path": "docs/main/contract-schemas/endpoints/", "desc": "API specifications." }
+      { "path": "CONTEXT.md", "desc": "Global glossary (permanent). Continuously updated during archaeology; grill-with-docs reuses it." },
+      { "path": "docs/survey-checklist.md", "desc": "Archaeology progress tracker. Four zones + L1/L2/L3 sub-checks per Record." },
+      { "path": "docs/records/", "desc": "As-is archaeology workspace. Developer reference during refactor; retained after survey freeze, not PM-facing." },
+      { "path": "docs/records/flows/[flow-name]/flow.md", "desc": "As-is current business flow. Name defined during archaeology from codebase (placeholder: [flow-name])." },
+      { "path": "docs/records/endpoints/[endpoint-name].ts", "desc": "Single endpoint raw response structure inferred from codebase during archaeology (TypeScript type). Name defined during archaeology." },
+      { "path": "docs/records/flows/[flow-name]/e2e-cases.feature", "desc": "BDD test cases." },
+      { "path": "docs/main/flows/", "desc": "Verified As-is flows; To-be SSOT foundation during refactor. Developer reference." },
+      { "path": "docs/main/pages/", "desc": "Page logic survey. Developer reference." },
+      { "path": "docs/main/contract-schemas/shared/", "desc": "Global Entities (To-be). Developer reference." },
+      { "path": "docs/main/contract-schemas/endpoints/", "desc": "Frontend Interface + Transformer (To-be). Developer reference." }
     ]
   },
   "s3": {
     "emoji": "🛠️",
-    "heading": "Skills Workflow Data Production",
-    "subheading": "Four roles with core tasks and precise I/O. Technical specs in collapsible drawers.",
+    "heading": "Producing Data via Skills Workflow",
+    "subheading": "Four roles with core tasks and precise I/O. Technical specs in collapsible drawers; Role 4 three-layer audit flow in dedicated section below.",
+    "auditor_heading": "Documentation audit three-layer verification flow",
+    "auditor_intro": "Role 4 does not re-archaeologize — it verifies whether Roles 1–3 fulfilled template contracts. \"No missing files\" and \"no missing details\" are handled separately: L1/L2 can be auto-verified; L3 is human spot-check against source code.",
+    "auditor_diagram": "flowchart TD\n    Draft[\"① AI draft checklist\"] --> L1[\"② L1 Coverage map<br/>unassigned files = 0\"]\n    L1 --> L2[\"③ L2 Structure gate<br/>template + cross-refs\"]\n    L2 --> Gap[\"④ gap report\"]\n    Gap --> L3[\"⑤ L3 Manual spot-check<br/>compare source code\"]\n    L3 --> Check[\"⑥ survey-checklist check\"]\n    Check --> Freeze[\"Four zones 100% → Freeze\"]",
+    "auditor_workflow_heading": "Actual execution steps per Record",
+    "auditor_workflow_steps": [
+      "AI drafts survey-checklist.md Four zones items from legacy file tree and existing artifacts.",
+      "AI runs L1: compare flow.md § Scoped Files, confirm every .ts/.tsx in scope has an assignment; unassigned files = 0.",
+      "AI runs L2: check flow seven sections complete, Referenced Endpoints closure (upstream .ts + contract-schema .md), BDD Scenarios aligned with flow.md, @old_logic_location appears in Scoped Files.",
+      "Produce gap report listing failures; if not all green, return to corresponding Role for fixes.",
+      "Human reviews gap report, performs L3 spot-check for that Record (see list below).",
+      "L1 + L2 + L3 all pass → check that Record; all Four zones checked → Phase 1 freeze."
+    ],
+    "auditor_layers_heading": "Three-layer audit definitions",
+    "auditor_layers_cols": ["Layer", "What to check", "Executor", "Pass condition"],
+    "auditor_layers_rows": [
+      { "layer": "L1 Coverage map", "checks": "Whether every legacy file in scope has an assignment", "who": "AI", "pass": "unassigned files = 0" },
+      { "layer": "L2 Structure gate", "checks": "flow template, endpoint closure, BDD alignment, transform consolidation", "who": "AI", "pass": "gap report all green" },
+      { "layer": "L3 Manual spot-check", "checks": "Randomly compare source code; confirm content is correct, not just complete", "who": "Human", "pass": "all spot-check items pass (core flows recommend 5)" }
+    ],
+    "auditor_spotcheck_heading": "L3 manual spot-check list (per Flow Record)",
+    "auditor_spotcheck_items": [
+      "Randomly pick 1 Edge Case → compare original component if-else, confirm flow.md description is correct.",
+      "Randomly pick 1 @old_logic_location → confirm transformer logic is consolidated, nothing missed.",
+      "Randomly pick 1 Unverified Logic → confirm truly cannot be explained from code (not a lazy tag).",
+      "(Core business flow extra) Pick 1 more Happy Path step + 1 Referenced Endpoint field semantics."
+    ],
+    "checklist_heading": "survey-checklist.md Four zones structure",
+    "checklist_intro": "Different archaeology artifact types have different pass standards. Each checkbox must include L1/L2/L3 sub-checks to avoid \"has docs but not verified\".",
+    "checklist_cols": ["Zone", "Check unit", "Pass standard", "Audit depth"],
+    "checklist_rows": [
+      { "area": "Flows", "unit": "Each [flow-name] Record", "standard": "flow.md (incl. Pending PM Clarification) + e2e-cases.feature + referenced endpoints all have contract-schemas; BDD aligned with flow.md", "depth": "L1 + L2 + L3" },
+      { "area": "Endpoints", "unit": "Each [endpoint-name].ts", "standard": "Corresponding main/contract-schemas/endpoints/[name].md exists and references upstream", "depth": "L2" },
+      { "area": "Static Pages", "unit": "Per page", "standard": "main/pages/ has blocks + i18n key list (no BDD required)", "depth": "L1" },
+      { "area": "Global Constraints", "unit": "Whole package", "standard": "global-constraints/e2e-cases.feature covers cross-cutting logic listed in s4", "depth": "L2 + L3" }
+    ],
+    "checklist_example_note": "Below is checklist entry format example (abstract illustration):",
     "roles": [
       {
         "emoji": "🕵️",
         "title": "Code Archaeologist",
-        "task": "Map the legacy system's As-is state — distill pure business behavior from messy code, exclude dead code.",
-        "input": "Legacy route/component source (Repomix bundle)",
-        "output": "docs/records/[domain]/flow.md",
-        "ai_recommendation": { "tool": "claude", "model": "Sonnet 4.5", "tier": "budget", "hint": "Batch archaeology" },
-        "spec_summary": "Expand detailed specifications",
+        "task": "Map the legacy system's current state (As-is): distill pure business behavior, infer related endpoint response structures and all possibilities from codebase, exclude dead code.",
+        "input": [
+          "Repomix-bundled codebase",
+          "Specified flow-related route / component scope"
+        ],
+        "output": [
+          "docs/records/flows/[flow-name]/flow.md",
+          "docs/records/endpoints/[endpoint-name].ts",
+          "CONTEXT.md (incremental glossary update)"
+        ],
+        "ai_recommendation": { "tool": "claude", "model": "Sonnet 4.5", "tier": "budget", "hint": "Batch archaeology for large file sets" },
+        "spec_summary": "Expand flow.md template requirements",
+        "spec_example_note": "Abstract example below illustrates section structure only — not real flows or endpoints for this project.",
         "spec_sections": [
+          { "title": "### Entry Points", "desc": "Which pages / routes / homepage blocks can enter this flow. Homepage spec only notes reference; behavior details written here." },
+          { "title": "### Referenced Endpoints", "desc": "List of endpoints/[name].ts this flow involves, as index to the orthogonal endpoint axis." },
           { "title": "### Happy Path", "desc": "Minimal user success operation steps." },
-          { "title": "### Edge Cases", "desc": "All business logic branches in code (excluding network/infrastructure errors)." },
-          { "title": "### Unverified Logic", "desc": "Dead code or mysterious logic written but never hit — flagged for later discussion." }
-        ]
+          { "title": "### Edge Cases", "desc": "All business logic branches in code (excluding network outage and other infrastructure errors)." },
+          { "title": "### Pending PM Clarification", "desc": "Unclear business intent or scenario: code shows behavior but not \"why\" or correct rules. Note source location and question; after survey freeze, align with PM via Docusaurus Open Questions." },
+          { "title": "### Unverified Logic", "desc": "Code mystery: branches written but never hit, cannot reproduce or explain. Note source file location; defer to production log verification or backend confirmation (not PM business questions)." },
+          { "title": "### Scoped Files (Coverage map)", "desc": "Required before Record archive. Every .ts/.tsx in scope must have assignment: referenced by flow section, Dead Code (with reason), Unverified Logic, or cross-reference to another flow. unassigned files = 0 before handing to Role 4." }
+        ],
+        "spec_code": "# [flow-name]\n\n### Entry Points\n- `/some-list-page` — User enters from list page option\n- `/landing#quick-action` — Homepage block as shortcut entry to this flow\n\n### Referenced Endpoints\n- `endpoints/search-items.ts` — Query and filter\n- `endpoints/submit-action.ts` — Submit main action\n\n### Happy Path\n1. User sets required conditions\n2. System displays selectable results\n3. User completes main action and sees success state\n\n### Edge Cases\n- Show empty state when no results found\n- Block next step when conditions not met\n\n### Pending PM Clarification\n- Should certain identity types have different discount rules? Code has branch but no business explanation (`src/legacy/Pricing.tsx:120`)\n\n### Unverified Logic\n- `src/legacy/foo.ts:88` — Branch never triggered, reason unknown\n\n### Scoped Files\n| File | Assignment |\n|---|---|\n| src/pages/Booking.tsx | Happy Path + Edge Cases |\n| src/utils/legacyCoupon.ts | Edge Cases: coupon expired |\n| src/deprecated/oldFlow.ts | Dead Code (confirmed no route reference) |\n| src/hooks/useMystery.ts | → Unverified Logic |\n\n---\n# endpoints/submit-action.ts (same Record output, abstract example)\n\n/** @endpoint POST /api/some-action */\ninterface RawActionResponse {\n  /** Field semantics pending confirmation; may not be literal meaning */\n  status_code: string;\n  payload: unknown;\n}"
       },
       {
         "emoji": "📐",
         "title": "Data Boundary Planner",
-        "task": "Reject legacy backend bad formats. Define clean Frontend Interfaces, consolidate transforms from components and Store.",
-        "input": "Legacy API Raw JSON, flow.md logic, component calc fragments, Store Mutations/Selectors triggers",
-        "output": "docs/main/contract-schemas/endpoints/[endpoint-name].md",
-        "ai_recommendation": { "tool": "claude", "model": "Opus 4.6", "tier": "required", "hint": "High type precision" },
-        "spec_summary": "Expand detailed specifications",
-        "spec_sections": [
-          { "title": "Upstream Raw JSON Schema (TypeScript Type)", "desc": "Backend original format." },
-          { "title": "Target TypeScript Interface", "desc": "Clean frontend types with JSDoc @upstream_source and @old_logic_location." },
-          { "title": "Transformer Pure Functions", "desc": "For complex derived calculations (amount, distance), write fully typed executable TS transform prototypes." }
+        "task": "Starting from archaeology upstream output, define To-be Frontend Interface and consolidate transform logic scattered in components and Store into Transformers. Does not touch live API directly.",
+        "input": [
+          "docs/records/flows/[flow-name]/flow.md",
+          "docs/records/endpoints/[endpoint-name].ts",
+          "Legacy component / store transform fragments to consolidate",
+          "Existing docs/main/contract-schemas/shared/"
         ],
-        "spec_code": "/** @upstream_source GET /api/booking/{id} */\ninterface BookingViewModel {\n  /** @old_logic_location src/pages/booking/transform.ts:42 */\n  displayAmount: string;\n}\n\nfunction transformBookingAmount(raw: RawBooking): string {\n  return (raw.amount_cents / 100).toFixed(2);\n}"
+        "output": [
+          "docs/main/contract-schemas/endpoints/[endpoint-name].md",
+          "(if needed) docs/main/contract-schemas/shared/[entity].md",
+          "CONTEXT.md (incremental glossary update)"
+        ],
+        "ai_recommendation": { "tool": "claude", "model": "Opus 4.6", "tier": "required", "hint": "High type precision required" },
+        "spec_summary": "Expand contract-schema template requirements",
+        "spec_example_note": "Abstract example below — not real APIs or fields for this project.",
+        "spec_sections": [
+          { "title": "Upstream Schema (references records/endpoints/)", "desc": "Use Role 1 .ts output as SSOT; note field semantic ambiguity and known backend quirks." },
+          { "title": "Target TypeScript Interface", "desc": "To-be clean frontend types. JSDoc notes @upstream_source and @old_logic_location." },
+          { "title": "Transformer Pure Functions", "desc": "Executable TypeScript transform function prototypes consolidating derived calculations from components / store." }
+        ],
+        "spec_code": "/** @upstream_source records/endpoints/submit-action.ts */\n\n// --- Upstream (references archaeology artifact, summary) ---\n// status_code: string  — Not HTTP status; business status code\n\n// --- Target Interface ---\ninterface ActionViewModel {\n  /** @old_logic_location src/legacy/ConfirmPanel.tsx:42 */\n  isSuccess: boolean;\n  displayMessage: string;\n}\n\n// --- Transformer ---\nfunction transformActionResponse(raw: RawActionResponse): ActionViewModel {\n  return {\n    isSuccess: raw.status_code === 'OK',\n    displayMessage: raw.payload?.message ?? '',\n  };\n}"
       },
       {
         "emoji": "✍️",
         "title": "Behavior Test Architect",
-        "task": "Convert flow.md business logic into implementation-decoupled BDD test cases.",
-        "input": "docs/records/[domain]/flow.md + docs/main/contract-schemas/",
-        "output": "docs/records/[domain]/e2e-cases.feature",
+        "task": "Convert flow.md business logic into implementation-decoupled BDD cases, keeping traceable alignment with flow.md sections.",
+        "input": [
+          "docs/records/flows/[flow-name]/flow.md",
+          "docs/main/contract-schemas/endpoints/ + shared/"
+        ],
+        "output": ["docs/records/flows/[flow-name]/e2e-cases.feature"],
         "ai_recommendation": { "tool": "claude", "model": "Sonnet 4.5", "tier": "budget", "hint": "Structured BDD output" },
-        "spec_summary": "Expand detailed specifications",
+        "spec_summary": "Expand BDD template requirements",
+        "spec_example_note": "Abstract example below — not real scenarios for this project.",
         "spec_sections": [
           { "title": "Gherkin syntax", "desc": "Must use Given-When-Then syntax." },
-          { "title": "Business Edge Cases", "desc": "Cover all business-layer edge cases (e.g. booking code not found)." },
-          { "title": "Exclude infrastructure errors", "desc": "404/500/network handled by global Client — not in Feature files." }
+          { "title": "Coverage aligned with flow.md", "desc": "At least one Scenario for Happy Path; at least one Scenario per Edge Case. Comment above each Scenario notes corresponding flow.md section." },
+          { "title": "Pending PM Clarification / Unverified Logic — no Scenarios", "desc": "Business pending items and code mysteries are not written as Scenarios; list separately in feature file top comments, referencing flow.md sections." },
+          { "title": "Exclude infrastructure errors", "desc": "404/500/network outage handled by global Client — not written in Feature file." }
         ],
-        "spec_code": "Scenario: Booking code not found\n  Given user enters a non-existent booking code\n  When user submits query\n  Then display \"Booking not found\" error message"
+        "spec_code": "# Pending PM Clarification (references flow.md § Pending PM Clarification):\n# - Certain identity discount rules pending confirmation\n\n# Pending log verification (references flow.md § Unverified Logic):\n# - src/legacy/foo.ts:88 — Branch never triggered\n\n# Corresponds to flow.md § Happy Path\nScenario: User completes main action\n  Given user has set valid conditions\n  When user submits main action\n  Then screen should show success state\n\n# Corresponds to flow.md § Edge Cases: no results\nScenario: Query conditions yield no matches\n  Given user has set valid query conditions\n  When system returns empty result set\n  Then screen should show empty state message"
       },
       {
         "emoji": "⚖️",
         "title": "Documentation Auditor",
-        "task": "Strict code-coverage perspective audit of archaeology progress — ensure no file is missed.",
-        "input": "Legacy folder file inventory, docs/records/ produced docs",
-        "output": "docs/survey-checklist.md",
-        "ai_recommendation": { "tool": "human", "tier": "human", "hint": "Final guard" },
-        "spec_summary": "Expand detailed specifications",
+        "task": "Does not re-archaeologize — verifies Roles 1–3 fulfilled template contracts: AI runs L1 Coverage map and L2 Structure gate producing gap report; human performs L3 spot-check sign-off then updates survey-checklist.md.",
+        "input": [
+          "Legacy file tree",
+          "docs/records/ and docs/main/ existing artifacts",
+          "Each Record's flow.md § Scoped Files"
+        ],
+        "output": [
+          "docs/survey-checklist.md",
+          "Four zones + L1/L2/L3 sub-checks per Record"
+        ],
+        "ai_recommendation": { "tool": "claude", "model": "Sonnet 4.5", "tier": "budget", "hint": "L1/L2 auto-verify; L3 human spot-check sign-off" },
+        "spec_summary": "Expand L2 Structure gate details",
         "spec_sections": [
-          { "title": "Check physical standard", "desc": "Only check when ALL .tsx/.ts files in module are surveyed AND every API has contract-schemas + BDD cases." }
-        ]
+          { "title": "L1 Coverage map", "desc": "Compare flow.md § Scoped Files: every .ts/.tsx in scope falls into one of four buckets: referenced by flow / Dead Code / Unverified / cross-reference to another flow. unassigned = 0." },
+          { "title": "L2 Structure gate — flow.md", "desc": "Seven sections complete: Entry Points, Referenced Endpoints, Happy Path, Edge Cases, Pending PM Clarification, Unverified Logic, Scoped Files." },
+          { "title": "L2 Structure gate — endpoint closure", "desc": "Every Referenced Endpoint has records/endpoints/*.ts + main/contract-schemas/endpoints/*.md." },
+          { "title": "L2 Structure gate — BDD alignment", "desc": "Scenario count ≥ 1 (Happy Path) + Edge Case count; each Scenario comment has corresponding flow.md section." },
+          { "title": "L2 Structure gate — transform consolidation", "desc": "Files pointed to by contract-schema @old_logic_location must appear in Scoped Files." },
+          { "title": "L3 Manual spot-check", "desc": "See \"L3 manual spot-check list\" below. Static pages need L1 only; Endpoints need L2 only." }
+        ],
+        "spec_code": "## Flows\n- [ ] booking-flow\n  - [ ] L1 Coverage map: 0 unassigned files\n  - [ ] L2 Structure gate: 5/5 passed\n  - [ ] L3 spot-check: 3/3 passed (YYYY-MM-DD by @reviewer)\n\n## Endpoints\n- [x] post-reservation.ts — L2 passed\n\n## Static Pages\n- [x] /faq — L1 passed\n\n## Global Constraints\n- [ ] session-expiry — L2 + L3 pending"
       }
     ]
   },
   "s4": {
     "emoji": "🔄",
-    "heading": "Core Survey Strategy & Execution Supplement",
+    "heading": "Core Archaeology Survey Flow & Execution SUPPLEMENT",
+    "subheading": "Priority and survey depth for three archaeology artifact types. Business uncertainties marked during archaeology; after survey freeze, align with PM via Docusaurus.",
+    "example_callout": "⚠️ \"Known examples\" below reflect current project understanding; actual flow list and naming defined during archaeology from codebase.",
+    "pm_clarification_heading": "Three-layer handling of business uncertainties",
+    "pm_clarification_items": [
+      "Archaeology phase: code mysteries → flow.md § Unverified Logic; unclear business intent / scenario → flow.md § Pending PM Clarification",
+      "Survey freeze → Docusaurus: consolidate all \"Pending PM Clarification\" to Open Questions section",
+      "After PM alignment: approved items written to main/ To-be; still uncertain items left as TODO + production log"
+    ],
     "card_scope_label": "Scope",
-    "card_standard_label": "Survey Standard",
-    "table_cols": ["Category", "Priority", "Scope", "Survey Standard"],
+    "card_standard_label": "Survey standard",
+    "table_cols": ["Category", "Priority", "Scope", "Survey standard"],
     "table_rows": [
       {
         "category": "Core Domain Flows",
         "priority": "Highest",
         "priority_type": "emerald",
-        "scope": "Booking Flow, Search & Filter (reverse-map UI hidden states), Coupon / Affiliate",
-        "standard": "Cross-page continuous actions — priority. Requires full flow.md + contract-schemas + BDD."
+        "scope": "Cross-page flows with complete User Journey (defined from codebase during archaeology). Known examples: main booking flow, search & filter, Coupon flow via email deep link.",
+        "standard": "Must complete four-role pipeline + Role 4 three-layer audit. Produce flow.md + contract-schemas + BDD; mark business uncertainties as \"Pending PM Clarification\"."
       },
       {
         "category": "Static & Content Pages",
-        "priority": "Simplified",
+        "priority": "Simplified survey",
         "priority_type": "blue",
-        "scope": "Nav pages, FAQ, Top Page blocks. Stored in frontend translation files (no CMS).",
-        "standard": "No schemas or BDD. List page blocks and translation key structure in docs/main/pages/."
+        "scope": "Nav pages, FAQ, Top Page blocks, etc. (no CMS, stored in frontend translation files). Affiliate intro pages (link to external forms, no complete in-site task) also belong here.",
+        "standard": "No schemas or BDD. List page blocks and i18n keys in docs/main/pages/."
       },
       {
         "category": "Global Infrastructure",
-        "priority": "global-constraints",
+        "priority": "Consolidate global-constraints",
         "priority_type": "indigo",
-        "scope": "Session validity, error attempt limits (anti-abuse), global state & URL sync (locale/currency refresh)",
-        "standard": "Strong business behavior across pages. Consolidate to docs/records/global-constraints/e2e-cases.feature."
+        "scope": "Auth state validity period (session lifecycle), error attempt limits (anti-abuse prompts), global state & URL sync (locale/currency refresh in URL)",
+        "standard": "Cross-page cross-cutting logic. Consolidate to docs/records/global-constraints/e2e-cases.feature; must run Role 4 L2 + L3."
       }
     ]
   },
   "s5": {
     "emoji": "🔒",
-    "heading": "Change Management & Main Docs Freeze",
-    "freeze_callout": "survey-checklist.md reaches 100% → Main Docs freeze point. Use this main/ version for technical and business change discussions with PM.",
-    "phase1_title": "Phase 1: Archaeology",
-    "phase1_items": [
-      "records/ captures As-is.",
-      "main/flows/ writes confirmed As-is logic.",
-      "main/contract-schemas/ produces new To-be clean types.",
-      "checklist 100% → Main Docs freeze point, PM change discussion."
+    "heading": "Change Management & Scope Freeze",
+    "subheading": "Two gates: survey freeze (technically complete) → Scope freeze (PM decisions). After confirming spec and Figma with PM, start renovation from blocks \"temporarily not changing\".",
+    "freeze_callout": "checklist 100% → survey freeze → produce Docusaurus. Bring spec + Figma to PM for Scope freeze: which blocks are Refactor-first, which Align later. Start work from parts PM confirms will not change for now.",
+    "two_gates_heading": "Two freeze gates",
+    "two_gates_cols": ["Gate", "Trigger", "Output"],
+    "two_gates_rows": [
+      { "gate": "Survey freeze", "trigger": "survey-checklist 100%", "output": "Docusaurus publishable; Open Questions consolidated" },
+      { "gate": "Scope freeze", "trigger": "PM completes per-block decisions on spec + Figma", "output": "Each flow / page marked Refactor-first or Align later" }
     ],
-    "phase2_title": "Phase 2: Refactor & Development",
+    "phase1_title": "Phase 1 (Archaeology)",
+    "phase1_items": [
+      "records/ records As-is; main/ accumulates To-be contract-schemas.",
+      "flow.md marks \"Pending PM Clarification\" and Unverified Logic.",
+      "checklist reaches 100% → survey freeze, organize Docusaurus (incl. Open Questions)."
+    ],
+    "phase2_title": "Phase 2 (PM alignment)",
     "phase2_items": [
-      "Approved changes and new requirements modify docs/main/ in Feature Branch — always To-be state.",
-      "PR must include CHANGELOG.md with Ticket links and modified files.",
-      "Code and docs merge together — code is docs, docs is code."
+      "Bring Docusaurus spec and Figma As-is drafts (see s6) to PM for per-block confirmation — including Align later items; both are required.",
+      "Discuss: what keeps current logic, what to refactor, what needs joint process rethink.",
+      "Close Open Questions one by one, or escalate to Scope decisions.",
+      "Mark Scope for each flow / page (see below)."
+    ],
+    "scope_decisions_heading": "Scope decision tags",
+    "scope_decisions_intro": "Core output of PM alignment. Decisions recorded as Docusaurus page badges and written back to main/ file frontmatter (scope: stable | pending).",
+    "scope_decisions_cols": ["Tag", "What PM means", "Next step"],
+    "scope_decisions_rows": [
+      { "label": "Refactor-first", "meaning": "PM confirms this block will not change business logic or flow for now", "next": "Prioritize for refactor kickoff" },
+      { "label": "Align later", "meaning": "PM indicates this block will be adjusted, refactored, or rethought later", "next": "Round one still needs spec + Figma As-is for PM decision; defer kickoff and To-be design. After Refactor-first completes, round two brings updated spec + Figma to discuss with PM" }
+    ],
+    "phase3_title": "Phase 3 (Refactor kickoff)",
+    "phase3_items": [
+      "Start development from blocks marked Refactor-first; do not touch Align later items.",
+      "Align later items: after other renovation wraps up, re-discuss with PM and update spec + Figma.",
+      "Feature Branch modifies docs/main/ (To-be); PR includes CHANGELOG.md (Ticket Link + changed docs).",
+      "Docs merge with code on deploy — code is docs, docs is code."
     ]
   },
   "s6": {
     "emoji": "🧱",
     "heading": "Figma Design System & Three-Layer Token Architecture",
-    "intro_p1": "Multi-product island maintenance: no cross-file Variable linking — adopt \"Central template, local customization\" pragmatic architecture.",
-    "intro_p2": "Central Core shadcn Template maintains Primitive definitions and component prototypes. Each project copies locally, overrides Semantic Tokens, 100% restores As-is canvas.",
-    "pro_warning": "⚠️ Figma Variables require Pro plan Full seat (not Collab seat).",
-    "token_rule": "Three-layer Token isolation rule: canvas must ONLY use Layer 3 (Semantic) Tokens.",
-    "token_cols": ["Layer", "Figma Variable Naming", "Code Namespace", "Designer Access"],
-    "token_rows": [
-      { "layer": "1. Primitive 🔒", "figma": "primitive/neutral/100", "css": "--nv-primitive-neutral-100", "access": "❌ Forbidden on canvas. Color dictionary." },
-      { "layer": "2. Brand 🔒", "figma": "brand/primary", "css": "--nv-brand-primary", "access": "❌ Forbidden on canvas." },
-      { "layer": "3. Semantic 🔓", "figma": "semantic/bg/base", "css": "--nv-semantic-bg-base", "access": "🔓 Only legal Token. Must name at this layer." }
+    "subheading": "Serves s5 PM alignment: spec and Figma As-is appear as a pair. No Figma changes during archaeology; build As-is canvas after survey freeze; only Refactor-first items update To-be after Scope freeze.",
+    "timeline_heading": "Figma four-phase timeline (aligned with s5)",
+    "timeline_steps": [
+      "① Archaeology: frontend does not touch Figma. Optional — ask designers to sync production site with new Token architecture (As-is restoration) in parallel with code archaeology.",
+      "② After survey freeze: build / complete Figma As-is canvas per spec (100% matching production), parallel with Docusaurus output.",
+      "③ PM alignment: all flows / pages (including Align later) need spec + Figma As-is together for PM confirmation.",
+      "④ Refactor kickoff: only Refactor-first items update Figma To-be; Align later stays As-is, changed after round-two PM discussion."
     ],
-    "fold_org_content": "Central Workspace → Core shadcn Template (Primitive Tokens + Standard Components). Local projects → copy template + Local Semantic override + 100% As-is restore.",
-    "fold_pattern_central": "Central: 100% logic-visual consistency, zero customization (e.g. Japan map selector) → Copy-Paste.",
-    "fold_pattern_local": "Local: composite components with product-specific semantics (BookingCard, CouponSelector) → central shadcn base + local assembly.",
-    "fold_align_desc": "Figma component note spec: designers must manually note frontend i18n key in Description when assembling.",
-    "fold_align_example": "Canvas shows \"Please enter your booking code\" → Description: [i18n-key] booking.field.code_placeholder. Benefit: EN copy changes won't break frontend field mapping."
+    "pm_deliverable_callout": "Minimum PM alignment deliverable: key screens per flow + static page blocks; spec (Docusaurus) and Figma As-is are both required.",
+    "kit_callout": "Figma starting point: use Obra shadcn/ui kit as community template (https://obra.studio/work/figma-shadcn-ui-kit/), copy to each project locally then override Tokens and As-is canvas — do not build component library from scratch. Code side pairs with shadcn/ui CLI.",
+    "intro_p1": "Multi-product \"island maintenance\": Figma Professional cannot link Variables across files — adopt \"central template (Obra kit + shadcn components), local customization\" — copy template, map brand colors, restore As-is canvas.",
+    "intro_p2": "Three Token layers align with Obra / shadcn philosophy: bottom Raw uses Tailwind palette naming; Brand builds 100–900 scales; Semantic aligns with shadcn and consolidates business-specific colors. Canvas binds only Semantic.",
+    "pro_warning": "⚠️ Creating Figma Variables requires at least Pro plan Full seat (not Collab seat).",
+    "token_rule": "Three-layer Token physical isolation: canvas must and may only use Semantic Tokens. Raw (Tailwind palette) and Brand (100–900 scales) are forbidden on canvas.",
+    "token_cols": ["Layer", "Naming convention", "Code counterpart", "Designer access"],
+    "token_rows": [
+      { "layer": "1. Raw / Primitives 🔒", "figma": "Same names as Tailwind CSS palette (e.g. slate-500, blue-600, neutral-100)", "css": "tailwind.config / @theme base color tokens", "access": "❌ Forbidden on canvas. Color dictionary." },
+      { "layer": "2. Brand 🔒", "figma": "Site brand colors 100–900 scales (e.g. brand-blue-100, brand-orange-500)", "css": "theme defines brand scale; exposed on canvas via Semantic alias (e.g. --brand-pink)", "access": "❌ Forbidden on canvas." },
+      { "layer": "3. Semantic 🔓", "figma": "shadcn standard (background, primary, muted…) + business semantics (e.g. link, brand-pink)", "css": "globals.css :root — shadcn built-in (--background, --primary…) + custom (--link, --brand-pink)", "access": "🔓 Only legal layer. Bind colors from Raw or Brand." }
+    ],
+    "token_semantic_heading": "Semantic layer rules",
+    "token_semantic_rules": [
+      "Prefer shadcn built-in semantics (background, foreground, primary, muted, destructive…).",
+      "Semantic color sources: select from Raw (Tailwind palette) or Brand (100–900) and create alias.",
+      "Brand / business colors not covered by shadcn: name at Semantic layer (e.g. link, brand-pink), add CSS variable in globals.css :root pointing to Brand or Raw.",
+      "Figma Semantic Variables 1:1 aligned with :root variable names (follow shadcn/ui CLI conventions)."
+    ],
+    "fold_org_content": "Central Workspace → Obra shadcn/ui kit template (Raw Tailwind palette + shadcn standard components). Each project locally → copy kit, override Brand scales and Semantic mapping, 100% restore As-is screens.",
+    "fold_pattern_central": "Central maintenance: 100% business-logic visual consistency, zero customization possible (e.g. Japan map selector) → Copy-Paste.",
+    "fold_pattern_local": "Local maintenance: composite components whose semantics change by product line (e.g. BookingCard, CouponSelector) → central shadcn base + local assembly.",
+    "fold_align_desc": "Figma canvas shows only human-readable English copy (company site primary locale is EN) — no i18n keys, no Variables Mode for translations.",
+    "fold_align_rules": [
+      "Description can hold design notes (not keys): dynamic copy (API response), placeholder / char limits, truncation risk, PM copy pending, or link to Docusaurus spec section.",
+      "Sticky / Comment for PM alignment discussion only — not long-term SSOT.",
+      "i18n keys and multilingual mapping: legacy archaeology → JSON → Google Sheet → code (see s7); static pages also list blocks + keys in docs/main/pages/. During refactor, cross-reference via screen + spec / Sheet, not reverse-lookup keys from Figma."
+    ],
+    "fold_align_example": "Canvas: \"Please enter your booking code\" → Description: \"Booking code placeholder; static copy; see booking flow spec §2\" — not booking.field.code_placeholder."
   },
   "s7": {
     "emoji": "🌍",
     "heading": "i18n Fully Automated Pipeline",
-    "toolchain_note": "Toolchain data cleaning: use Claude Web for docs (archaeology), Cursor for renovation. Model cleans odd formats, marks unused in status field.",
-    "gemini_rule": "Gemini auto-translation rule: Gemini can operate Sheets directly. Put Tone & Style Guide in Sheet instruction row. Filter unused in new projects, create SKILL.md reference.",
-    "iron_rule": "System Prompt global rule: if translation key missing in JSON, NEVER invent new keys. Hardcode with // TODO: i18n-missing for batch extraction.",
-    "fold_json_content": "JSON format example: status, key, legacy_key, zh_TW.\n\nAutomated script compares legacy_key with original translations to check missing keys. JSON writes back to sheet (namespace column for easy lookup).",
+    "figma_boundary": "Figma shows only human-readable English copy (primary locale EN), not i18n SSOT. Keys and translations follow archaeology JSON → Sheet → code; design Description holds design semantics only (see s6).",
+    "sheet_ssot": "Legacy translations for all locales already exist during archaeology — cleanup only does format normalization, namespace / key rename, status tagging; no re-translation. When writing to Sheet, en / ja / zh_TW columns should already be filled; Sheet is the complete reference table.",
+    "toolchain_note": "Toolchain: Claude Web for archaeology JSON cleanup, Cursor for renovation. Target framework i18next → next-intl, format adjusted per next-intl conventions; status tags unused / in-progress.",
+    "gemini_rule": "Gemini is not required for archaeology: Sheet already has all legacy locales. Only when refactor adds keys (in-progress) or manual translation delegation, use Gemini to operate Sheet; Instruction Sheet holds Tone Guide for supplementary translation.",
+    "iron_rule": "System Prompt-level global rule: if needed translation does not exist in JSON, NEVER invent new keys. Hardcode in code with // TODO: i18n-missing for batch extraction.",
+    "migration_heading": "i18next → next-intl cleanup rules",
+    "normalize_rules": [
+      "Framework migration: reorganize from i18next structure to next-intl conventions (namespace + key, JSON / message format per next-intl sync script output).",
+      "Do not actively strip extra whitespace — legacy may preserve it intentionally for layout; carry through as-is during cleanup.",
+      "Newline merge: legacy renders array [a, b, c] sentences via map → consolidate to single key with \\n newlines (e.g. \"Line one\\nLine two\\nLine three\") for easier translator editing in one column.",
+      "Interpolation syntax: during archaeology cleanup, i18next {{var}} directly becomes next-intl {var}; written to Sheet as final form; sync script only reads/writes, no format conversion — for future reuse.",
+      "Code side: copy with \\n rendered via CSS whitespace-pre-line (or equivalent), no longer map array sentences in components."
+    ],
+    "namespace_heading": "Namespace split",
+    "namespace_rules": [
+      "Single-domain project: namespace per page / screen, no -page suffix (e.g. checkout, affiliate-intro).",
+      "Cross-page shared copy → common; each page references only its namespace + common. Flow does not get its own namespace — each step screen uses its page's translations.",
+      "Slug aligns with docs/main/pages/, Figma frame names, and route Entry screen; legacy_key retains old name for comparison during cleanup."
+    ],
+    "fold_json_content": "JSON format example: status, namespace, key, legacy_key, en, ja, zh_TW, description.\n\nLocale values come from legacy translations (not empty shells awaiting translation). Example: namespace checkout + key coupon.btn.apply; legacy_key for script gap detection.",
+    "sync_heading": "Sheet → code output structure",
+    "sync_rules": [
+      "Split files by namespace: messages/{locale}/{namespace}.json (e.g. messages/en/common.json, messages/en/checkout.json).",
+      "Nested JSON inside files (e.g. { \"coupon\": { \"btn\": { \"apply\": \"…\" } } }). Sheet key column still uses dot notation (coupon.btn.apply) for editing; sync script expands to nested on write.",
+      "Sheet namespace column 1:1 with filename; pages use useTranslations('{namespace}') + t('coupon.btn.apply'); common shared across pages."
+    ],
     "steps": [
-      "AI organizes legacy translations to JSON (status: active | unused | in-progress, with namespace + legacy_key)",
+      "AI organizes legacy translations to JSON (i18next → next-intl; {{var}} → {var}; array newlines merged to \\n; no trim of extra whitespace)",
       "Script compares legacy_key with original translations, checks gaps (dynamic keys manually marked active)",
-      "Script writes to Google Spreadsheet (single sheet + namespace column; Instruction Sheet with Tone Guide)",
-      "Gemini handles initial translation (Japanese unified keigo)",
-      "New project script syncs from Sheet to code (unused filtered, in-progress shows 🚧)",
-      "SKILL.md rule: missing keys forbidden — hardcode + // TODO: i18n-missing"
+      "Script writes to Google Spreadsheet (single sheet + namespace column; all locale columns filled)",
+      "New project sync script: Sheet → messages/{locale}/{namespace}.json (dot key to nested JSON; unused filtered, in-progress shows 🚧)",
+      "SKILL.md rule: missing keys forbidden — hardcode + // TODO: i18n-missing; new keys marked in-progress then translated"
     ]
   },
   "s8": {
     "emoji": "🏁",
     "heading": "Survey, Validation & Renovation Kickoff",
-    "validation_heading": "Parallel Comparison & Acceptance",
+    "validation_heading": "Parallel comparison & renovation thresholds",
     "validation_items": [
       "Legacy and new projects in same workspace for side-by-side comparison.",
-      "Handle \\n with CSS whitespace-pre-line on frontend.",
-      "Standalone Docusaurus site repo for PM confirmation."
+      "Multi-line copy with \\n: frontend uses CSS whitespace-pre-line (see s7 newline merge rules), no longer map array sentences.",
+      "After survey freeze, organize records/ + main/ survey docs into Docusaurus format, deploy separate repo, align with PM (working directory itself not PM-facing)."
     ],
-    "log_rule": "Boundary rule: for unclear legacy logic, add logs to track if executed in production. If no data after a period, safe to delete.",
-    "skills_heading": "Issue Splitting & Matt Pocock Agent Skills",
-    "skills_subheading": "Split Issues into 5 Agent Skills. Leverage monorepo integration. Parallel Issue tasks.",
+    "gate_heading": "Phase 3 kickoff & acceptance (three stages)",
+    "gate_project_heading": "1. Project-level (before Phase 3 kickoff, once only)",
+    "gate_project_items": [
+      "Survey freeze (survey-checklist 100%)",
+      "Docusaurus organized and deployed",
+      "Figma As-is 100% ready (completed parallel with Docusaurus after survey freeze; prerequisite for Scope freeze)",
+      "Scope freeze complete: each flow / page marked Refactor-first or Align later",
+      "Align later items still need spec + Figma As-is in round one, but do not enter work pool"
+    ],
+    "gate_issue_heading": "2. Single Issue / vertical slice (Refactor-first only)",
+    "gate_issue_cols": ["Issue type", "Minimum before kickoff"],
+    "gate_issue_rows": [
+      { "type": "Schema / Transformer / pure function", "requirement": "flow.md + main/contract-schemas/ spec sufficient → TDD kickoff" },
+      { "type": "UI component / page", "requirement": "Above + Figma To-be for that block (Refactor-first items)" },
+      { "type": "Flow (with BDD)", "requirement": "Happy Path Scenarios written; Pending PM Clarification / Unverified Logic stay as comments, no Scenarios" },
+      { "type": "Static Pages", "requirement": "docs/main/pages/ blocks + i18n key list sufficient; BDD not required" }
+    ],
+    "gate_merge_heading": "3. Pre-merge / pre-deploy (acceptance, not kickoff threshold)",
+    "gate_merge_items": [
+      "Slice BDD all green (flows with written Scenarios)",
+      "AI L1/L2 structure audit + human L3 spot-check (see s3)",
+      "PM sign-off on that Refactor-first block (Docusaurus spec + Figma To-be comparison)"
+    ],
+    "log_rule_heading": "Unverified Logic observation rule",
+    "log_rule": "During refactor, logic behavior must align with legacy. Branches listed in flow.md § Unverified Logic must add runtime log in refactor version to observe if still triggered — silent deletion or skipping forbidden.",
+    "log_rule_items": [
+      "Unverified Logic marked during archaeology: keep equivalent branch and add log (reference flow.md file location).",
+      "After observation period with zero hits → can delete branch and update flow.md § Scoped Files.",
+      "New unexplained branches found during refactor: first tag flow.md § Unverified Logic then add log; do not remove directly."
+    ],
+    "skills_heading": "Issue splitting & Matt Pocock Agent Skills",
+    "skills_subheading": "Split Issues using 5 Agent Skills. Leverage monorepo integration. Parallel Issue tasks.",
     "skills_cols": ["Skill", "Description", "Recommended AI", "Phase"],
     "skills_rows": [
-      { "name": "Grill-with-Docs", "desc": "Clarify decision branches along design tree with archaeology docs", "ai": "Claude Opus 4.6", "phase": "Planning" },
+      { "name": "Grill-with-Docs", "desc": "Combine archaeology docs, clarify decision branches along design tree", "ai": "Claude Opus 4.6", "phase": "Planning" },
       { "name": "To-PRD", "desc": "Produce PRD from consensus with User Stories and module sketches", "ai": "Claude Sonnet 4.5", "phase": "Planning" },
       { "name": "To-Issues", "desc": "Split PRD into vertical-slice Issues with blocking relationships", "ai": "Claude Sonnet 4.5", "phase": "Planning" },
-      { "name": "TDD", "desc": "Red-green-refactor loop — one test one implementation, no feature loss", "ai": "Cursor Composer 2.5", "phase": "Development" },
+      { "name": "TDD", "desc": "Red-green-refactor loop — one test one implementation, no feature loss on refactor", "ai": "Cursor Composer 2.5", "phase": "Development" },
       { "name": "Architecture-Refactor", "desc": "Deepen shallow modules, clarify test boundaries for stable Agent navigation", "ai": "Cursor Composer 2.5", "phase": "Development" }
     ],
-    "refs_heading": "Technical References",
+    "refs_heading": "Technical references",
     "refs": [
       { "label": "Stop writing docs by hand", "url": "https://www.aihero.dev/5-agent-skills-i-use-every-day" },
       { "label": "Playwright BDD", "url": "https://playwright.dev/docs/test-agents" }
     ],
-    "issues_heading": "Atomic Issue Examples",
+    "issues_heading": "Atomic Issue examples",
     "issues": [
-      { "id": "#01", "tag": "Schema", "title": "Implement transformBookingAmount pure function", "blocks": "No blockers, start immediately" },
-      { "id": "#02", "tag": "UI", "title": "Implement new BookingCard static component per Figma", "blocks": "Blocked by #01" },
-      { "id": "#03", "tag": "BDD", "title": "Write booking code validation Edge Cases acceptance tests", "blocks": "Parallel with #01" }
+      { "id": "#01", "tag": "Schema", "title": "Implement transformBookingAmount pure function", "blocks": "Refactor-first + flow.md / schema ready → can start" },
+      { "id": "#02", "tag": "UI", "title": "Implement BookingCard static component per Figma To-be", "blocks": "Blocked by #01; needs To-be draft for that block" },
+      { "id": "#03", "tag": "BDD", "title": "Write booking code validation Edge Cases acceptance cases", "blocks": "Parallel with #01; BDD must be green before merge" }
     ],
     "roadmap_heading": "Roadmap",
     "roadmap": [
-      { "title": "Phase 1: Archaeology & Data Boundaries", "desc": "Four-role Skills produce Main Docs, achieve 100% survey-checklist", "risk": "🔥 Risk control: post-freeze technical change discussion with PM" },
-      { "title": "Phase 2: Figma System Rebuild", "desc": "Central template copy + Local Semantic override + 100% As-is canvas restore" },
-      { "title": "Phase 3: Development & Refactor Launch", "desc": "After Claude To-Issues, Cursor Agent + juniors execute TDD renovation pipeline" }
-    ]
+      { "title": "Phase 1: Archaeology & survey freeze", "desc": "Four-role Skills → records/ + main/ → checklist 100% (survey freeze). Then parallel Docusaurus and Figma As-is (s6 ②, 100% matching production) — both ready before Phase 2. Optional kit sync during archaeology ①." },
+      { "title": "Phase 2: Scope freeze", "desc": "Prerequisites met: Docusaurus spec + Figma As-is both ready. PM confirms each flow / page as pair, marks Refactor-first / Align later (s6 ③).", "risk": "🔥 Risk control: cannot enter PM alignment until Figma As-is complete" },
+      { "title": "Phase 3: Refactor kickoff", "desc": "After project-level + Issue thresholds pass, only Refactor-first vertical slices start; Figma To-be incrementally updated with UI Issues (s6 ④). Pre-merge BDD + L3 + PM sign-off." }
+    ],
+    "roadmap_note": "Figma As-is is not done at refactor time — it is a hard prerequisite for Phase 2 PM alignment, completed parallel with Docusaurus after survey freeze."
+  },
+  "s9": {
+    "emoji": "🛡️",
+    "heading": "API Data Boundary: No BFF, Zod + Transformers",
+    "subheading": "Conclusion after reviewing \"Frontend-Backend Responsibility Split & BFF Design\": no separate BFF; frontend fetches Core API then uses Zod for runtime validation and data normalization (Parse, don't validate). Aligns with contract-schemas produced by s3 Data Boundary Planner.",
+    "decision_callout": "No BFF layer — less infra and deployment cost. Frontend `httpClient` connects directly to backend; client-side Zod Schema + Transformer consolidates legacy odd formats; components only consume Clean Type.",
+    "layers_heading": "Three-layer defense",
+    "layers_cols": ["Layer", "Responsibility", "Artifact"],
+    "layers_rows": [
+      { "layer": "1. Upstream (archaeology)", "role": "Role 1 infers backend Raw structure from codebase", "artifact": "docs/records/endpoints/[endpoint-name].ts" },
+      { "layer": "2. Contract (spec SSOT)", "role": "Role 2 defines Frontend Interface + Transformer prototype", "artifact": "docs/main/contract-schemas/endpoints/[name].md" },
+      { "layer": "3. Runtime (code)", "role": "refactor implements Zod parse + transform + handleResponse", "artifact": "lib/api/[endpoint-name]/{schema,transformer,index}.ts" }
+    ],
+    "runtime_heading": "Runtime pattern (client-side normalization)",
+    "runtime_steps": [
+      "httpClient fetch Core API → get unknown",
+      "Zod Backend*Schema.safeParse — intercept HTML / non-JSON / field drift (ApiProtocolError)",
+      ".transform() to frontend Clean Type (snake_case, semantic fields, strip redundancy)",
+      "Unified ApiResponseSuccess / ApiResponseError envelope — business errors throw ApiBusinessError",
+      "React / Store only import Clean Type; direct Raw JSON forbidden"
+    ],
+    "error_heading": "Error classification",
+    "error_cols": ["Type", "Trigger", "Handling"],
+    "error_rows": [
+      { "type": "ApiProtocolError", "trigger": "Non-JSON, HTML error page, Zod parse failure", "handling": "log + unified error UI; addresses s1 \"inconsistent error formats\" root cause" },
+      { "type": "ApiBusinessError", "trigger": "Backend returns { error: { code, message } }", "handling": "Branch by code; no more guesswork in components" }
+    ],
+    "proto_heading": "Prototype reference (backend/ — paused)",
+    "proto_intro": "Previously implemented multiple endpoints per above pattern (get-bus-list, get-locations, submit-contact…), each with schema.ts (Backend + Clean), transformer.ts, index.ts, shared handleResponse and contract.ts.",
+    "proto_structure": [
+      "backend/[endpoint-name]/schema.ts — Backend*Schema (Zod) + Clean Type",
+      "backend/[endpoint-name]/transformer.ts — request / response transform",
+      "backend/[endpoint-name]/index.ts — httpClient + handleResponse",
+      "backend/utils/handle-response.ts — safeParse unified entry",
+      "backend/contract.ts — ApiResponseSuccess / ApiResponseError"
+    ],
+    "proto_pause_heading": "Why paused",
+    "proto_pause_items": [
+      "As endpoint count grows, easy to get lost between folders — missing naming reference SSOT with flows / archaeology artifacts",
+      "Backend naming (PascalCase, nested XML style) hard to align with frontend Clean naming across APIs",
+      "shared entities (e.g. BusFacilities) vs. per-endpoint boundaries unclear; duplicate definition risk"
+    ],
+    "plan_bridge_heading": "How renovation plan continues",
+    "plan_bridge_items": [
+      "Archaeology: records/endpoints/[name].ts 1:1 with flow.md § Referenced Endpoints — endpoint list no longer by memory",
+      "Planning: contract-schemas/endpoints/[name].md as SSOT for naming and Transformer; shared/ consolidates cross-endpoint entities",
+      "Code directory slug aligns with contract-schemas filename (e.g. get-bus-list), one endpoint per folder",
+      "First vertical slice defines golden sample (incl. Zod + test); subsequent endpoints copy structure, no reinventing",
+      "Role 2 must check contract-schemas/shared/ before starting; duplicate entity definitions forbidden"
+    ],
+    "bff_note": "BFF discussion evaluated location search, 7k-record cache, etc. — most can be done with frontend IndexedDB + local filter; only a few geographic computation scenarios need backend. Default path remains client-side transformer, not a separate BFF service."
   },
   "footer": {
     "text": "Project Renovation & Refactor Plan"
