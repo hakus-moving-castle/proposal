@@ -195,10 +195,13 @@
   .gated .date,
   .gated .rule{animation-play-state:paused}
 
-  /* スクロールロック。このページの scrollingElement は html なので
-     body だけに overflow:hidden を掛けても効かない（実測済み）。 */
+  /* スクロールロック。実測してわかったこと:
+     - body だけに overflow:hidden → 効かない（scrollingElement は html）
+     - html にも overflow:hidden   → まだ漏れる（内容が溢れたままなので
+       文書自体はスクロールできる）
+     - height:100% を足す          → ここで初めて実際に止まる */
   html.gated,
-  html.gated body{overflow:hidden}
+  html.gated body{overflow:hidden;height:100%}
 
   @media (prefers-reduced-motion: reduce){
     .enso circle{animation:none;stroke-dashoffset:15}
