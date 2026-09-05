@@ -76,6 +76,7 @@
     .shop,.plan,.memo,.ticket,.maplink,a.tel{transition:none}
     .shop:hover,.plan:hover,.memo:hover,.ticket:hover,.maplink:hover,a.tel:hover{transform:none}
     details.note .note-body{animation:none}
+    .stop::after{transition:none}
   }
 
   html{-webkit-text-size-adjust:100%}
@@ -286,14 +287,29 @@
   }
   .stop{position:relative;padding-bottom:28px}
   .stop::before{
-    content:"";position:absolute;left:-26px;top:8px;
-    width:9px;height:9px;border-radius:50%;
-    background:var(--paper);border:1.5px solid var(--ink-3);
+    content:"";position:absolute;left:-27.5px;top:8px;
+    width:10px;height:10px;border-radius:50%;
+    background:var(--paper);border:1px solid var(--ink-3);
   }
   .stop.k-ai::before{border-color:var(--ai)}
   .stop.k-day::before{border-color:var(--day)}
   .stop.k-night::before{border-color:var(--night);background:var(--night)}
   .stop.k-move::before{width:6px;height:6px;left:-24.5px;top:11px;background:var(--line);border:none}
+
+  /* 通過した節の中に実心の点が入る。進行線（.tl-prog）と同じ基準で
+     切り替えるので、線が届いた瞬間に点が灯る。 */
+  .stop::after{
+    content:"";position:absolute;left:-23.5px;top:12px;
+    width:4px;height:4px;border-radius:50%;
+    background:var(--ink-3);
+    transform:scale(0);opacity:0;
+    transition:transform .5s cubic-bezier(.2,1.4,.3,1), opacity .3s ease;
+  }
+  .stop.passed::after{transform:scale(1);opacity:1}
+  .stop.k-ai::after{background:var(--ai)}
+  .stop.k-day::after{background:var(--day)}
+  .stop.k-night::after{background:var(--paper)}   /* 夜の点は既に塗ってあるので抜きで */
+  .stop.k-move::after{display:none}               /* 移動の節は元から実心 */
   .time{
     font-family:var(--serif);font-size:14px;letter-spacing:.11em;
     color:var(--ink-2);display:block;margin-bottom:4px;
@@ -1304,6 +1320,7 @@
   /* ---------- 一日の進み具合を示す線 & nav の現在地 ---------- */
   var tl    = document.querySelector('.tl');
   var prog  = document.querySelector('.tl-prog');
+  var stops = [].slice.call(document.querySelectorAll('.stop'));
   var links = [].slice.call(document.querySelectorAll('nav a[href^="#"]'));
   var secs  = links.map(function(a){
     try { return document.querySelector(a.getAttribute('href')); } catch(e){ return null; }
@@ -1313,10 +1330,17 @@
   function paint(){
     queued = false;
 
+    // 進行線と節の点は同じ基準線で判定する（画面の 62% の高さ）
+    var mark = window.innerHeight * 0.62;
+
     if (tl && prog) {
       var r = tl.getBoundingClientRect();
-      var p = (window.innerHeight * 0.62 - r.top) / (r.height || 1);
+      var p = (mark - r.top) / (r.height || 1);
       prog.style.setProperty('--p', Math.max(0, Math.min(1, p)).toFixed(3));
+    }
+
+    for (var s = 0; s < stops.length; s++) {
+      stops[s].classList.toggle('passed', stops[s].getBoundingClientRect().top <= mark);
     }
 
     var active = -1;
@@ -1331,6 +1355,28 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   paint();
+
+  /* ---------- 注記を開いた時、本文が画面外に出ないよう寄せる ----------
+     画面下端近くの ⓘ を開くと本文が折り返しの下に出てしまい、
+     「押しても何も起きない」ように見える。足りない分だけ動かす。
+     見出し（summary）が nav の下に隠れない範囲に抑える。 */
+  [].slice.call(document.querySelectorAll('details.note')).forEach(function(d){
+    d.addEventListener('toggle', function(){
+      if (!d.open) return;
+      var r = d.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var need = r.bottom - (vh - 16);          // 本文がはみ出している量
+      if (need <= 0) return;
+      var allow = r.top - 82;                   // summary を nav の下へ入れない上限
+      var y = Math.min(need, allow);
+      if (y <= 0) return;
+      if (reduce || !('scrollBehavior' in document.documentElement.style)) {
+        window.scrollBy(0, y);
+      } else {
+        window.scrollBy({ top: y, behavior: 'smooth' });
+      }
+    });
+  });
 
   /* ---------- hero に戻ってきたら入場アニメをもう一度 ----------
      header が画面から完全に出て、また入ってきた時だけ再生し直す。
