@@ -105,7 +105,7 @@
   /* ---------- header ---------- */
   header{
     position:relative;overflow:hidden;
-    padding:74px 0 64px;text-align:center;
+    padding:74px 0 48px;text-align:center;
   }
   header .wrap{position:relative;z-index:2}
 
@@ -171,6 +171,14 @@
   .rule{animation-delay:1.4s}
   @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
+  /* パスワード画面が出ているあいだ hero の入場アニメを一時停止する。
+     止めないと、パスワードを入れ終わる前に再生し終わってしまう。 */
+  .gated .enso circle,
+  .gated h1 .c,
+  .gated .kicker,
+  .gated .date,
+  .gated .rule{animation-play-state:paused}
+
   @media (prefers-reduced-motion: reduce){
     .enso circle{animation:none;stroke-dashoffset:15}
     .mist{animation:none}
@@ -197,8 +205,8 @@
   }
 
   /* ---------- section ---------- */
-  section{padding:52px 0}
-  .sec-head{margin:0 0 34px}
+  section{padding:34px 0}
+  .sec-head{margin:0 0 26px}
   .sec-no{
     font-family:var(--serif);font-size:11px;letter-spacing:.3em;
     color:var(--ink-3);display:block;margin-bottom:9px;
@@ -241,7 +249,7 @@
     content:"";position:absolute;left:4px;top:9px;bottom:34px;
     width:1px;background:var(--line);
   }
-  .stop{position:relative;padding-bottom:34px}
+  .stop{position:relative;padding-bottom:28px}
   .stop::before{
     content:"";position:absolute;left:-26px;top:8px;
     width:9px;height:9px;border-radius:50%;
@@ -421,7 +429,7 @@
 
   /* ---------- footer ---------- */
   footer{
-    padding:52px 0 64px;text-align:center;
+    padding:40px 0 48px;text-align:center;
     border-top:1px solid var(--line-soft);margin-top:26px;
   }
   footer p{margin:0;font-size:11.5px;color:var(--ink-3);letter-spacing:.14em}
@@ -569,8 +577,8 @@
   <div class="wrap">
     <a href="#ticket">チケット</a>
     <a href="#plan">一日の流れ</a>
-    <a href="#yoru">夜の２プラン</a>
-    <a href="#gohan">夕食の候補</a>
+    <a href="#yoru">夜の２案</a>
+    <a href="#gohan">夕食</a>
     <a href="#memo">メモ</a>
   </div>
 </nav>
@@ -1042,6 +1050,7 @@
      4桁なので総当たりには弱い。狙いは
      「URL を知っただけの人／検索エンジンに QR を見せない」こと。 */
   var LS_KEY = 'kyoto-plan-pw';
+  var startReveals = null;   // ゲートを閉じてから登場演出を始めるため
 
   function fnv1aStr(str){
     var h = 0x811c9dc5;
@@ -1118,9 +1127,13 @@
     gate.classList.remove('show');
     setTimeout(function(){ gate.hidden = true; }, reduce ? 0 : 300);
     document.body.style.overflow = '';
+    // ここで hero の入場アニメと登場演出を解禁する
+    root.classList.remove('gated');
+    if (startReveals) startReveals();
   }
   function showGate(){
     gate.hidden = false;
+    root.classList.add('gated');
     document.body.style.overflow = 'hidden';
     requestAnimationFrame(function(){
       gate.classList.add('show');
@@ -1190,6 +1203,13 @@
 
   var items = [].slice.call(document.querySelectorAll('.rv'));
 
+  startReveals = function(){
+    if (startReveals.done) return;
+    startReveals.done = true;
+    run();
+  };
+
+  function run(){
   if ('IntersectionObserver' in window && !reduce) {
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(en){
@@ -1206,6 +1226,10 @@
   } else {
     items.forEach(function(el){ el.classList.add('in'); });
   }
+  }
+
+  // ゲートが出ていない（＝すでに解錠済み）ならそのまま開始
+  if (gate.hidden) startReveals();
 
   /* ---------- 一日の進み具合を示す線 & nav の現在地 ---------- */
   var tl    = document.querySelector('.tl');
