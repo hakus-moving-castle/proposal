@@ -44,6 +44,18 @@ jobs:
           echo "--- deployed tree ---"
           find _site -maxdepth 2 -not -path '*/.*' | sort
 
+      # PWA の更新用に commit の短縮 SHA と時刻を埋め込む。
+      # sw.js のキャッシュ名が毎回変わるので資産が自動的に失効し、
+      # sw.js 自体もバイト単位で変わるためブラウザが更新を検知できる。
+      - name: Stamp build id
+        run: |
+          BUILD="$(git rev-parse --short HEAD) $(date -u +%Y-%m-%dT%H:%MZ)"
+          echo "build = $BUILD"
+          grep -rl '__BUILD__' _site | while read -r f; do
+            sed -i "s|__BUILD__|${BUILD}|g" "$f"
+            echo "  stamped: $f"
+          done
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

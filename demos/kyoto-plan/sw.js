@@ -1,7 +1,10 @@
 /* 京都一日プラン — offline cache
    チケットのQRは index.html に data URI で埋め込んであるので、
    index.html がキャッシュされていれば圏外でも改札で表示できる。 */
-var CACHE = 'kyoto-plan-v2';
+// __BUILD__ はデプロイ時に commit の短縮 SHA と時刻へ置換される。
+// キャッシュ名が毎回変わるので、資産は自動的に失効する。
+var BUILD = '__BUILD__';
+var CACHE = 'kyoto-plan-' + BUILD;
 var ASSETS = [
   './',
   './index.html',

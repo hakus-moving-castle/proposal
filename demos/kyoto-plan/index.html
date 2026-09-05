@@ -1111,6 +1111,7 @@
   };
   var QR = {};
 
+  var BUILD = '__BUILD__';   // デプロイ時に置換される
   var root = document.documentElement;
   var reduce = window.matchMedia &&
                window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1428,6 +1429,7 @@
         ['lanterns found', document.querySelectorAll('.proc i').length],
         ['enso anims', (function(){ var c=document.querySelector('.enso circle'); return c && c.getAnimations ? c.getAnimations().length : 'n/a'; })()],
         ['page bytes-ish', document.documentElement.outerHTML.length],
+        ['build', BUILD.indexOf('__') === 0 ? '<span class="n">dev (未スタンプ)</span>' : BUILD],
         ['UA', navigator.userAgent]
       ];
       var html = '<h4>DIAGNOSTICS</h4><table>';
@@ -1450,10 +1452,40 @@
     })();
   }
 
-  /* ---------- PWA: ホーム画面に追加＆オフライン表示（file:// では動きません） ---------- */
+  /* ---------- PWA: ホーム画面に追加＆オフライン表示（file:// では動きません） ----------
+     standalone 表示では再読込ボタンが無いので、更新を自分で取り込む。
+     HTML は network-first なので開き直せば新しくなるが、
+     アプリを背景から復帰させた時は古い画面が残るため下で対応する。 */
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+
+    // 初回登録なのか、既に別の SW に制御されていたのかを先に覚えておく。
+    // 初回で再読込してしまわないための判定に使う。
+    var hadController = !!navigator.serviceWorker.controller;
+    var reloading = false;
+
+    function applyUpdate(){
+      if (reloading || !hadController) return;
+      // 改札で QR を出している最中に再読込したら最悪なので、閉じるまで待つ。
+      if (!ov.hidden) {
+        ov.addEventListener('click', function(){ setTimeout(applyUpdate, 400); }, { once: true });
+        return;
+      }
+      reloading = true;
+      location.reload();
+    }
+
+    navigator.serviceWorker.addEventListener('controllerchange', applyUpdate);
+
     window.addEventListener('load', function(){
-      navigator.serviceWorker.register('sw.js').catch(function(){});
+      navigator.serviceWorker.register('sw.js').then(function(reg){
+        function check(){ try { reg.update(); } catch (e) {} }
+        check();
+        // アプリを開き直した／背景から戻した時に更新を確認する
+        document.addEventListener('visibilitychange', function(){
+          if (!document.hidden) check();
+        });
+        window.addEventListener('focus', check);
+      }).catch(function(){});
     });
   }
 
