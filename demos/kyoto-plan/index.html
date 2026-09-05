@@ -203,10 +203,13 @@
   html.gated,
   html.gated body{overflow:hidden;height:100%}
 
+  /* 動きを控える設定のときは「止める」。要素は消さない。
+     display:none にすると提灯や妖怪ごと見えなくなってしまう。 */
   @media (prefers-reduced-motion: reduce){
     .enso circle{animation:none;stroke-dashoffset:15}
     .mist{animation:none}
-    .proc{display:none}
+    .proc i{animation:none;left:calc(7% + var(--i) * 33%)}
+    .proc i::before{animation:none}
     h1 .c{opacity:1;transform:none;animation:none}
     .kicker,.date,.rule{opacity:1;transform:none;animation:none}
   }
@@ -530,8 +533,15 @@
   }
   @keyframes sDrift{from{background-position:0 0} to{background-position:64px 0}}
 
+  /* 同じ方針。ゲートの絵も消さず、静止させて見せる。 */
   @media (prefers-reduced-motion: reduce){
-    .gate-art{display:none}
+    .jelly-xl{animation:none;bottom:26%}
+    .jelly-xl svg{animation:none;transform:none}
+    .parade{animation:none;left:6%}
+    .parade svg{animation:none;transform:none}
+    .seigaiha{animation:none}
+    .ripple{animation:none;opacity:.14;transform:scale(.55)}
+    .ripple:last-of-type{opacity:.1;transform:scale(.85)}
   }
   .gate-icon{
     width:74px;height:74px;border-radius:18px;display:block;margin:0 auto 22px;
