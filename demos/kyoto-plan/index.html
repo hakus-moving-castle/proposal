@@ -93,7 +93,15 @@
     background:rgba(250,248,243,.92);backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line-soft);
   }
-  nav .wrap{display:flex;gap:22px;padding:13px 20px;overflow-x:auto;scrollbar-width:none}
+  nav .wrap{
+    display:flex;gap:22px;padding:13px 20px;
+    overflow-x:auto;scrollbar-width:none;
+    /* safe center: 万一はみ出しても先頭が切れない */
+    justify-content:safe center;
+  }
+  @media (max-width:360px){          /* iPhone SE 等 */
+    nav .wrap{gap:14px;padding:13px 14px}
+  }
   nav .wrap::-webkit-scrollbar{display:none}
   nav a{
     color:var(--ink-2);text-decoration:none;font-size:12.5px;
@@ -105,7 +113,7 @@
   /* ---------- header ---------- */
   header{
     position:relative;overflow:hidden;
-    padding:74px 0 48px;text-align:center;
+    padding:74px 0 66px;text-align:center;
   }
   header .wrap{position:relative;z-index:2}
 
@@ -139,7 +147,7 @@
 
   /* 提灯の行列がゆっくり通り過ぎる（百鬼夜行のほのめかし）。
      数は少なく、ひとつを大きく — 5x8px では実機でまず見えなかった。 */
-  .proc{position:absolute;left:0;right:0;bottom:14px;height:22px}
+  .proc{position:absolute;left:0;right:0;bottom:16px;height:22px}
   .proc i{
     position:absolute;bottom:0;left:0;width:12px;height:22px;
     animation:walk 22s linear infinite;
@@ -462,6 +470,31 @@
   footer p{margin:0;font-size:11.5px;color:var(--ink-3);letter-spacing:.14em}
   footer .sig{font-family:var(--serif);margin-top:10px;font-size:12.5px}
 
+
+  /* ---------- 診断パネル（?diag=1 のときだけ出る） ---------- */
+  #diag[hidden]{display:none}
+  #diag{
+    position:fixed;left:0;right:0;bottom:0;z-index:300;
+    background:#1E1C19;color:#E9E4D8;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:11px;line-height:1.75;padding:14px 16px 18px;
+    max-height:62vh;overflow:auto;
+    box-shadow:0 -6px 24px rgba(0,0,0,.28);
+  }
+  #diag h4{margin:0 0 8px;font-size:11px;letter-spacing:.14em;color:#C9A96A;font-weight:500}
+  #diag table{width:100%;border-collapse:collapse;background:none;min-width:0}
+  #diag td{
+    padding:2px 0;border:none;color:#E9E4D8;font-size:11px;
+    vertical-align:top;line-height:1.7;
+  }
+  #diag td:first-child{color:#9C9484;white-space:nowrap;padding-right:12px;width:1%}
+  #diag .y{color:#8FBF7F}
+  #diag .n{color:#E08A6E}
+  #diag button{
+    margin-top:10px;font-family:inherit;font-size:11px;letter-spacing:.1em;
+    background:none;border:1px solid #4A453C;color:#9C9484;
+    padding:5px 12px;border-radius:3px;cursor:pointer;
+  }
 
   /* ---------- gate ---------- */
   #gate[hidden]{display:none}
@@ -1029,6 +1062,8 @@
   </div>
 </footer>
 
+<div id="diag" hidden></div>
+
 <div id="gate" hidden>
   <div class="gate-art" aria-hidden="true">
     <span class="seigaiha"></span>
@@ -1365,6 +1400,55 @@
       setTimeout(paint, reduce ? 0 : 420);
     });
   });
+
+  /* ---------- 診断パネル（?diag=1）----------
+     「アニメが出ない」等の原因を推測せず端末に答えさせるためのもの。
+     通常の閲覧では出ない。 */
+  if (/[?&]diag=1/.test(location.search)) {
+    (function(){
+      var d = document.getElementById('diag');
+      function mq(q){ return window.matchMedia ? window.matchMedia(q).matches : null; }
+      function yn(v){
+        if (v === null || v === undefined) return '<span class="n">unknown</span>';
+        return v ? '<span class="y">yes</span>' : '<span class="n">NO</span>';
+      }
+      var rows = [
+        ['reduce-motion', yn(mq('(prefers-reduced-motion: reduce)'))],
+        ['scroll-behavior', yn(window.CSS && CSS.supports && CSS.supports('scroll-behavior','smooth'))],
+        ['scrollIntoView opts', yn((function(){
+            var ok=false;
+            try { document.createElement('div').scrollIntoView({ get behavior(){ ok=true; return 'smooth'; } }); } catch(e){}
+            return ok;
+          })())],
+        ['getAnimations', yn(typeof document.documentElement.getAnimations === 'function')],
+        ['IntersectionObs', yn('IntersectionObserver' in window)],
+        ['SW controlled', yn(!!(navigator.serviceWorker && navigator.serviceWorker.controller))],
+        ['localStorage', yn((function(){ try{ localStorage.setItem('_t','1'); localStorage.removeItem('_t'); return true; }catch(e){ return false; } })())],
+        ['viewport', window.innerWidth + '×' + window.innerHeight + ' @' + (window.devicePixelRatio||1) + 'x'],
+        ['lanterns found', document.querySelectorAll('.proc i').length],
+        ['enso anims', (function(){ var c=document.querySelector('.enso circle'); return c && c.getAnimations ? c.getAnimations().length : 'n/a'; })()],
+        ['page bytes-ish', document.documentElement.outerHTML.length],
+        ['UA', navigator.userAgent]
+      ];
+      var html = '<h4>DIAGNOSTICS</h4><table>';
+      rows.forEach(function(r){ html += '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'; });
+      html += '</table><button type="button" id="diag-cache">キャッシュと SW を消して再読込</button>';
+      d.innerHTML = html;
+      d.hidden = false;
+      document.getElementById('diag-cache').addEventListener('click', function(){
+        var jobs = [];
+        if (window.caches) jobs.push(caches.keys().then(function(ks){
+          return Promise.all(ks.map(function(k){ return caches.delete(k); }));
+        }));
+        if (navigator.serviceWorker) jobs.push(navigator.serviceWorker.getRegistrations().then(function(rs){
+          return Promise.all(rs.map(function(r){ return r.unregister(); }));
+        }));
+        Promise.all(jobs).catch(function(){}).then(function(){
+          location.replace(location.pathname + '?diag=1&cb=' + Date.now());
+        });
+      });
+    })();
+  }
 
   /* ---------- PWA: ホーム画面に追加＆オフライン表示（file:// では動きません） ---------- */
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
