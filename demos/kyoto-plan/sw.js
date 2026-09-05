@@ -1,7 +1,7 @@
 /* 京都一日プラン — offline cache
    チケットのQRは index.html に data URI で埋め込んであるので、
    index.html がキャッシュされていれば圏外でも改札で表示できる。 */
-var CACHE = 'kyoto-plan-v1';
+var CACHE = 'kyoto-plan-v2';
 var ASSETS = [
   './',
   './index.html',
@@ -33,6 +33,30 @@ self.addEventListener('activate', function (e) {
 self.addEventListener('fetch', function (e) {
   var req = e.request;
   if (req.method !== 'GET') return;
+
+  // ページ本体は network-first。
+  // cache-first にすると、デプロイ後に一度目は必ず古い版が出てしまう。
+  // オフライン時はキャッシュに落ちるので、圏外でも改札で QR は出せる。
+  var isDoc = req.mode === 'navigate' ||
+              (req.destination === 'document') ||
+              (req.headers.get('accept') || '').indexOf('text/html') > -1;
+
+  if (isDoc) {
+    e.respondWith(
+      fetch(req).then(function (res) {
+        if (res && res.ok) {
+          var copy = res.clone();
+          caches.open(CACHE).then(function (c) { c.put(req, copy); });
+        }
+        return res;
+      }).catch(function () {
+        return caches.match(req).then(function (hit) {
+          return hit || caches.match('./index.html');
+        });
+      })
+    );
+    return;
+  }
 
   e.respondWith(
     caches.match(req).then(function (hit) {
