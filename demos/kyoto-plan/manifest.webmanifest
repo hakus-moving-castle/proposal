@@ -1,0 +1,17 @@
+{
+  "name": "京都一日プラン 2026.9.20",
+  "short_name": "京都プラン",
+  "description": "水族館から百鬼夜行まで — 一日の予定とチケット",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FAF8F3",
+  "theme_color": "#FAF8F3",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.jpg", "sizes": "512x512", "type": "image/jpeg", "purpose": "any" },
+    { "src": "./icon-512.jpg", "sizes": "512x512", "type": "image/jpeg", "purpose": "maskable" }
+  ]
+}

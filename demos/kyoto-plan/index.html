@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>京都一日プラン — 2026.9.20</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#FAF8F3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="京都プラン">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&amp;family=Noto+Sans+JP:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light;
+    --paper:#FAF8F3;
+    --paper-2:#F3F0E7;
+    --card:#FFFFFF;
+    --line:#E6E0D3;
+    --line-soft:#EFEBE0;
+    --ink:#332F28;
+    --ink-2:#6D6559;
+    --ink-3:#9B9384;
+    --ai:#6E8B9E;
+    --day:#A98B52;
+    --night:#7C7198;
+    --warn:#B25B41;
+    --ok:#6E8A69;
+    --serif:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",YuMincho,serif;
+    --sans:"Noto Sans JP","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  }
+  *{box-sizing:border-box}
+
+  /* ---------- motion ---------- */
+  html{scroll-behavior:smooth}
+  section{scroll-margin-top:74px}          /* sticky nav 分をずらす */
+  nav a.active{color:var(--ink);border-bottom-color:var(--ai)}
+
+  /* JS がある時だけ隠す。JS が死んでも内容は必ず見える */
+  .js .rv{
+    opacity:0;transform:translateY(16px);
+    transition:opacity .7s cubic-bezier(.22,.7,.2,1) var(--d,0s),
+               transform .7s cubic-bezier(.22,.7,.2,1) var(--d,0s);
+  }
+  .js .rv.in{opacity:1;transform:none}
+
+  .tl-prog{
+    position:absolute;left:4px;top:9px;bottom:34px;width:1px;
+    background:linear-gradient(180deg,var(--ai) 0%,var(--day) 48%,var(--night) 100%);
+    transform-origin:top center;transform:scaleY(var(--p,0));
+  }
+
+  .shop,.plan,.memo,.ticket{transition:transform .35s cubic-bezier(.2,.8,.2,1),
+                                       box-shadow .35s ease, border-color .25s ease}
+  @media (hover:hover){
+    .shop:hover,.plan:hover,.memo:hover{
+      transform:translateY(-2px);box-shadow:0 6px 22px rgba(51,47,40,.055);
+    }
+    .ticket:hover{transform:translateY(-2px)}
+  }
+  .maplink,a.tel{transition:transform .2s ease,background .2s,border-color .2s,color .2s}
+  @media (hover:hover){ .maplink:hover,a.tel:hover{transform:translateY(-1px)} }
+
+  details.note .note-body{animation:noteIn .38s cubic-bezier(.22,.7,.2,1)}
+  @keyframes noteIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .js .rv{opacity:1!important;transform:none!important;transition:none!important}
+    .tl-prog{transition:none}
+    .shop,.plan,.memo,.ticket,.maplink,a.tel{transition:none}
+    .shop:hover,.plan:hover,.memo:hover,.ticket:hover,.maplink:hover,a.tel:hover{transform:none}
+    details.note .note-body{animation:none}
+  }
+
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);font-size:15px;line-height:1.85;
+    font-weight:400;letter-spacing:.01em;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:30;
+    background:rgba(250,248,243,.92);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  nav .wrap{display:flex;gap:22px;padding:13px 20px;overflow-x:auto;scrollbar-width:none}
+  nav .wrap::-webkit-scrollbar{display:none}
+  nav a{
+    color:var(--ink-2);text-decoration:none;font-size:12.5px;
+    white-space:nowrap;letter-spacing:.06em;padding-bottom:2px;
+    border-bottom:1px solid transparent;transition:.2s;
+  }
+  nav a:hover{color:var(--ink);border-bottom-color:var(--ink-3)}
+
+  /* ---------- header ---------- */
+  header{
+    position:relative;overflow:hidden;
+    padding:74px 0 64px;text-align:center;
+  }
+  header .wrap{position:relative;z-index:2}
+
+  .hero-art{position:absolute;inset:0;z-index:1;pointer-events:none}
+
+  /* 円相：筆で一息に描く円。少し開けて筆跡らしく残す */
+  .enso{
+    position:absolute;left:50%;top:48px;
+    width:210px;height:210px;margin-left:-105px;
+    transform:rotate(-96deg);
+  }
+  .enso circle{
+    fill:none;stroke:rgba(178,91,65,.30);
+    stroke-width:1.5;stroke-linecap:round;
+    stroke-dasharray:541;stroke-dashoffset:541;
+    animation:ensoDraw 2.2s cubic-bezier(.32,.72,.24,1) .2s forwards;
+  }
+  @keyframes ensoDraw{to{stroke-dashoffset:15}}
+
+  /* 霧：ゆっくり流れる */
+  .mist{
+    position:absolute;left:-28%;width:156%;border-radius:50%;
+    background:radial-gradient(58% 50% at 50% 50%,
+      rgba(255,255,255,.95), rgba(250,248,243,0) 72%);
+    filter:blur(6px);
+  }
+  .m1{top:36%;height:150px;animation:drift 24s ease-in-out infinite alternate}
+  .m2{top:56%;height:112px;opacity:.7;
+      animation:drift 34s ease-in-out infinite alternate-reverse}
+  @keyframes drift{from{transform:translateX(-6%)}to{transform:translateX(6%)}}
+
+  /* 提灯の行列がゆっくり通り過ぎる（百鬼夜行のほのめかし） */
+  .proc{position:absolute;left:0;right:0;bottom:20px;height:14px}
+  .proc i{
+    position:absolute;bottom:2px;left:0;width:5px;height:8px;
+    border-radius:3px 3px 2px 2px;
+    background:linear-gradient(180deg,#C9705A,#AE5540);
+    box-shadow:0 0 7px 2px rgba(196,103,79,.28);
+    opacity:.6;
+    animation:walk 34s linear infinite;
+    animation-delay:calc(var(--i) * -6.8s);
+  }
+  @keyframes walk{
+    from{transform:translateX(-14px)}
+    to{transform:translateX(calc(100vw + 14px))}
+  }
+
+  /* 見出しを一文字ずつ */
+  h1 .ln{display:block}
+  h1 .c{
+    display:inline-block;opacity:0;
+    transform:translateY(.42em) scale(.96);
+    animation:charIn .85s cubic-bezier(.2,.8,.2,1) forwards;
+    animation-delay:calc(.5s + var(--i) * .06s);
+  }
+  @keyframes charIn{to{opacity:1;transform:none}}
+
+  .kicker,.date,.rule{
+    opacity:0;animation:fadeUp .9s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  .kicker{animation-delay:.15s}
+  .date{animation-delay:1.22s}
+  .rule{animation-delay:1.4s}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+  @media (prefers-reduced-motion: reduce){
+    .enso circle{animation:none;stroke-dashoffset:15}
+    .mist{animation:none}
+    .proc{display:none}
+    h1 .c{opacity:1;transform:none;animation:none}
+    .kicker,.date,.rule{opacity:1;transform:none;animation:none}
+  }
+  .kicker{
+    font-family:var(--serif);font-size:12px;letter-spacing:.32em;
+    color:var(--ink-3);margin:0 0 20px;text-transform:uppercase;
+  }
+  h1{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(28px,7.4vw,40px);line-height:1.4;
+    margin:0 0 84px;letter-spacing:.06em;   /* 円相の下に日付を出すための間 */
+  }
+  .date{
+    font-family:var(--serif);font-size:16px;color:var(--ink-2);
+    letter-spacing:.14em;margin:0;
+  }
+  .rule{
+    width:44px;height:1px;background:var(--ink-3);
+    margin:28px auto 0;opacity:.5;
+  }
+
+  /* ---------- section ---------- */
+  section{padding:52px 0}
+  .sec-head{margin:0 0 34px}
+  .sec-no{
+    font-family:var(--serif);font-size:11px;letter-spacing:.3em;
+    color:var(--ink-3);display:block;margin-bottom:9px;
+  }
+  h2{
+    font-family:var(--serif);font-weight:500;font-size:22px;
+    letter-spacing:.09em;margin:0;line-height:1.5;
+  }
+  .lede{margin:14px 0 0;color:var(--ink-2);font-size:14px;line-height:1.9}
+
+  /* ---------- ticket ---------- */
+  .tickets{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:420px){.tickets{grid-template-columns:1fr}}
+  .ticket{
+    background:var(--card);border:1px solid var(--line);border-radius:5px;
+    padding:20px 16px 18px;text-align:center;cursor:pointer;
+    transition:.2s;font-family:inherit;width:100%;display:block;
+  }
+  .ticket:hover{border-color:var(--ai);box-shadow:0 3px 14px rgba(110,139,158,.11)}
+  .ticket-name{
+    font-family:var(--serif);font-size:17px;letter-spacing:.1em;
+    margin:0 0 3px;color:var(--ink);
+  }
+  .ticket-meta{font-size:11px;color:var(--ink-3);letter-spacing:.07em;margin:0 0 15px}
+  .ticket .qr-thumb{
+    width:100%;max-width:158px;aspect-ratio:1/1;display:block;margin:0 auto;
+    background:var(--paper-2);border-radius:3px;image-rendering:pixelated;
+  }
+  .ticket-date{
+    font-size:11px;color:var(--ink-3);letter-spacing:.05em;
+    margin:12px 0 0;font-variant-numeric:tabular-nums;
+  }
+  .ticket-tap{
+    display:block;margin:14px 0 0;font-size:11px;color:var(--ai);letter-spacing:.1em;
+  }
+
+  /* ---------- timeline ---------- */
+  .tl{position:relative;padding-left:26px}
+  .tl::before{
+    content:"";position:absolute;left:4px;top:9px;bottom:34px;
+    width:1px;background:var(--line);
+  }
+  .stop{position:relative;padding-bottom:34px}
+  .stop::before{
+    content:"";position:absolute;left:-26px;top:8px;
+    width:9px;height:9px;border-radius:50%;
+    background:var(--paper);border:1.5px solid var(--ink-3);
+  }
+  .stop.k-ai::before{border-color:var(--ai)}
+  .stop.k-day::before{border-color:var(--day)}
+  .stop.k-night::before{border-color:var(--night);background:var(--night)}
+  .stop.k-move::before{width:6px;height:6px;left:-24.5px;top:11px;background:var(--line);border:none}
+  .time{
+    font-family:var(--serif);font-size:14px;letter-spacing:.11em;
+    color:var(--ink-2);display:block;margin-bottom:4px;
+    font-variant-numeric:tabular-nums;
+  }
+  .stop.k-ai .time{color:var(--ai)}
+  .stop.k-day .time{color:var(--day)}
+  .stop.k-night .time{color:var(--night)}
+  h3{
+    font-family:var(--serif);font-weight:500;font-size:17px;
+    letter-spacing:.05em;margin:0 0 8px;line-height:1.6;
+  }
+  .stop p{margin:0 0 8px;color:var(--ink-2);font-size:14px;line-height:1.88}
+  .stop.k-move h3{font-size:14.5px;font-weight:400;color:var(--ink-2);font-family:var(--sans)}
+  .stop.k-move{padding-bottom:26px}
+
+  .tag{
+    display:inline-block;font-size:10.5px;letter-spacing:.1em;
+    padding:2px 8px;border-radius:2px;margin:0 0 9px;
+    background:var(--paper-2);color:var(--ink-2);
+  }
+
+  /* ---------- map links ---------- */
+  .maps{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+  .maplink{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12px;letter-spacing:.05em;text-decoration:none;
+    color:var(--ink-2);background:var(--card);
+    border:1px solid var(--line);border-radius:100px;
+    padding:5px 12px 5px 10px;transition:.2s;
+  }
+  .maplink:hover{border-color:var(--ai);color:var(--ai)}
+  .maplink svg{width:12px;height:12px;flex-shrink:0;opacity:.65}
+  .maplink:hover svg{opacity:1}
+
+  /* ---------- info note ---------- */
+  details.note{margin:11px 0 0}
+  details.note summary{
+    display:inline-flex;align-items:center;gap:6px;
+    cursor:pointer;list-style:none;
+    font-size:12px;letter-spacing:.07em;color:var(--ai);
+    padding:2px 0;
+  }
+  details.note summary::-webkit-details-marker{display:none}
+  details.note summary .ico{
+    width:15px;height:15px;border-radius:50%;
+    border:1px solid currentColor;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-family:var(--serif);font-size:10px;line-height:1;flex-shrink:0;
+  }
+  details.note[open] summary{color:var(--ink-3)}
+  .note-body{
+    margin-top:10px;padding:14px 16px;
+    background:var(--paper-2);border-left:2px solid var(--ai);
+    border-radius:0 3px 3px 0;
+    font-size:13px;line-height:1.92;color:var(--ink-2);
+  }
+  .note-body strong{color:var(--ink);font-weight:500}
+  .note-body p{margin:0 0 9px}
+  .note-body p:last-child{margin:0}
+  details.note.warn summary{color:var(--warn)}
+  details.note.warn .note-body{border-left-color:var(--warn)}
+
+  /* ---------- fork ---------- */
+  .mood{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:5px;padding:22px 22px 20px;margin:0 0 26px;
+  }
+  .mood h3{margin:0 0 9px;font-size:16px}
+  .mood p{margin:0 0 9px;font-size:13.5px;color:var(--ink-2);line-height:1.92}
+  .mood p:last-child{margin:0}
+  .mood strong{color:var(--ink);font-weight:500}
+
+  .plans{display:grid;gap:16px}
+  @media(min-width:620px){.plans{grid-template-columns:1fr 1fr}}
+  .plan{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:5px;padding:22px 20px;display:flex;flex-direction:column;
+  }
+  .plan-a{border-top:2px solid var(--ok)}
+  .plan-b{border-top:2px solid var(--night)}
+  .plan-label{
+    font-family:var(--serif);font-size:11px;letter-spacing:.26em;
+    color:var(--ink-3);margin:0 0 7px;
+  }
+  .plan h3{margin:0 0 16px;font-size:16.5px}
+  .plan-steps{margin:0 0 16px;padding:0;list-style:none;border-top:1px solid var(--line-soft)}
+  .plan-steps li{
+    display:flex;gap:12px;font-size:13px;padding:8px 0;
+    border-bottom:1px solid var(--line-soft);color:var(--ink-2);line-height:1.7;
+  }
+  .plan-steps time{
+    font-family:var(--serif);color:var(--ink-3);flex-shrink:0;
+    width:44px;font-variant-numeric:tabular-nums;letter-spacing:.04em;
+  }
+  .home{
+    background:var(--paper-2);border-radius:4px;padding:11px 14px;margin:0 0 16px;
+    font-size:12.5px;color:var(--ink-2);
+  }
+  .home b{
+    font-family:var(--serif);font-size:16px;color:var(--ink);
+    font-weight:500;letter-spacing:.06em;
+  }
+  .pros{margin:0;padding:0;list-style:none;font-size:12.5px;line-height:1.8}
+  .pros li{display:flex;gap:8px;margin-bottom:6px;color:var(--ink-2)}
+  .pros li:last-child{margin:0}
+  .pros .m{color:var(--ok);flex-shrink:0;font-family:var(--serif)}
+  .pros .x{color:var(--warn);flex-shrink:0;font-family:var(--serif)}
+
+  /* ---------- shop cards ---------- */
+  .shops{display:grid;gap:14px}
+  .shop{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:5px;padding:20px;
+  }
+  .shop-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px}
+  .shop-nm{
+    font-family:var(--serif);font-weight:500;font-size:16px;
+    letter-spacing:.04em;margin:0;line-height:1.5;
+  }
+  .badge{
+    font-size:10px;letter-spacing:.1em;padding:2px 8px;border-radius:2px;
+    background:var(--paper-2);color:var(--ink-2);white-space:nowrap;
+  }
+  .badge.pick{background:rgba(110,138,105,.13);color:#54704F}
+  .shop p{margin:0 0 13px;font-size:13.5px;color:var(--ink-2);line-height:1.88}
+  .shop-meta{
+    display:flex;flex-wrap:wrap;gap:6px 20px;margin:0 0 14px;
+    padding:11px 0 0;border-top:1px solid var(--line-soft);
+  }
+  .shop-meta div{font-size:12px;color:var(--ink-2)}
+  .shop-meta dt{
+    font-family:var(--serif);font-size:10.5px;letter-spacing:.12em;
+    color:var(--ink-3);margin:0 0 1px;
+  }
+  .shop-meta dd{margin:0;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+  .shop-meta dd b{font-family:var(--serif);font-size:14px;font-weight:500;color:var(--ink)}
+  .shop-act{display:flex;flex-wrap:wrap;gap:7px}
+  a.tel{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12px;letter-spacing:.05em;text-decoration:none;
+    color:var(--card);background:var(--ai);
+    border:1px solid var(--ai);border-radius:100px;
+    padding:5px 13px 5px 11px;white-space:nowrap;transition:.2s;
+    font-variant-numeric:tabular-nums;
+  }
+  a.tel:hover{background:#5C798C;border-color:#5C798C}
+  a.tel svg{width:12px;height:12px;flex-shrink:0}
+
+  /* ---------- memo ---------- */
+  .memo{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:5px;padding:22px;margin-bottom:14px;
+  }
+  .memo:last-child{margin-bottom:0}
+  .memo h3{margin:0 0 10px;font-size:15.5px}
+  .memo p{margin:0 0 9px;font-size:13.5px;color:var(--ink-2);line-height:1.9}
+  .memo p:last-child{margin:0}
+  .memo strong{color:var(--ink);font-weight:500}
+  .memo.rain{border-left:2px solid var(--ai)}
+  .memo.assume{border-left:2px solid var(--ink-3)}
+  .memo.home-add{border-left:2px solid var(--ok)}
+  .kbd{
+    display:inline-block;font-family:var(--serif);font-size:12px;
+    border:1px solid var(--line);border-radius:3px;
+    padding:0 5px;margin:0 1px;background:var(--paper-2);color:var(--ink-2);
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    padding:52px 0 64px;text-align:center;
+    border-top:1px solid var(--line-soft);margin-top:26px;
+  }
+  footer p{margin:0;font-size:11.5px;color:var(--ink-3);letter-spacing:.14em}
+  footer .sig{font-family:var(--serif);margin-top:10px;font-size:12.5px}
+
+
+  /* ---------- gate ---------- */
+  #gate[hidden]{display:none}
+  #gate{
+    position:fixed;inset:0;z-index:200;background:var(--paper);
+    display:flex;align-items:center;justify-content:center;padding:28px;
+    overflow:hidden;
+    opacity:0;transition:opacity .3s ease;
+  }
+  #gate.show{opacity:1}
+  .gate-box{width:100%;max-width:300px;text-align:center;position:relative;z-index:2}
+
+  /* ---- 「水族館から百鬼夜行まで」を一日ぶんの絵にした背景 ----
+     数は少なく、ひとつひとつを大きく。 */
+  .gate-art{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+
+  /* 画面をゆっくり昇っていく巨大なクラゲ */
+  .jelly-xl{
+    position:absolute;left:50%;width:280px;margin-left:-140px;bottom:-340px;
+    color:var(--ai);opacity:.2;
+    animation:jRise 46s linear infinite;
+  }
+  .jelly-xl svg{
+    display:block;width:100%;height:auto;
+    animation:jSway 12s ease-in-out infinite alternate;
+  }
+  @keyframes jRise{from{bottom:-340px} to{bottom:108%}}
+  @keyframes jSway{
+    from{transform:translateX(-30px) rotate(-5deg)}
+    to{transform:translateX(30px) rotate(5deg)}
+  }
+
+  /* 大きく広がる水の波紋 */
+  .ripple{
+    position:absolute;left:50%;top:54%;
+    width:820px;height:820px;margin:-410px 0 0 -410px;
+    border:1px solid var(--ai);border-radius:50%;
+    transform:scale(.2);opacity:0;
+    animation:rip 16s ease-out infinite;
+    animation-delay:var(--d,0s);
+  }
+  @keyframes rip{
+    0%  {transform:scale(.2); opacity:.3}
+    100%{transform:scale(1);  opacity:0}
+  }
+
+  /* 百鬼夜行 — 一団の大きな影として横切る */
+  .parade{
+    position:absolute;bottom:52px;width:74%;left:-80%;
+    color:var(--ink-2);opacity:.34;
+    animation:pWalk 46s linear infinite;
+  }
+  .parade svg{
+    display:block;width:100%;height:auto;
+    animation:pBob 2.8s ease-in-out infinite alternate;
+  }
+  @keyframes pWalk{from{left:-80%} to{left:106%}}
+  @keyframes pBob{from{transform:translateY(0)} to{transform:translateY(-8px)}}
+
+  /* 足元の青海波 */
+  .seigaiha{
+    position:absolute;left:0;right:0;bottom:0;height:180px;opacity:.16;
+    background-image:radial-gradient(circle at 50% 100%,
+      transparent 44%, var(--ai) 44%, var(--ai) 48%, transparent 48%);
+    background-size:64px 32px;
+    -webkit-mask-image:linear-gradient(to top,#000 8%,transparent 100%);
+    mask-image:linear-gradient(to top,#000 8%,transparent 100%);
+    animation:sDrift 38s ease-in-out infinite alternate;
+  }
+  @keyframes sDrift{from{background-position:0 0} to{background-position:64px 0}}
+
+  @media (prefers-reduced-motion: reduce){
+    .gate-art{display:none}
+  }
+  .gate-icon{
+    width:74px;height:74px;border-radius:18px;display:block;margin:0 auto 22px;
+    box-shadow:0 4px 18px rgba(51,47,40,.10);
+  }
+  .gate-title{
+    font-family:var(--serif);font-size:19px;letter-spacing:.12em;
+    margin:0 0 8px;color:var(--ink);
+  }
+  .gate-sub{font-size:12.5px;color:var(--ink-3);letter-spacing:.06em;margin:0 0 26px}
+  #gate form{display:flex;flex-direction:column;gap:11px}
+  #gate-pw{
+    font-family:var(--serif);font-size:22px;letter-spacing:.5em;text-align:center;
+    padding:13px 10px 13px 20px;border:1px solid var(--line);border-radius:4px;
+    background:var(--card);color:var(--ink);width:100%;
+  }
+  #gate-pw:focus{outline:none;border-color:var(--ai);box-shadow:0 0 0 3px rgba(110,139,158,.13)}
+  #gate button{
+    font-family:var(--serif);font-size:14px;letter-spacing:.18em;
+    padding:12px;border:1px solid var(--ink);border-radius:4px;
+    background:var(--ink);color:var(--paper);cursor:pointer;transition:.2s;
+  }
+  #gate button:hover{background:#4A443B;border-color:#4A443B}
+  .gate-err{
+    font-size:12px;color:var(--warn);letter-spacing:.06em;margin:14px 0 0;
+    animation:shake .3s;
+  }
+  .gate-err[hidden]{display:none}
+  @keyframes shake{
+    0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}
+    75%{transform:translateX(4px)}
+  }
+  @media (prefers-reduced-motion: reduce){
+    #gate{transition:none}.gate-err{animation:none}
+  }
+
+  /* ---------- QR overlay ---------- */
+  #qr-ov[hidden]{display:none}
+  #qr-ov{
+    position:fixed;inset:0;z-index:100;
+    background:#fff;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:22px;padding:28px;
+    opacity:0;pointer-events:none;transition:opacity .18s ease;
+  }
+  #qr-ov.show{opacity:1;pointer-events:auto}
+  #qr-ov img{transform:scale(.96);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+  #qr-ov.show img{transform:none}
+  @media (prefers-reduced-motion: reduce){
+    #qr-ov{transition:none}
+    #qr-ov img,#qr-ov.show img{transform:none;transition:none}
+  }
+  #qr-ov img{width:min(92vw,460px);height:auto;image-rendering:pixelated;border:1px solid #EFEBE0}
+  #qr-ov .qr-name{
+    font-family:var(--serif);font-size:19px;letter-spacing:.16em;color:#332F28;margin:0;
+  }
+  #qr-ov .qr-sub{font-size:12px;color:#9B9384;letter-spacing:.1em;margin:0;text-align:center;line-height:1.9}
+  #qr-ov .qr-close{
+    position:absolute;top:20px;right:22px;
+    font-size:13px;color:#9B9384;letter-spacing:.14em;
+    background:none;border:none;font-family:var(--serif);cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#ticket">チケット</a>
+    <a href="#plan">一日の流れ</a>
+    <a href="#yoru">夜の２プラン</a>
+    <a href="#gohan">夕食の候補</a>
+    <a href="#memo">メモ</a>
+  </div>
+</nav>
+
+<header>
+  <div class="hero-art" aria-hidden="true">
+    <svg class="enso" viewBox="0 0 200 200"><circle cx="100" cy="100" r="86"/></svg>
+    <span class="mist m1"></span>
+    <span class="mist m2"></span>
+    <span class="proc"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i></span>
+  </div>
+  <div class="wrap">
+    <p class="kicker">Kyoto · One Day</p>
+    <h1><span class="ln"><span class="c" style="--i:0">水</span><span class="c" style="--i:1">族</span><span class="c" style="--i:2">館</span><span class="c" style="--i:3">か</span><span class="c" style="--i:4">ら</span></span><span class="ln"><span class="c" style="--i:5">百</span><span class="c" style="--i:6">鬼</span><span class="c" style="--i:7">夜</span><span class="c" style="--i:8">行</span><span class="c" style="--i:9">ま</span><span class="c" style="--i:10">で</span></span></h1>
+    <p class="date">2026年9月20日（日）</p>
+    <div class="rule"></div>
+  </div>
+</header>
+
+<!-- ===== チケット ===== -->
+<section id="ticket">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="sec-no">01</span>
+      <h2>チケット</h2>
+      <p class="lede">京都水族館のWeb入場券です。タップすると全画面に大きく表示されます。スタッフの方にはその画面を見せてください。</p>
+    </div>
+
+    <div class="tickets">
+      <button class="ticket" data-key="tomochan" data-name="ともちゃん">
+        <p class="ticket-name">ともちゃん</p>
+        <p class="ticket-meta">大人（大学生含む） 1 / 2</p>
+        <img class="qr-thumb" alt="京都水族館 Web入場券 ともちゃん">
+        <p class="ticket-date">2026年9月20日（日）10:30〜11:00</p>
+        <span class="ticket-tap">タップで拡大</span>
+      </button>
+      <button class="ticket" data-key="haku" data-name="ハク">
+        <p class="ticket-name">ハク</p>
+        <p class="ticket-meta">大人（大学生含む） 2 / 2</p>
+        <img class="qr-thumb" alt="京都水族館 Web入場券 ハク">
+        <p class="ticket-date">2026年9月20日（日）10:30〜11:00</p>
+        <span class="ticket-tap">タップで拡大</span>
+      </button>
+    </div>
+
+    <details class="note">
+      <summary><span class="ico">i</span>この券について</summary>
+      <div class="note-body">
+        <p>券面の <strong>10:30〜11:00</strong> は「<strong>入場できる時間帯</strong>」です。館内にいられる時間の制限ではないので、中はゆっくり見て大丈夫です。</p>
+        <p>ただし <strong>11:00 を過ぎると入場できません</strong>。今日いちばん時間に厳しいのはここだけです。</p>
+        <p>２枚は同じ券種なので、どちらを使っても問題ありません。二人で別々のQRを見せてください。読み取りにくいときは画面の明るさを上げると通りやすくなります。</p>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="ico">i</span>映画村のチケットについて</summary>
+      <div class="note-body">
+        <p>東映太秦映画村の<strong>ナイトタイム入村券（17:00〜）</strong>は、ともちゃんが持っています。このページには入っていないので、当日忘れずに。</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ===== 一日の流れ ===== -->
+<section id="plan">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="sec-no">02</span>
+      <h2>一日の流れ</h2>
+      <p class="lede">午前は水族館、午後は三条会商店街でおそばとモンブラン、夜は太秦映画村。移動はぜんぶ短くしてあります。ⓘ を押すと「なぜそうしたか」が出てきます。</p>
+    </div>
+
+    <div class="tl">
+      <div class="tl-prog"></div>
+
+      <div class="rv stop">
+        <span class="time">10:00</span>
+        <h3>阪急 大宮駅 で待ち合わせ</h3>
+        <p>改札を出たところで。京都河原町の２つ手前の駅です。</p>
+      </div>
+
+      <div class="rv stop k-move">
+        <span class="time">10:08 / 10:18</span>
+        <h3>市バス 207 で水族館へ（約7分・3停留所）</h3>
+        <p>のりばは<strong>大宮通</strong>（四条大宮の交差点を南に入ったところ）。<strong>「東寺・東福寺」行き</strong>に乗ります。</p>
+        <details class="note warn">
+          <summary><span class="ico">i</span>乗り間違い注意 — 「東寺」の字を見てください</summary>
+          <div class="note-body">
+            <p>207は循環系統なので、<strong>反対方向のバスも行き先に「東福寺」と出ます</strong>。見分けるポイントは <strong>「東寺」の二文字があるかどうか</strong>です。</p>
+            <p>「<strong>東寺</strong>・東福寺」行き＝正しい（大宮通を南へ）／「清水寺・東福寺」行き＝反対（京都の東側を大回りします）。</p>
+            <p>休日ダイヤは 10:08・10:18・10:27・10:37・10:47・10:56 発で、だいたい10分間隔。1本見送っても11:00には十分間に合います。<strong>急ぐより、行き先を確かめる方が大事</strong>です。</p>
+          </div>
+        </details>
+        <div class="maps">
+          <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;origin=阪急大宮駅 京都&amp;destination=京都水族館&amp;travelmode=transit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17h2m0 0a2 2 0 104 0m-4 0h8m0 0a2 2 0 104 0m-4 0h4M3 7h13v10H3zM16 10h3l2 3v4h-5"/></svg>ルートを見る</a>
+        </div>
+      </div>
+
+      <div class="rv stop k-ai">
+        <span class="time">10:20 — 12:30</span>
+        <h3>京都水族館</h3>
+        <span class="tag">屋内</span>
+        <p>全部屋内なので、暑さも雨も関係なし。ゆっくり回れます。</p>
+        <div class="maps">
+          <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=京都水族館"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>場所を見る</a>
+        </div>
+      </div>
+
+      <div class="rv stop k-ai">
+        <span class="time">11:30</span>
+        <h3>イルカのがっこう</h3>
+        <p>イルカのパフォーマンス。始まる前にイルカスタジアムの場所を確認しておくと安心です。</p>
+        <details class="note">
+          <summary><span class="ico">i</span>この回だけ、という理由</summary>
+          <div class="note-body">
+            <p>1日3回（11:30 / 13:30 / 15:30）ありますが、12:30に館を出るので <strong>間に合うのは11:30の回だけ</strong>です。</p>
+            <p>逆に言うと、ここが館内でいちばん時間を気にする場所。あとは自由に回って大丈夫です。</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="rv stop k-move">
+        <span class="time">12:35</span>
+        <h3>梅小路京都西駅 → JR二条駅（2駅・約4分）</h3>
+        <p>JR山陰線で２駅だけ。</p>
+        <div class="maps">
+          <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;origin=京都水族館&amp;destination=JR二条駅 京都&amp;travelmode=transit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17h2m0 0a2 2 0 104 0m-4 0h8m0 0a2 2 0 104 0m-4 0h4M3 7h13v10H3zM16 10h3l2 3v4h-5"/></svg>ルートを見る</a>
+        </div>
+      </div>
+
+      <div class="rv stop k-day">
+        <span class="time">12:55 — 13:45</span>
+        <h3>昼食 — 田舎亭（そば・うどん）</h3>
+        <span class="tag">三条会商店街の中</span>
+        <p>JR二条駅から徒歩4分ほど。商店街の中にある、地元のおそば屋さんです。1,000円以下。</p>
+        <details class="note">
+          <summary><span class="ico">i</span>お昼を軽めにしてある理由</summary>
+          <div class="note-body">
+            <p><strong>今日のメインは 15:20 のモンブラン</strong>です。お昼でお腹をいっぱいにしないのがコツ。</p>
+            <p>冷たいおそばは軽くて重くならないので、この後のケーキにちょうどつながります。天ぷらをつけるかどうかは、その時のお腹の具合で。</p>
+          </div>
+        </details>
+        <div class="maps">
+          <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=田舎亭 京都市中京区 三条会商店街"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>場所を見る</a>
+        </div>
+      </div>
+
+      <div class="rv stop k-day">
+        <span class="time">13:45 — 15:20</span>
+        <h3>三条会商店街を、西から東へ</h3>
+        <span class="tag">全部アーケード</span>
+        <p>全長約800m、ぜんぶ屋根付き。日差しも雨も関係ありません。手作りのお店やパン屋さんを見ながら、ゆっくり歩きます。</p>
+        <div class="maps">
+          <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=京都三条会商店街"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>場所を見る</a>
+        </div>
+      </div>
+
+      <div class="rv stop k-day">
+        <span class="time">15:20 — 16:30</span>
+        <h3>Sweets Cafe KYOTO KEIZO — 10分モンブラン</h3>
+        <span class="tag">今日のいちばん</span>
+        <p>賞味期限10分の、絞りたてモンブラン。10:00〜18:00・月曜定休。中には小さな庭があります。</p>
+        <details class="note warn">
+          <summary><span class="ico">i</span>お店が２つあります — 間違えないで</summary>
+          <div class="note-body">
+            <p>10分モンブランが食べられるのは <strong>御供町293 の「Sweets Cafe KYOTO KEIZO」</strong>（席があるお店）です。</p>
+            <p>商店街の中にある <strong>「KEIZO OKASHI」はテイクアウト専門</strong>なので、そちらでは食べられません。10分しかもたないお菓子なので、必ず座れるお店へ。</p>
+            <p>混んでいたら、数歩隣の <strong>さらさ3</strong>（11:00〜22:30）へ。チーズケーキとキャロットケーキが評判で、レトロな町家の雰囲気もいいお店です。</p>
+          </div>
+        </details>
+        <div class="maps">
+          <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Sweets Cafe KYOTO KEIZO 京都市中京区御供町293"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>KEIZO</a>
+          <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=さらさ3 京都市中京区御供町309"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>さらさ3（予備）</a>
+        </div>
+      </div>
+
+      <div class="rv stop k-move">
+        <span class="time">16:30</span>
+        <h3>JR二条駅 → JR太秦駅（3駅・約6分）→ 徒歩6分</h3>
+        <p>駅から映画村までは少し歩きます。</p>
+        <div class="maps">
+          <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;origin=JR二条駅 京都&amp;destination=東映太秦映画村&amp;travelmode=transit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17h2m0 0a2 2 0 104 0m-4 0h8m0 0a2 2 0 104 0m-4 0h4M3 7h13v10H3zM16 10h3l2 3v4h-5"/></svg>ルートを見る</a>
+        </div>
+      </div>
+
+      <div class="rv stop k-night">
+        <span class="time">17:00</span>
+        <h3>東映太秦映画村 — 怪々YOKAI祭</h3>
+        <span class="tag">ナイトタイム入村券</span>
+        <p>入ったら、まっすぐ屋外の江戸の町へ。日が落ちると通りの赤提灯に灯が入って、いちばん雰囲気が出てきます。フォトスポットや妖怪グリーティングもこのあたり。</p>
+        <details class="note">
+          <summary><span class="ico">i</span>17:30 のパレードは、場所取りしません</summary>
+          <div class="note-body">
+            <p>17:30 の「KAIKAI YOKAI PARADE」は <strong>参加型</strong>のパレードです。妖怪の衣装に着替えて自分も行列に加わるもので、事前申込と衣装の審査が必要でした。</p>
+            <p>私たちは仮装しないので、<strong>前で粘って見るほどの内容にはなりません</strong>。通りかかったら眺めるくらいで十分です。</p>
+            <p>見るほうの本番は <strong>19:30 の「うずまさ百鬼夜行」</strong>。音楽・ダンス・殺陣が入るショー形式で、最後は妖怪と一緒に踊れます。</p>
+          </div>
+        </details>
+        <div class="maps">
+          <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=東映太秦映画村"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>場所を見る</a>
+        </div>
+      </div>
+
+      <div class="rv stop k-night">
+        <span class="time">18:15 ごろ</span>
+        <h3>ここで、夜の予定を決めます</h3>
+        <p>プランAとプランB、２つ用意してあります。<a href="#yoru" style="color:var(--night);border-bottom:1px solid rgba(124,113,152,.4);text-decoration:none">下のセクション</a>を見て、その時の気分で選んでください。</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== 夜の２プラン ===== -->
+<section id="yoru">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="sec-no">03</span>
+      <h2>夜の２プラン</h2>
+      <p class="lede">どちらも用意してあるので、当日 18:15 ごろに決めれば大丈夫です。決めなくても困らないように、両方とも下まで書いてあります。</p>
+    </div>
+
+    <div class="mood rv">
+      <h3>決め方は、その日の元気しだい</h3>
+      <p><strong>疲れていたら、迷わずプランA。</strong>早めに切り上げて、河原町でちゃんと座って、おいしいものを食べて休むのがいちばんです。百鬼夜行は<strong>立って見るので、けっこう体力を使います</strong>。無理して見るものではありません。</p>
+      <p><strong>まだ元気だったら、プランB。</strong>最後まで見て、そのまま解散です。</p>
+      <p>ちなみに<strong>差は30分だけ</strong>。しかもAの方が早く帰れて、夕食もついてきます。どちらを選んでも損にはなりません。</p>
+    </div>
+
+    <div class="plans">
+
+      <div class="plan plan-a rv">
+        <p class="plan-label">PLAN A</p>
+        <h3>早めに出て、河原町でごはん</h3>
+        <ul class="plan-steps">
+          <li><time>18:30</time><span>映画村を出る（閉園ラッシュの前）</span></li>
+          <li><time>19:05</time><span>京都河原町 着</span></li>
+          <li><time>19:10</time><span>夕食（メニューも時間もゆったり）</span></li>
+          <li><time>20:45</time><span>鴨川・四条大橋を少し歩く</span></li>
+          <li><time>21:00</time><span>阪急 発</span></li>
+        </ul>
+        <p class="home">大阪梅田 着 <b>21:45</b></p>
+        <ul class="pros">
+          <li><span class="m">◯</span><span>京都のおばんざいを、ちゃんと座って食べられる</span></li>
+          <li><span class="m">◯</span><span>20:00の閉園ラッシュに巻き込まれない</span></li>
+          <li><span class="x">✕</span><span>百鬼夜行（今夜のメイン）は見られない</span></li>
+        </ul>
+      </div>
+
+      <div class="plan plan-b rv" style="--d:.1s">
+        <p class="plan-label">PLAN B</p>
+        <h3>百鬼夜行を見てから解散</h3>
+        <ul class="plan-steps">
+          <li><time>18:00</time><span>烏通りでYOKAIフードを歩き食べ ＝ 夕食</span></li>
+          <li><time>19:30</time><span>うずまさ百鬼夜行（〜20:00）</span></li>
+          <li><time>21:00</time><span>京都河原町 着・鴨川を少し歩く</span></li>
+          <li><time>21:30</time><span>阪急 発</span></li>
+        </ul>
+        <p class="home">大阪梅田 着 <b>22:15</b></p>
+        <ul class="pros">
+          <li><span class="m">◯</span><span>今夜のメインを最後まで見られる</span></li>
+          <li><span class="x">✕</span><span>座ってちゃんと食べる夕食はなし</span></li>
+          <li><span class="x">✕</span><span>19:30から30分ほど立ち見</span></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <details class="note warn">
+      <summary><span class="ico">i</span>18:30 を過ぎると、自動的にプランBになります</summary>
+      <div class="note-body">
+        <p>18:30〜19:30 は<strong>待ち時間しかない</strong>ので、そこまで残ると実質Bを選んだことになります。「決めないまま気づいたらB」を避けるため、<strong>18:15ごろに一度話しましょう</strong>。</p>
+        <p>ごはんに行くなら第一希望は <strong>京家 きよみず</strong>（京都らしいおばんざいのお店）。<strong>園内から電話して席を聞いておく</strong>と確実です（<a href="tel:0752011127">075-201-1127</a>）。プランAなら18:00までに、プランBなら19:00ごろまでに。日曜の夜は混みやすい時間帯です。</p>
+        <p>Bを選んだあとに「やっぱり食べたい」となっても大丈夫。21:15ごろから食べられるお店も下に載せてあります。ただしその場合、<strong>梅田着は23:15</strong>になります。</p>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="ico">i</span>なぜ京都河原町から乗るのか</summary>
+      <div class="note-body">
+        <p>京都河原町は阪急京都線の<strong>始発駅</strong>です。ここから乗れば、並べば<strong>必ず座って帰れます</strong>。一日歩きまわったあとなので、座れることを優先してこの駅にしました。</p>
+        <p>しかも ともちゃんが乗る路線がそのまま通っているので、<strong>乗り換えなしで帰れます</strong>。</p>
+        <p>途中の烏丸や大宮から乗ると、始発で乗った人で席が埋まっていることが多いので、あえて少し歩いてここまで来る形にしています。</p>
+      </div>
+    </details>
+
+    <div class="maps" style="margin-top:18px">
+      <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;origin=東映太秦映画村&amp;destination=阪急京都河原町駅&amp;travelmode=transit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17h2m0 0a2 2 0 104 0m-4 0h8m0 0a2 2 0 104 0m-4 0h4M3 7h13v10H3zM16 10h3l2 3v4h-5"/></svg>映画村 → 河原町 のルート</a>
+      <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=四条大橋 鴨川 京都"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>鴨川・四条大橋</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 夕食の候補 ===== -->
+<section id="gohan">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="sec-no">04</span>
+      <h2>夕食の候補</h2>
+      <p class="lede">食べるなら<strong>京都らしいお店</strong>で、というのが第一希望。どれも阪急 京都河原町駅から歩けるおばんざいのお店です。おばんざいは小皿なので、少しだけ食べたいときにも合います。予約なしでも入れますが、電話で席を聞いてから行くと確実です。</p>
+    </div>
+
+    <div class="shops">
+      <div class="shop rv">
+        <div class="shop-top">
+          <p class="shop-nm">京家 きよみず 木屋町</p>
+          <span class="badge pick">第一希望</span>
+        </div>
+        <p>町家の雰囲気で、京野菜のおばんざいと京都の地酒。最初に探していた「京都らしい居酒屋」はここです。名物は京たまごの卵かけごはん。</p>
+        <dl class="shop-meta">
+          <div><dt>ラストオーダー</dt><dd><b>22:00</b></dd></div>
+          <div><dt>営業時間</dt><dd>16:00〜22:30</dd></div>
+          <div><dt>場所</dt><dd>河原町通四条上る ・ 徒歩2〜3分</dd></div>
+        </dl>
+        <div class="shop-act">
+          <a class="tel" href="tel:0752011127"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z"/></svg>075-201-1127</a>
+          <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=京家 きよみず 木屋町 京都市中京区米屋町378"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>場所を見る</a>
+        </div>
+        <details class="note">
+          <summary><span class="ico">i</span>満席でも、同じ料理が食べられるお店が近くに２軒</summary>
+          <div class="note-body">
+            <p>京家 きよみずは河原町のまわりに何軒かあって、<strong>どのお店も同じ 16:00〜22:30（L.O.22:00）</strong>です。木屋町が満席でも、歩いてすぐ次を当たれます。</p>
+            <p><strong>錦小路店</strong>（麩屋町通錦小路上ル・路地奥／徒歩5〜6分）<a href="tel:0752055442">075-205-5442</a><br>
+            <strong>柳馬場本家</strong>（柳馬場通綾小路下ル／徒歩8〜9分）<a href="tel:0753526556">075-352-6556</a></p>
+          </div>
+        </details>
+      </div>
+
+      <div class="shop rv">
+        <div class="shop-top">
+          <p class="shop-nm">おばんざい TATSUNOSUKE</p>
+          <span class="badge pick">時間の保険</span>
+        </div>
+        <p>店主は京都の和食で10年修業した方で、こちらも季節のおばんざい・生麩・湯葉が中心。生麩の田楽 820円など単品で頼めます。<strong>深夜2:00まで</strong>なので、遅くなっても時間を気にせずに入れます。</p>
+        <dl class="shop-meta">
+          <div><dt>ラストオーダー</dt><dd><b>深夜2:00</b></dd></div>
+          <div><dt>営業時間</dt><dd>18:00〜3:00</dd></div>
+          <div><dt>場所</dt><dd>木屋町通 ・ 1-A出口 徒歩1分</dd></div>
+        </dl>
+        <div class="shop-act">
+          <a class="tel" href="tel:0752525544"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z"/></svg>075-252-5544</a>
+          <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=おばんざい TATSUNOSUKE 京都市中京区紙屋町370-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>場所を見る</a>
+        </div>
+      </div>
+
+      <div class="shop rv">
+        <div class="shop-top">
+          <p class="shop-nm">まるたけえびす豆八 先斗町</p>
+          <span class="badge">プランAのときだけ</span>
+        </div>
+        <p>豆腐・湯葉・西京焼き。全51席あるので入りやすいお店。ただしラストオーダーが早いので、プランBのあとでは間に合いません。</p>
+        <dl class="shop-meta">
+          <div><dt>ラストオーダー</dt><dd><b>21:30</b></dd></div>
+          <div><dt>営業時間</dt><dd>17:00〜22:00</dd></div>
+          <div><dt>場所</dt><dd>先斗町 ・ 徒歩4〜5分</dd></div>
+        </dl>
+        <div class="shop-act">
+          <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=まるたけえびす豆八 先斗町 京都市中京区鍋屋町210-4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>場所を見る</a>
+        </div>
+      </div>
+    </div>
+
+    <details class="note">
+      <summary><span class="ico">i</span>プラン別の使い分け</summary>
+      <div class="note-body">
+        <p><strong>プランA（19:10 に入る）</strong> — 迷わず <strong>京家 きよみず</strong>。時間もメニューもたっぷり余裕があります。</p>
+        <p><strong>プランBのあと（21:15 ごろ）</strong> — 京家も <strong>L.O.22:00 まで45分ある</strong>ので、おばんざいなら十分間に合います。ただし滑り込みになるので、<strong>園内から先に電話</strong>しておくと安心。満席や時間が厳しそうなときは <strong>TATSUNOSUKE</strong>（深夜2:00まで）へ。</p>
+        <p>豆八はラストオーダーが21:30なので、Bのあとでは間に合いません。</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ===== メモ ===== -->
+<section id="memo">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="sec-no">05</span>
+      <h2>メモ</h2>
+    </div>
+
+    <div class="rv memo rain">
+      <h3>雨のとき</h3>
+      <p>うずまさ百鬼夜行は<strong>少雨決行</strong>です。小雨ならそのまま開催されます。</p>
+      <p>本降りになると、パレードは中止。かわりに屋内の <strong>パディオス</strong> で「怪々YOKAI Dance（雨バージョン）」とグリーティングになります。<strong>内容も時間も変わる</strong>ので、当日は園内の案内を確認してください。</p>
+      <p>日中の予定は、水族館も三条会商店街もアーケード・屋内なので、雨でもそのまま進められます。</p>
+    </div>
+
+    <div class="memo rv">
+      <h3>帰りの電車</h3>
+      <p>阪急 <strong>京都河原町は始発駅</strong>なので、並べば座って帰れます。一日歩いたあとなので、ここは素直に座りましょう。</p>
+      <p>大阪梅田まで直通する最終は <strong>23:15（準特急）</strong>。それ以降は高槻市・正雀・桂止まりで梅田まで行きません。とはいえどちらのプランでも、まったく余裕があります。</p>
+    </div>
+
+    <div class="rv memo home-add">
+      <h3>ホーム画面に置いておくと便利です</h3>
+      <p>このページはホーム画面に追加すると、アプリのように<strong>ワンタップで開けます</strong>。チケットのQRはページの中に埋め込んであるので、<strong>電波が悪くても改札で表示できます</strong>。</p>
+      <p><strong>iPhone（Safari）</strong>：下の共有ボタン <span class="kbd">⇧</span> →「ホーム画面に追加」<br>
+      <strong>Android（Chrome）</strong>：右上のメニュー <span class="kbd">⋮</span> →「アプリをインストール」</p>
+    </div>
+
+    <div class="rv memo assume">
+      <h3>この予定で仮に決めていること</h3>
+      <p>帰りは <strong>大阪梅田まで</strong>と仮定して時間を計算しています（未確認）。降りる駅が違う場合は、到着時刻が変わります。</p>
+      <p>待ち合わせは <strong>阪急 大宮駅の改札前</strong>としています。</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>2026.09.20 SUN — KYOTO</p>
+    <p class="sig">たのしい一日になりますように</p>
+  </div>
+</footer>
+
+<div id="gate" hidden>
+  <div class="gate-art" aria-hidden="true">
+    <span class="seigaiha"></span>
+    <span class="ripple" style="--d:0s"></span>
+    <span class="ripple" style="--d:-8s"></span>
+    <span class="jelly-xl"><svg viewBox="0 0 120 190" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M8 70a52 52 0 0 1 104 0v8H8z" fill="currentColor" fill-opacity=".16" stroke-width="2.2"/><path d="M20 62q8-6 16 0M46 56q14-8 28 0M84 62q8-6 16 0" stroke-width="1.8" opacity=".8"/><path d="M22 79c2 26-9 40-5 62M43 79c2 30 4 46 0 70M60 79c0 32 1 48 0 74M77 79c-2 30-4 46 0 70M98 79c-2 26 9 40 5 62"/></svg></span>
+    <span class="parade"><svg viewBox="0 0 320 132" fill="currentColor"><path d="M12 58Q52 10 92 58Z"/><path d="M36 56q16-30 16-30M68 56q-16-30-16-30" stroke="#FAF8F3" stroke-width="1.6" fill="none" opacity=".5"/><path d="M49 58h6v46h-6z"/><path d="M52 104q-17 5-20 17h40q-3-12-20-17z"/><circle cx="52" cy="42" r="6" fill="#FAF8F3"/><circle cx="52" cy="42" r="2.6"/><path d="M49 52h6v11q-3 4-6 0z" fill="#AE5540"/><path d="M120 130l7-44h26l7 44z"/><path d="M126 88q14-8 28 0" stroke="currentColor" stroke-width="3" fill="none"/><path d="M140 86C140 66 162 62 158 46 154 30 130 30 134 16" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none"/><circle cx="134" cy="15" r="13"/><path d="M121 14q13-15 26 0q1-17-13-17t-13 17z"/><path d="M128 15l6 2M141 15l-6 2" stroke="#FAF8F3" stroke-width="2.6" stroke-linecap="round" fill="none"/><path d="M131 22h6" stroke="#AE5540" stroke-width="2.4" stroke-linecap="round" fill="none"/><g transform="translate(198,4) scale(0.92)"><path d="M38 100C20 102 8 88 10 66 12 46 21 36 31 34C30 46 32 58 34 70 35 82 36 90 38 98Z"/><path d="M50 46C52 56 56 65 59 74 61 88 60 102 57 116L59 126 51 126 50 119 47 126 40 126 38 116C34 96 32 78 32 60 32 52 32 48 33 45Z"/><path d="M32 46C32 34 33 26 36 22L30 2 47 16C50 13 52 11.5 54 13L62 0 60 22C63 26 64 28 66 28L77 33.5 66 40C62 45 57 48 50 49C44 50 36 49 32 46Z"/><path d="M37 19L33 6 44 16Z" fill="#AE5540" opacity=".9"/><path d="M52 16L60 5 59 20Z" fill="#AE5540" opacity=".9"/><path d="M53 27l7 3" stroke="#FAF8F3" stroke-width="2.4" stroke-linecap="round" fill="none"/><path d="M68 37L75 35.2" stroke="#FAF8F3" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".7"/><path d="M30 44C31 55 33 66 35 76 36 84 36 89 37 93" fill="none" stroke="#FAF8F3" stroke-width="1.5" stroke-linecap="round" opacity=".38"/><path d="M54 70C64 66 78 62 95 60L96 70C80 72 66 76 55 80Z"/><path d="M92 6h5v120h-5z"/><path d="M92 8h23v4H92z"/><path d="M112 12h3v11h-3z"/><ellipse cx="113.5" cy="38" rx="11" ry="15" fill="#AE5540"/><path d="M103 31h21v2.5h-21zM103 43h21v2.5h-21z" fill="#FAF8F3" opacity=".5"/></g></svg></span>
+  </div>
+
+  <div class="gate-box">
+    <img class="gate-icon" src="icon-192.png" alt="">
+    <p class="gate-title">京都一日プラン</p>
+    <p class="gate-sub">パスワードを入力してください</p>
+    <form id="gate-form" novalidate>
+      <input id="gate-pw" type="password" inputmode="numeric" enterkeyhint="go"
+             autocomplete="current-password" maxlength="32" aria-label="パスワード">
+      <button type="submit">ひらく</button>
+    </form>
+    <p class="gate-err" id="gate-err" hidden>パスワードが違います</p>
+  </div>
+</div>
+
+<div id="qr-ov" hidden>
+  <button class="qr-close" type="button">閉じる ✕</button>
+  <p class="qr-name"></p>
+  <img alt="京都水族館 Web入場券">
+  <p class="qr-sub">京都水族館 Web入場券<br>大人（大学生含む）</p>
+</div>
+
+<script>
+(function(){
+  /* チケット QR は暗号化して埋め込んである（パスワード無しでは復号できない）。
+     鍵はパスワードから導出。ソースを見ても QR は出てこない。 */
+  var BLOBS = {
+    "tomochan": {
+      "salt": "kp-tomochan",
+      "sum": "e0212f42",
+      "ct": "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"
+    },
+    "haku": {
+      "salt": "kp-haku",
+      "sum": "6815b864",
+      "ct": "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"
+    }
+  };
+  var QR = {};
+
+  var root = document.documentElement;
+  var reduce = window.matchMedia &&
+               window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- パスワード（QR の復号鍵） ----------
+     4桁なので総当たりには弱い。狙いは
+     「URL を知っただけの人／検索エンジンに QR を見せない」こと。 */
+  var LS_KEY = 'kyoto-plan-pw';
+
+  function fnv1aStr(str){
+    var h = 0x811c9dc5;
+    for (var i = 0; i < str.length; i++) {
+      h ^= (str.charCodeAt(i) & 0xff);
+      h = Math.imul(h, 16777619) >>> 0;
+    }
+    return h >>> 0;
+  }
+  function fnv1aBytes(b){
+    var h = 0x811c9dc5;
+    for (var i = 0; i < b.length; i++) {
+      h ^= b[i];
+      h = Math.imul(h, 16777619) >>> 0;
+    }
+    return h >>> 0;
+  }
+  function hex8(n){ return ('00000000' + (n >>> 0).toString(16)).slice(-8); }
+
+  function keystream(seed, n){
+    var x = (seed >>> 0) || 1, out = new Uint8Array(n);
+    for (var i = 0; i < n; i++) {
+      x = (x ^ (x << 13)) >>> 0;
+      x = (x ^ (x >>> 17)) >>> 0;
+      x = (x ^ (x << 5))  >>> 0;
+      out[i] = x & 0xff;
+    }
+    return out;
+  }
+  function b64ToBytes(b64){
+    var bin = atob(b64), a = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
+    return a;
+  }
+  function bytesToB64(bytes){
+    var CH = 0x8000, parts = [];
+    for (var i = 0; i < bytes.length; i += CH) {
+      parts.push(String.fromCharCode.apply(null, bytes.subarray(i, i + CH)));
+    }
+    return btoa(parts.join(''));
+  }
+
+  // 正しければ data URI の組を返す。違えば null。
+  function decryptAll(pw){
+    var out = {};
+    for (var k in BLOBS) {
+      if (!Object.prototype.hasOwnProperty.call(BLOBS, k)) continue;
+      var b = BLOBS[k];
+      try {
+        var ct = b64ToBytes(b.ct);
+        var ks = keystream(fnv1aStr(pw + '|' + b.salt), ct.length);
+        var pt = new Uint8Array(ct.length);
+        for (var i = 0; i < ct.length; i++) pt[i] = ct[i] ^ ks[i];
+        if (hex8(fnv1aBytes(pt)) !== b.sum) return null;
+        out[k] = 'data:image/png;base64,' + bytesToB64(pt);
+      } catch (e) { return null; }
+    }
+    return out;
+  }
+
+  var gate    = document.getElementById('gate');
+  var gateFrm = document.getElementById('gate-form');
+  var gatePw  = document.getElementById('gate-pw');
+  var gateErr = document.getElementById('gate-err');
+
+  function applyUnlock(map){
+    QR = map;
+    [].slice.call(document.querySelectorAll('.ticket')).forEach(function(btn){
+      var k = btn.getAttribute('data-key');
+      if (QR[k]) btn.querySelector('.qr-thumb').src = QR[k];
+    });
+  }
+  function hideGate(){
+    gate.classList.remove('show');
+    setTimeout(function(){ gate.hidden = true; }, reduce ? 0 : 300);
+    document.body.style.overflow = '';
+  }
+  function showGate(){
+    gate.hidden = false;
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(function(){
+      gate.classList.add('show');
+      try { gatePw.focus(); } catch (e) {}
+    });
+  }
+
+  gateFrm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var map = decryptAll(gatePw.value.trim());
+    if (!map) {
+      gateErr.hidden = true;
+      // アニメーションを鳴らし直す
+      void gateErr.offsetWidth;
+      gateErr.hidden = false;
+      gatePw.select();
+      return;
+    }
+    gateErr.hidden = true;
+    try { localStorage.setItem(LS_KEY, gatePw.value.trim()); } catch (err) {}
+    applyUnlock(map);
+    hideGate();
+  });
+
+  // 一度入れたら、同じ端末では聞き直さない
+  (function(){
+    var saved = null;
+    try { saved = localStorage.getItem(LS_KEY); } catch (e) {}
+    var map = saved ? decryptAll(saved) : null;
+    if (map) { applyUnlock(map); } else { showGate(); }
+  })();
+
+  /* ---------- チケット全画面 ---------- */
+  var ov = document.getElementById('qr-ov');
+  var img = ov.querySelector('img');
+  var nm  = ov.querySelector('.qr-name');
+  var closeTimer = null;
+
+  function open(src, name){
+    img.src = src; nm.textContent = name;
+    clearTimeout(closeTimer);
+    ov.hidden = false;
+    document.body.style.overflow = 'hidden';
+    // 次フレームで .show → transition が効く
+    requestAnimationFrame(function(){ ov.classList.add('show'); });
+  }
+  function close(){
+    ov.classList.remove('show');
+    document.body.style.overflow = '';
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(function(){ ov.hidden = true; }, reduce ? 0 : 200);
+  }
+
+  [].slice.call(document.querySelectorAll('.ticket')).forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var k = btn.getAttribute('data-key');
+      if (!QR[k]) { showGate(); return; }
+      open(QR[k], btn.getAttribute('data-name'));
+    });
+  });
+  ov.addEventListener('click', close);
+
+  /* ---------- スクロール演出 ----------
+     CSS 側は .js が付いた時だけ隠すので、
+     ここが失敗しても内容は普通に読める。 */
+  root.classList.add('js');
+
+  var items = [].slice.call(document.querySelectorAll('.rv'));
+
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+    items.forEach(function(el){ io.observe(el); });
+
+    // 保険：observer が何らかの理由で発火しなかった要素も必ず表示させる。
+    // 演出のために内容が消えたままになる事故を防ぐ。
+    setTimeout(function(){
+      items.forEach(function(el){ el.classList.add('in'); });
+    }, 2500);
+  } else {
+    items.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* ---------- 一日の進み具合を示す線 & nav の現在地 ---------- */
+  var tl    = document.querySelector('.tl');
+  var prog  = document.querySelector('.tl-prog');
+  var links = [].slice.call(document.querySelectorAll('nav a[href^="#"]'));
+  var secs  = links.map(function(a){
+    try { return document.querySelector(a.getAttribute('href')); } catch(e){ return null; }
+  });
+
+  var queued = false;
+  function paint(){
+    queued = false;
+
+    if (tl && prog) {
+      var r = tl.getBoundingClientRect();
+      var p = (window.innerHeight * 0.62 - r.top) / (r.height || 1);
+      prog.style.setProperty('--p', Math.max(0, Math.min(1, p)).toFixed(3));
+    }
+
+    var active = -1;
+    for (var i = 0; i < secs.length; i++) {
+      if (secs[i] && secs[i].getBoundingClientRect().top <= 110) active = i;
+    }
+    links.forEach(function(a, i){ a.classList.toggle('active', i === active); });
+  }
+  function onScroll(){
+    if (!queued) { queued = true; requestAnimationFrame(paint); }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  paint();
+
+  /* nav のジャンプは JS で明示的に行う。
+     CSS の :target 頼みだと sticky nav の下に隠れたり、
+     PWA の standalone / data: URL で効かないことがある。 */
+  var NAV_OFFSET = 74;
+  links.forEach(function(a){
+    a.addEventListener('click', function(ev){
+      var id = a.getAttribute('href'), t;
+      try { t = document.querySelector(id); } catch (err) { return; }
+      if (!t) return;
+      ev.preventDefault();
+
+      // scrollIntoView + CSS の scroll-margin-top で sticky nav の下に隠れない。
+      // window.scrollTo が効かない環境（アプリ内ビューア等）でも動く。
+      var done = false;
+      if (t.scrollIntoView) {
+        try {
+          t.scrollIntoView(reduce ? true : { behavior: 'smooth', block: 'start' });
+          done = true;
+        } catch (err) {
+          try { t.scrollIntoView(true); done = true; } catch (e2) {}
+        }
+      }
+      if (!done) {
+        var y = Math.max(0, Math.round(
+          t.getBoundingClientRect().top + (window.pageYOffset || 0) - NAV_OFFSET));
+        window.scrollTo(0, y);
+      }
+      if (window.history && history.replaceState) {
+        try { history.replaceState(null, '', id); } catch (err) {}
+      }
+      setTimeout(paint, reduce ? 0 : 420);
+    });
+  });
+
+  /* ---------- PWA: ホーム画面に追加＆オフライン表示（file:// では動きません） ---------- */
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});
+    });
+  }
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !ov.hidden) close();
+  });
+})();
+</script>
+
+</body>
+</html>

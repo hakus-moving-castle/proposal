@@ -19,7 +19,9 @@ proposals/
 ├── demos/<slug>/        # 每篇報告一個資料夾
 │   ├── PROMPT.md
 │   ├── index.html
-│   └── i18n/
+│   ├── CONTEXT.md       # （選用）術語表 — 見 domain-modeling
+│   ├── docs/adr/        # （選用）決策紀錄
+│   └── i18n/            # （選用）多語 JSON
 └── .github/workflows/   # push main → GitHub Pages deploy
 ```
 
@@ -27,7 +29,7 @@ proposals/
 
 | Slug | 說明 | 開啟 |
 |------|------|------|
-| [`renovation-plan`](demos/renovation-plan/index.html) | 專案全面翻新：AI 驅動的敏捷考古與重構計畫 | [線上](https://hakus-moving-castle.github.io/proposal/demos/renovation-plan/) |
+| [`kyoto-plan`](demos/kyoto-plan/index.html) | 京都一日行程攻略（日文 PWA）：水族館到百鬼夜行 | [線上](https://hakus-moving-castle.github.io/proposal/demos/kyoto-plan/) |
 
 ## 部署
 

@@ -1,3 +1,10 @@
 .DS_Store
 .env
 node_modules/
+
+# 生チケットQR — PUBLIC repo なのでコミットしない。
+# index.html にはパスワードで暗号化した版が埋め込まれている。
+demos/*/qr-*.png
+
+# アイコンの元画像（1.8MB・サイトでは未使用）
+demos/*/logo-source.*

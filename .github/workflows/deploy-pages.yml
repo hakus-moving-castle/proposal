@@ -26,10 +26,28 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      # 発布対象を _site に組み立てる。
+      # EXCLUDE に入れたものは repo に残るが公開されない。
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          rsync -a ./ _site/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '_site' \
+            --exclude 'demos/renovation-plan' \
+            --exclude 'demos/*/qr-*.png' \
+            --exclude 'demos/*/PROMPT.md' \
+            --exclude 'demos/*/CONTEXT.md' \
+            --exclude 'demos/*/docs' \
+            --exclude 'demos/*/logo-source.*'
+          echo "--- deployed tree ---"
+          find _site -maxdepth 2 -not -path '*/.*' | sort
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
