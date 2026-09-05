@@ -137,20 +137,36 @@
       animation:drift 34s ease-in-out infinite alternate-reverse}
   @keyframes drift{from{transform:translateX(-6%)}to{transform:translateX(6%)}}
 
-  /* 提灯の行列がゆっくり通り過ぎる（百鬼夜行のほのめかし） */
-  .proc{position:absolute;left:0;right:0;bottom:20px;height:14px}
+  /* 提灯の行列がゆっくり通り過ぎる（百鬼夜行のほのめかし）。
+     数は少なく、ひとつを大きく — 5x8px では実機でまず見えなかった。 */
+  .proc{position:absolute;left:0;right:0;bottom:14px;height:22px}
   .proc i{
-    position:absolute;bottom:2px;left:0;width:5px;height:8px;
-    border-radius:3px 3px 2px 2px;
-    background:linear-gradient(180deg,#C9705A,#AE5540);
-    box-shadow:0 0 7px 2px rgba(196,103,79,.28);
-    opacity:.6;
-    animation:walk 34s linear infinite;
-    animation-delay:calc(var(--i) * -6.8s);
+    position:absolute;bottom:0;left:0;width:12px;height:22px;
+    animation:walk 22s linear infinite;
+    animation-delay:calc(var(--i) * -7.33s);
+  }
+  .proc i::before{                      /* 提灯本体 */
+    content:'';position:absolute;left:0;bottom:0;width:12px;height:17px;
+    border-radius:5px 5px 4px 4px;
+    background:
+      repeating-linear-gradient(180deg,
+        rgba(255,255,255,.24) 0 1px, transparent 1px 4.5px),
+      linear-gradient(180deg,#D2836A,#AE5540 58%,#8C4232);
+    box-shadow:0 0 15px 5px rgba(196,103,79,.32);
+    opacity:.78;
+    animation:bob 2.1s ease-in-out infinite alternate;
+  }
+  .proc i::after{                       /* 吊り紐 */
+    content:'';position:absolute;left:5px;top:0;width:2px;height:6px;
+    background:var(--ink-3);opacity:.5;
   }
   @keyframes walk{
-    from{transform:translateX(-14px)}
-    to{transform:translateX(calc(100vw + 14px))}
+    from{transform:translateX(-16px)}
+    to{transform:translateX(calc(100vw + 16px))}
+  }
+  @keyframes bob{
+    from{transform:translateY(0)}
+    to{transform:translateY(-3px)}
   }
 
   /* 見出しを一文字ずつ */
@@ -178,6 +194,11 @@
   .gated .kicker,
   .gated .date,
   .gated .rule{animation-play-state:paused}
+
+  /* スクロールロック。このページの scrollingElement は html なので
+     body だけに overflow:hidden を掛けても効かない（実測済み）。 */
+  html.gated,
+  html.gated body{overflow:hidden}
 
   @media (prefers-reduced-motion: reduce){
     .enso circle{animation:none;stroke-dashoffset:15}
@@ -588,7 +609,7 @@
     <svg class="enso" viewBox="0 0 200 200"><circle cx="100" cy="100" r="86"/></svg>
     <span class="mist m1"></span>
     <span class="mist m2"></span>
-    <span class="proc"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i></span>
+    <span class="proc"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i></span>
   </div>
   <div class="wrap">
     <p class="kicker">Kyoto · One Day</p>
@@ -1126,9 +1147,9 @@
   function hideGate(){
     gate.classList.remove('show');
     setTimeout(function(){ gate.hidden = true; }, reduce ? 0 : 300);
-    document.body.style.overflow = '';
-    // ここで hero の入場アニメと登場演出を解禁する
+    // .gated を外すとスクロールロックも入場アニメの一時停止も同時に解ける
     root.classList.remove('gated');
+    document.body.style.overflow = '';
     if (startReveals) startReveals();
   }
   function showGate(){
@@ -1261,6 +1282,42 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   paint();
+
+  /* ---------- hero に戻ってきたら入場アニメをもう一度 ----------
+     header が画面から完全に出て、また入ってきた時だけ再生し直す。
+     少し動かすたびに再生されると落ち着かないので。 */
+  var heroEls = [].slice.call(document.querySelectorAll(
+    '.enso circle, h1 .c, header .kicker, header .date, header .rule'));
+
+  function replayHero(){
+    heroEls.forEach(function(el){
+      // Web Animations API で巻き戻す。
+      // SVG 要素には offsetWidth が無いため、style を書き換えて reflow を
+      // 起こす旧来の手は円相に効かない（実測: offsetWidth === undefined）。
+      if (typeof el.getAnimations === 'function') {
+        el.getAnimations().forEach(function(a){ a.cancel(); a.play(); });
+        return;
+      }
+      el.style.animation = 'none';
+      void document.body.offsetWidth;   // HTML 要素で reflow を起こす
+      el.style.animation = '';
+    });
+  }
+
+  var header = document.querySelector('header');
+  if (header && !reduce && 'IntersectionObserver' in window) {
+    var heroVisible = true;
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (!en.isIntersecting) {
+          heroVisible = false;
+        } else if (!heroVisible) {
+          heroVisible = true;
+          replayHero();
+        }
+      });
+    }, { threshold: 0 }).observe(header);
+  }
 
   /* nav のジャンプは JS で明示的に行う。
      CSS の :target 頼みだと sticky nav の下に隠れたり、
