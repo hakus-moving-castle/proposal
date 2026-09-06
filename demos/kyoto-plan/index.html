@@ -551,8 +551,26 @@
   .memo p:last-child{margin:0}
   .memo strong{color:var(--ink);font-weight:500}
   .memo.rain{border-left:2px solid var(--ai)}
+
+  /* 当日の予報。Open-Meteo（APIキー不要・CORS可）から取る。 */
+  .wx{
+    margin:0 0 14px;padding:12px 14px;background:var(--paper-2);border-radius:4px;
+    font-size:12.5px;color:var(--ink-2);line-height:1.8;
+  }
+  .wx-h{
+    font-family:var(--serif);font-size:11px;letter-spacing:.14em;
+    color:var(--ink-3);margin:0 0 6px;
+  }
+  .wx-main{margin:0;color:var(--ink)}
+  .wx-main b{
+    font-family:var(--serif);font-size:16px;font-weight:500;letter-spacing:.04em;
+    font-variant-numeric:tabular-nums;
+  }
+  .wx-sub{margin:5px 0 0;font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .wx-wait{color:var(--ink-3)}
   .memo.assume{border-left:2px solid var(--ink-3)}
   .memo.home-add{border-left:2px solid var(--ok)}
+  .memo.pack{border-left:2px solid var(--day)}
   .kbd{
     display:inline-block;font-family:var(--serif);font-size:12px;
     border:1px solid var(--line);border-radius:3px;
@@ -878,6 +896,16 @@
         <h3>京都水族館</h3>
         <span class="tag">屋内</span>
         <p>全部屋内なので、暑さも雨も関係なし。ゆっくり回れます。</p>
+        <details class="note">
+          <summary><span class="ico">i</span>ここは見ておきたい、という場所</summary>
+          <div class="note-body">
+            <p><strong>クラゲワンダー</strong>（2階）── 約30種のクラゲ。360度見わたせるパノラマ水槽「<strong>GURURI</strong>」があります。このページの入口の絵も、ここのクラゲです。</p>
+            <p><strong>京の川</strong>（1階）── <strong>オオサンショウウオ</strong>。国の特別天然記念物で、この館の顔です。由良川の上流・中流・下流を再現した水槽になっています。</p>
+            <p><strong>ペンギン</strong>（2階）── ケープペンギン。「ペンギンの洞窟」と、<strong>「個性豊かなペンギン相関図」</strong>という関係図の掲示があります。誰と誰が仲がいいのかが書いてあって、これは二人で読むと長居します。</p>
+            <p><strong>京の海</strong>（1階）── 館内最大の大水槽、約50種。アマダイやエイ、サメ。</p>
+            <p>ほかに アザラシ（チューブ状の水槽）、オットセイ、京の里山、山紫水明、ミテッテ（チンアナゴ）。<strong>2階から回って1階に下りる</strong>と、11:30 のイルカスタジアムに寄りやすいです。</p>
+          </div>
+        </details>
         <div class="maps">
           <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=京都水族館"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>場所を見る</a>
         </div>
@@ -926,7 +954,19 @@
         <span class="time">13:45 — 15:20</span>
         <h3>三条会商店街を、西から東へ</h3>
         <span class="tag">全部アーケード</span>
-        <p>全長約800m、ぜんぶ屋根付き。日差しも雨も関係ありません。手作りのお店やパン屋さんを見ながら、ゆっくり歩きます。</p>
+        <p>全長約800m、ぜんぶ屋根付き。日差しも雨も関係ありません。西の端（JR二条駅側）から東へ、ゆっくり歩きます。</p>
+        <details class="note">
+          <summary><span class="ico">i</span>のぞいてみる価値がある店</summary>
+          <div class="note-body">
+            <p><strong>さらさ焼菓子工房</strong> ── 焼き菓子。シナモンケーキが評判です。<br>
+            <strong>panscape 京都三条本店</strong> ／ <strong>ブラザーベーカリー</strong> ── パン。<br>
+            <strong>ブリュレドーナツ Brulee</strong> ／ <strong>京餡菓子だるま</strong> ── 甘いもの。</p>
+            <p><strong>木村漬物店</strong> ── 漬物。京都らしいおみやげはここが手堅いです。<br>
+            <strong>fruitist 果心</strong> ── 果物。</p>
+            <p><strong>ギャラリー幹</strong> ／ <strong>GALLERY ARTISLONG</strong> ── 小さなギャラリー。歩き疲れたときの寄り道に。</p>
+            <p>ここは観光地ではなく<strong>地元の商店街</strong>なので、日曜は閉まっている店もあります。開いている店をのぞく、くらいの気持ちで。</p>
+          </div>
+        </details>
         <div class="maps">
           <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=京都三条会商店街"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>場所を見る</a>
         </div>
@@ -1174,8 +1214,16 @@
       <h2>メモ</h2>
     </div>
 
+    <div class="rv memo pack">
+      <h3>持っていくもの</h3>
+      <p><strong>モバイルバッテリー。</strong>今日は水族館のQR、映画村の入村券、地図、このページ —— <strong>ぜんぶスマホの中</strong>です。とくに映画村の券はその場で開くリンクなので、電池が切れると入れません。ここだけは代わりがききません。</p>
+      <p><strong>羽織るもの。</strong>9月下旬の夜、19:30 の百鬼夜行は屋外で立って見ます。昼が暑くても、そこだけ冷えます。</p>
+      <p>あとは歩きやすい靴。一日で 800m のアーケードと江戸の町を歩きます。</p>
+    </div>
+
     <div class="rv memo rain">
       <h3>雨のとき</h3>
+      <div class="wx" id="wx"><p class="wx-h">9月20日の京都</p><p class="wx-main wx-wait">予報を読み込んでいます…</p></div>
       <p>うずまさ百鬼夜行は<strong>少雨決行</strong>です。小雨ならそのまま開催されます。</p>
       <p>本降りになると、パレードは中止。かわりに屋内の <strong>パディオス</strong> で「怪々YOKAI Dance（雨バージョン）」とグリーティングになります。<strong>内容も時間も変わる</strong>ので、当日は園内の案内を確認してください。</p>
       <p>日中の予定は、水族館も三条会商店街もアーケード・屋内なので、雨でもそのまま進められます。</p>
@@ -1521,6 +1569,76 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   paint();
+
+  /* ---------- 当日の天気（Open-Meteo・APIキー不要） ----------
+     19:30 の百鬼夜行は屋外なので、夕方の降水確率がいちばん知りたい情報。
+     予報は約16日先までしか出ないため、まだ出ていない場合も扱う。
+     Service Worker は同一オリジンとフォント以外をキャッシュしないので、
+     この取得は常にネットワークへ行く（圏外なら素直に失敗させる）。 */
+  (function(){
+    var box = document.getElementById('wx');
+    if (!box) return;
+
+    var DATE = '2026-09-20';
+    var CODES = {
+      0:'快晴', 1:'晴れ', 2:'晴れ時々曇り', 3:'曇り',
+      45:'霧', 48:'霧', 51:'霧雨', 53:'霧雨', 55:'霧雨',
+      56:'霧雨', 57:'霧雨', 61:'小雨', 63:'雨', 65:'強い雨',
+      66:'冷たい雨', 67:'冷たい雨', 71:'雪', 73:'雪', 75:'雪',
+      77:'雪', 80:'にわか雨', 81:'にわか雨', 82:'激しいにわか雨',
+      85:'にわか雪', 86:'にわか雪', 95:'雷雨', 96:'雷雨', 99:'雷雨'
+    };
+
+    function show(html){ box.innerHTML = '<p class="wx-h">9月20日の京都</p>' + html; }
+
+    var url = 'https://api.open-meteo.com/v1/forecast'
+      + '?latitude=35.0116&longitude=135.7681'
+      + '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max'
+      + '&hourly=precipitation_probability'
+      + '&timezone=Asia%2FTokyo'
+      + '&start_date=' + DATE + '&end_date=' + DATE;
+
+    fetch(url, { cache: 'no-store' })
+      .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function(d){
+        var day = d && d.daily;
+        if (!day || !day.time || !day.time.length || day.temperature_2m_max[0] === null) {
+          show('<p class="wx-main wx-wait">まだ予報が出ていません。'
+             + '当日が近づくと、ここに表示されます。</p>');
+          return;
+        }
+        var code = day.weather_code[0];
+        var hi = Math.round(day.temperature_2m_max[0]);
+        var lo = Math.round(day.temperature_2m_min[0]);
+        var pop = day.precipitation_probability_max[0];
+
+        // 17〜21時（百鬼夜行の時間帯）の降水確率の最大値
+        var evening = null;
+        if (d.hourly && d.hourly.time) {
+          for (var i = 0; i < d.hourly.time.length; i++) {
+            var h = parseInt(d.hourly.time[i].slice(11, 13), 10);
+            if (h >= 17 && h <= 21) {
+              var v = d.hourly.precipitation_probability[i];
+              if (v !== null && (evening === null || v > evening)) evening = v;
+            }
+          }
+        }
+
+        var html = '<p class="wx-main"><b>' + (CODES[code] || '—') + '</b>'
+                 + '　' + hi + '° / ' + lo + '°'
+                 + (pop !== null && pop !== undefined ? '　降水 ' + pop + '%' : '')
+                 + '</p>';
+        if (evening !== null) {
+          html += '<p class="wx-sub">夜（17〜21時）の降水確率 '
+                + evening + '%　—— 百鬼夜行は屋外です</p>';
+        }
+        show(html);
+      })
+      .catch(function(){
+        show('<p class="wx-main wx-wait">予報を取得できませんでした'
+           + '（通信を確認してください）。</p>');
+      });
+  })();
 
   /* ---------- 時刻でテーマを切り替える ----------
      head で初期値は決めてある。ここでは開きっぱなしの間も追従させる。 */
