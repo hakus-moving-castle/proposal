@@ -30,6 +30,7 @@
     --day:#A98B52;
     --night:#7C7198;
     --warn:#B25B41;
+    --ph:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4'%3E%3Cpath d='M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z'/%3E%3C/svg%3E");
     --pin:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4'%3E%3Cpath d='M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E");
     --ok:#6E8A69;
     --serif:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",YuMincho,serif;
@@ -453,6 +454,9 @@
     mask:var(--pin) center/contain no-repeat}
   a.mini:hover{border-bottom-color:var(--ai)}
   a.mini:hover::after{opacity:.85}
+  /* 電話版。店名の隣に置くので、番号そのものをリンクにする */
+  a.mini.ph{font-variant-numeric:tabular-nums;font-weight:400;color:var(--ink-2)}
+  a.mini.ph::after{-webkit-mask-image:var(--ph);mask-image:var(--ph)}
 
   /* ---------- info note ---------- */
   details.note{margin:11px 0 0}
@@ -529,9 +533,8 @@
   .pros .x{color:var(--warn);flex-shrink:0;font-family:var(--serif)}
 
   .deadline{
-    margin:18px 0 0;padding:14px 16px;
-    background:var(--paper-2);border-left:2px solid var(--ok);border-radius:0 3px 3px 0;
-    font-size:13px;line-height:1.9;color:var(--ink-2);
+    margin:18px 2px 0;
+    font-size:13px;line-height:1.9;color:var(--ink-3);
   }
   .deadline b{
     font-family:var(--serif);font-size:17px;color:var(--ink);font-weight:500;
@@ -956,11 +959,11 @@
         <h3>市バス 207 で水族館へ（約7分・3停留所）</h3>
         <p>待ち合わせた場所からそのまま乗車。<strong>「東寺・東福寺」行き</strong>に乗ります。</p>
         <details class="note warn">
-          <summary><span class="ico">i</span>乗り間違い注意 — 「東寺」の字を見てください</summary>
+          <summary><span class="ico">i</span>207は反対方向も「東福寺」と出ます</summary>
           <div class="note-body">
             <p>207は循環系統なので、<strong>反対方向のバスも行き先に「東福寺」と出ます</strong>。見分けるポイントは <strong>「東寺」の二文字があるかどうか</strong>です。</p>
             <p>「<strong>東寺</strong>・東福寺」行き＝正しい（大宮通を南へ）／「清水寺・東福寺」行き＝反対（京都の東側を大回りします）。</p>
-            <p>だいたい<strong>10分に1本</strong>なので、1本見送っても入場時間には十分間に合います。<strong>急ぐより、行き先を確かめる方が大事</strong>です。</p>
+            <p>だいたい<strong>10分に1本</strong>なので、1本見送っても入場時間には十分間に合います。</p>
           </div>
         </details>
         <div class="maps">
@@ -1024,28 +1027,22 @@
           <summary><span class="ico">i</span>満席・お休みだったら — 三軒</summary>
           <div class="note-body">
             <p>24席なので、日曜のお昼は待つこともあります。そういう時は：</p>
-            <p><strong>沖縄そばとルーロー飯 →　麺・めし・酒 かふー</strong><br>
+            <p><strong>沖縄そばとルーロー飯 →</strong>　<a class="mini" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=麺・めし・酒%20かふー%20京都市中京区西ノ京南聖町21-19">麺・めし・酒 かふー</a>　<a class="mini ph" href="tel:0758236106">075-823-6106</a><br>
             商店街の西の端（西ノ京南聖町）、志な乃から歩いてすぐ。沖縄料理の食堂で、
             <strong>11:30〜14:30（L.O.14:00）・日曜は営業</strong>。
             <span class="yen">セットで1,000円ほど、志な乃と同じくらいです。</span></p>
-            <p><strong>うどんでもよければ →　はなまるうどん BiVi二条店</strong><br>
+            <p><strong>うどんでもよければ →</strong>　<a class="mini" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=はなまるうどん%20BiVi二条店%20京都市中京区西ノ京栂尾町107">はなまるうどん BiVi二条店</a><br>
             JR二条駅の駅ビル1階、<strong>10:00〜22:00</strong>。セルフのさぬきうどんで席が多く、
             電話も予約もいりません。<strong>待ちたくない時はここがいちばん確実</strong>です。</p>
             <p>このあたりの安いおそば屋さんは日曜休みが多いので、麺で通すならこの2軒になります。</p>
-            <p><strong>とにかく座りたい →　さらさ3</strong><br>
+            <p><strong>とにかく座りたい →</strong>　<a class="mini" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=さらさ3%20京都市中京区御供町309">さらさ3</a>　<a class="mini ph" href="tel:0758110221">075-811-0221</a><br>
             御供町309・11:30〜22:00（ランチは15:00まで）・水曜定休なので日曜は開いています。ピザやキッシュ。おそばではなくなりますが、席が多いので入りやすいお店です。</p>
-          </div>
-          <div class="maps">
-            <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=麺・めし・酒 かふー 京都市中京区西ノ京南聖町21-19"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>かふー（予備）</a>
-            <a class="tel" href="tel:0758236106"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z"/></svg>075-823-6106</a>
-            <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=はなまるうどん BiVi二条店 京都市中京区西ノ京栂尾町107"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>はなまるうどん（予備）</a>
-            
           </div>
         </details>
         <details class="note">
           <summary><span class="ico">i</span>お昼を軽めにしてある理由</summary>
           <div class="note-body">
-            <p><strong>今日のメインは 15:20 の甘いもの</strong>です。お昼でお腹をいっぱいにしないのがコツ。</p>
+            <p><strong>今日のメインは 15:20 の甘いもの</strong>なので、お昼は軽めにしてあります。</p>
             <p>冷たいおそばは軽くて重くならないので、この後のケーキにちょうどつながります。天ぷらをつけるかどうかは、その時のお腹の具合で。</p>
           </div>
         </details>
@@ -1089,9 +1086,9 @@
           <summary><span class="ico">i</span>同じ区画の、あと2軒</summary>
           <div class="note-body">
             <p>この3軒は<strong>ぜんぶ御供町、歩いて数十歩</strong>の範囲にあります。混んでいたら隣、で足ります。</p>
-            <p><strong>御供町304</strong>　Gallery Cafe 鶴屋万艸 三条 hanare（10:00〜18:00）<br>
-            <strong>御供町309</strong>　さらさ3（11:30〜22:00・水曜定休・レトロな町家・チーズケーキとキャロットケーキ）<br>
-            <strong>御供町293</strong>　Sweets Cafe KYOTO KEIZO（10:00〜18:00・月曜定休）</p>
+            <p><strong>御供町304</strong>　<a class="mini" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Gallery%20Cafe%20鶴屋万艸%20三条%20hanare%20京都市中京区御供町304">鶴屋万艸 三条 hanare</a>（10:00〜18:00）<br>
+            <strong>御供町309</strong>　<a class="mini" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=さらさ3%20京都市中京区御供町309">さらさ3</a>（11:30〜22:00・水曜定休・レトロな町家・チーズケーキとキャロットケーキ）<br>
+            <strong>御供町293</strong>　<a class="mini" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Sweets%20Cafe%20KYOTO%20KEIZO%20京都市中京区御供町293">Sweets Cafe KYOTO KEIZO</a>（10:00〜18:00・月曜定休）</p>
             <p><strong>KEIZO は「賞味期限10分の絞りたてモンブラン」</strong>が名物です。ここだけの体験なので、鶴屋万艸でお茶にして、モンブランは持ち帰らずここで食べる、という組み方もできます。</p>
           </div>
         </details>
@@ -1099,15 +1096,11 @@
         <details class="note warn">
           <summary><span class="ico">i</span>KEIZO に行くなら — お店が２つあります</summary>
           <div class="note-body">
-            <p>10分モンブランが食べられるのは <strong>御供町293 の「Sweets Cafe KYOTO KEIZO」</strong>（席があるお店）です。</p>
-            <p>商店街の中にある <strong>「KEIZO OKASHI」はテイクアウト専門</strong>なので、そちらでは食べられません。10分しかもたないお菓子なので、必ず座れるお店へ。</p>
+            <p>10分モンブランが食べられるのは <strong>御供町293 の「<a class="mini" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Sweets%20Cafe%20KYOTO%20KEIZO%20京都市中京区御供町293">Sweets Cafe KYOTO KEIZO</a>」</strong>（席があるお店）です。</p>
+            <p>商店街の中にある <strong>「KEIZO OKASHI」はテイクアウト専門</strong>なので、そちらでは食べられません。10分しかもたないお菓子なので、席のある方のお店です。</p>
           </div>
         </details>
 
-        <div class="maps">
-          <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=さらさ3 京都市中京区御供町309"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>さらさ3</a>
-          <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Sweets Cafe KYOTO KEIZO 京都市中京区御供町293"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>KEIZO</a>
-        </div>
       </div>
 
       <div class="rv stop k-move" data-at="16:15">
@@ -1146,7 +1139,7 @@
           <div class="note-body">
             <p>ふだんは <strong>アトラクションの最終入場が17:30</strong>、パディオスの2・3階も18:00で閉まります。つまり通常のナイトタイムは「江戸の町とショーだけ」。</p>
             <p>ところが <strong>9/19（土）〜9/22（火）は映画村全域が21:00まで営業</strong>で、<strong>アトラクションの最終入場も20:30</strong>（エヴァンゲリオン京都基地は20:15）。9/20 はちょうどこの期間に入っています。</p>
-            <p>混雑状況で最終入場は前後することがあるので、入りたいものがあれば <strong>19:30 の百鬼夜行より前に</strong>回っておくのが安全です。</p>
+            <p>混雑状況で最終入場は前後することがあるので、入りたいものがあれば <strong>19:30 の百鬼夜行より前に</strong>回っておくと確実です。</p>
           </div>
         </details>
 
@@ -1193,7 +1186,7 @@
 
     <div class="mood rv">
       <h3>決め方は、その日の元気しだい</h3>
-      <p><strong>疲れていたら、迷わずプランA。</strong>早めに切り上げて、河原町でちゃんと座って、おいしいものを食べて休むのがいちばんです。百鬼夜行は<strong>立って見るので、けっこう体力を使います</strong>。無理して見るものではありません。</p>
+      <p><strong>疲れていたら、プランA。</strong>早めに切り上げて、河原町で座ってごはんにできます。百鬼夜行は<strong>立って見るので、けっこう体力を使います</strong>。</p>
       <p><strong>まだ元気だったら、プランB。</strong>最後まで見て、そのまま解散です。</p>
       <p>ちなみに<strong>差は30分だけ</strong>。しかもAの方が早く帰れて、夕食もついてきます。どちらを選んでも損にはなりません。</p>
     </div>
@@ -1239,10 +1232,8 @@
     </div>
 
     <p class="deadline">
-      <b>22:30</b> までに乗れれば大丈夫とのことでしたが、それは「いちばん遅くて」の話。
-      夜に一人で帰る時間は短いほうがいいので、<strong>どちらのプランもそれより早く乗れるように</strong>組んであります
-      —— プランAは <strong>21:00 発</strong>、プランBでも <strong>21:30 発</strong>です。
-      急ぐ必要はありませんが、無理に遅くする理由もありません。
+      22:30 までに乗れれば大丈夫と聞いています。プランAは 21:00 発、プランBは 21:30 発なので、
+      どちらも1時間ほど余裕があります。ごはんが長くなっても、鴨川をもうひと回りしても、その中です。
     </p>
 
     <details class="note">
@@ -1384,8 +1375,8 @@
 
     <div class="memo rv">
       <h3>帰りの電車</h3>
-      <p>阪急 <strong>京都河原町は始発駅</strong>なので、並べば座って帰れます。一日歩いたあとなので、ここは素直に座りましょう。</p>
-      <p>「22:00〜22:30 に出れば23:00ごろ」とのことでしたが、そこまで引っぱらずに済むようにしてあります。<strong>プランAなら21:00発、プランBでも21:30発</strong>。プランAだと帰宅は22:00前です。</p>
+      <p>阪急 <strong>京都河原町は始発駅</strong>なので、並べば座って帰れます。一日歩いたあとなので、この駅にしました。</p>
+      <p>「22:00〜22:30 に出れば23:00ごろ」と聞いています。プランAなら21:00発、プランBでも21:30発で、プランAだと帰宅は22:00前です。</p>
     </div>
 
     <div class="rv memo home-add">
