@@ -427,6 +427,8 @@
 
   /* ---------- map links ---------- */
   .maps{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+  /* details の末尾が .maps だと、直後の .shop-act と隙間 0 でくっつく */
+  details.note > .maps:last-child{margin-bottom:11px}
   .maplink{
     display:inline-flex;align-items:center;gap:6px;
     font-size:12px;letter-spacing:.05em;text-decoration:none;

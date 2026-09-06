@@ -798,3 +798,16 @@ Cafe／JR／映画村／決めます）。「イルカのがっこう」の横�
 （さらさ焼菓子工房 / panscape / ブラザーベーカリー / Brulee / 京餡菓子だるま /
 木村漬物店 / fruitist 果心 / ギャラリー幹 / GALLERY ARTISLONG）。
 `.maplink`（丸いボタン）は主要な店に、`a.mini` は列挙した店に、と使い分ける。
+
+## ボタンがくっついていた（2026-09-06 修正）
+
+`.maps{gap:7px; margin-top:11px}` は**上マージンしか持たない**。
+`details.note` の最後の子が `.maps` で、その直後に `.shop-act`（下マージンも上マージンも
+持たない）が続くと、**隙間が実測 0px** になってピルが上下に密着する。
+
+該当は昼食の「満席・お休みだったら」の1箇所だけ（ページ全体を走査して確認）。
+→ `details.note > .maps:last-child{margin-bottom:11px}` で 0px → 11px。
+
+**測り方**：`.maplink, a.tel` を全部取って、隣り合う要素の
+`getBoundingClientRect()` の差を出し、10px 未満を洗い出す。
+残るのは 7px のものだけ（同じ flex コンテナ内の折り返し ＝ `gap:7px` そのもの）で正常。
