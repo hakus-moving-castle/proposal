@@ -703,8 +703,10 @@
   try{
     var q=(location.search.match(/[?&]theme=(night|day)/)||[])[1];
     var h=new Date().getHours();
-    var os=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches;
-    var night=q?(q==='night'):(os||h>=17||h<6);
+    /* 時刻だけで決める。OS の設定は見ない。
+       端末を常時ダークにしていると OS 条件が常に真になり、
+       昼でも夜になってしまうため（実機で発生）。 */
+    var night=q?(q==='night'):(h>=17||h<6);
     document.documentElement.setAttribute('data-theme',night?'night':'day');
     var m=document.querySelector('meta[name="theme-color"]');
     if(m)m.setAttribute('content',night?'#14131B':'#FAF8F3');
@@ -1420,8 +1422,7 @@
     var q = (location.search.match(/[?&]theme=(night|day)/) || [])[1];
     if (q) return q === 'night';
     var h = new Date().getHours();
-    var os = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
-    return os || h >= 17 || h < 6;
+    return h >= 17 || h < 6;      // 時刻だけ。OS のダーク設定には従わない
   }
   function applyTheme(){
     var want = wantsNight() ? 'night' : 'day';
@@ -1434,10 +1435,6 @@
   }
   setInterval(applyTheme, 60000);
   document.addEventListener('visibilitychange', function(){ if (!document.hidden) applyTheme(); });
-  if (window.matchMedia) {
-    var mq = matchMedia('(prefers-color-scheme: dark)');
-    if (mq.addEventListener) mq.addEventListener('change', applyTheme);
-  }
 
   /* ---------- 注記を開いた時、本文が画面外に出ないよう寄せる ----------
      画面下端近くの ⓘ を開くと本文が折り返しの下に出てしまい、
@@ -1558,7 +1555,8 @@
         ['lanterns found', document.querySelectorAll('.proc i').length],
         ['enso anims', (function(){ var c=document.querySelector('.enso circle'); return c && c.getAnimations ? c.getAnimations().length : 'n/a'; })()],
         ['page bytes-ish', document.documentElement.outerHTML.length],
-        ['theme', root.getAttribute('data-theme') + ' (h=' + new Date().getHours() + ')'],
+        ['theme', root.getAttribute('data-theme') + ' (h=' + new Date().getHours() + ' / 夜は17-6時)'],
+        ['os dark', yn(mq('(prefers-color-scheme: dark)')) + ' <span style="color:#7C7466">※テーマには使わない</span>'],
         ['build', BUILD.indexOf('__') === 0 ? '<span class="n">dev (未スタンプ)</span>' : BUILD],
         ['UA', navigator.userAgent]
       ];
