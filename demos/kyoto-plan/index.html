@@ -34,6 +34,48 @@
     --serif:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",YuMincho,serif;
     --sans:"Noto Sans JP","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
   }
+  /* ---------- 夜のいろ ----------
+     17:00（映画村の入村）を境に、攻略ページ自身も夜になる。
+     提灯や光暈は暗いところでこそ効く。 */
+  [data-theme="night"]{
+    color-scheme:dark;
+    --paper:#14131B;
+    --paper-2:#1D1B25;
+    --card:#1B1923;
+    --line:#312E3B;
+    --line-soft:#272430;
+    --ink:#EDE7DA;
+    --ink-2:#AFA797;
+    --ink-3:#7D7667;
+    --ai:#8FB2C6;
+    --day:#CBAA6C;
+    --night:#AB9CD2;
+    --warn:#DB8168;
+    --ok:#93B487;
+  }
+  [data-theme="night"] nav{background:rgba(20,19,27,.92)}
+
+  /* 光りものは夜に強める */
+  [data-theme="night"] .proc i::before{
+    box-shadow:0 0 26px 10px rgba(214,122,92,.45);
+    opacity:.95;
+  }
+  [data-theme="night"] .enso circle{stroke:rgba(222,133,107,.46)}
+  [data-theme="night"] .mist{
+    background:radial-gradient(58% 50% at 50% 50%,
+      rgba(168,186,208,.13), rgba(20,19,27,0) 72%);
+  }
+  [data-theme="night"] .seigaiha{opacity:.2}
+  [data-theme="night"] .ripple{border-color:rgba(143,178,198,.5)}
+  [data-theme="night"] .gate-icon{box-shadow:0 4px 22px rgba(0,0,0,.45)}
+  [data-theme="night"] .shop:hover,
+  [data-theme="night"] .plan:hover,
+  [data-theme="night"] .memo:hover{box-shadow:0 6px 22px rgba(0,0,0,.3)}
+  [data-theme="night"] .ticket:hover{box-shadow:0 3px 14px rgba(143,178,198,.16)}
+
+  /* QR の全画面だけは、どちらのテーマでも白のまま。
+     読み取り機はコントラストの高い白地を要る。ここで凝らない。 */
+
   *{box-sizing:border-box}
 
   /* ---------- motion ---------- */
@@ -456,7 +498,7 @@
     padding:5px 13px 5px 11px;white-space:nowrap;transition:.2s;
     font-variant-numeric:tabular-nums;
   }
-  a.tel:hover{background:#5C798C;border-color:#5C798C}
+  a.tel:hover{filter:brightness(.92)}
   a.tel svg{width:12px;height:12px;flex-shrink:0}
 
   /* ---------- memo ---------- */
@@ -653,6 +695,22 @@
     background:none;border:none;font-family:var(--serif);cursor:pointer;
   }
 </style>
+<script>
+/* 描画前にテーマを決める（後で決めると一瞬明るく光ってしまう）。
+   夜は 17:00–06:00 ＝ 映画村の入村時刻に合わせてある。
+   OS が dark なら時刻によらず夜。?theme=night / ?theme=day で上書き可。 */
+(function(){
+  try{
+    var q=(location.search.match(/[?&]theme=(night|day)/)||[])[1];
+    var h=new Date().getHours();
+    var os=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches;
+    var night=q?(q==='night'):(os||h>=17||h<6);
+    document.documentElement.setAttribute('data-theme',night?'night':'day');
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m)m.setAttribute('content',night?'#14131B':'#FAF8F3');
+  }catch(e){}
+})();
+</script>
 </head>
 <body>
 
@@ -1086,7 +1144,7 @@
     <span class="ripple" style="--d:0s"></span>
     <span class="ripple" style="--d:-8s"></span>
     <span class="jelly-xl"><svg viewBox="0 0 120 190" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M8 70a52 52 0 0 1 104 0v8H8z" fill="currentColor" fill-opacity=".16" stroke-width="2.2"/><path d="M20 62q8-6 16 0M46 56q14-8 28 0M84 62q8-6 16 0" stroke-width="1.8" opacity=".8"/><path d="M22 79c2 26-9 40-5 62M43 79c2 30 4 46 0 70M60 79c0 32 1 48 0 74M77 79c-2 30-4 46 0 70M98 79c-2 26 9 40 5 62"/></svg></span>
-    <span class="parade"><svg viewBox="0 0 320 132" fill="currentColor"><path d="M12 58Q52 10 92 58Z"/><path d="M36 56q16-30 16-30M68 56q-16-30-16-30" stroke="#FAF8F3" stroke-width="1.6" fill="none" opacity=".5"/><path d="M49 58h6v46h-6z"/><path d="M52 104q-17 5-20 17h40q-3-12-20-17z"/><circle cx="52" cy="42" r="6" fill="#FAF8F3"/><circle cx="52" cy="42" r="2.6"/><path d="M49 52h6v11q-3 4-6 0z" fill="#AE5540"/><path d="M120 130l7-44h26l7 44z"/><path d="M126 88q14-8 28 0" stroke="currentColor" stroke-width="3" fill="none"/><path d="M140 86C140 66 162 62 158 46 154 30 130 30 134 16" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none"/><circle cx="134" cy="15" r="13"/><path d="M121 14q13-15 26 0q1-17-13-17t-13 17z"/><path d="M128 15l6 2M141 15l-6 2" stroke="#FAF8F3" stroke-width="2.6" stroke-linecap="round" fill="none"/><path d="M131 22h6" stroke="#AE5540" stroke-width="2.4" stroke-linecap="round" fill="none"/><g transform="translate(198,4) scale(0.92)"><path d="M38 100C20 102 8 88 10 66 12 46 21 36 31 34C30 46 32 58 34 70 35 82 36 90 38 98Z"/><path d="M50 46C52 56 56 65 59 74 61 88 60 102 57 116L59 126 51 126 50 119 47 126 40 126 38 116C34 96 32 78 32 60 32 52 32 48 33 45Z"/><path d="M32 46C32 34 33 26 36 22L30 2 47 16C50 13 52 11.5 54 13L62 0 60 22C63 26 64 28 66 28L77 33.5 66 40C62 45 57 48 50 49C44 50 36 49 32 46Z"/><path d="M37 19L33 6 44 16Z" fill="#AE5540" opacity=".9"/><path d="M52 16L60 5 59 20Z" fill="#AE5540" opacity=".9"/><path d="M53 27l7 3" stroke="#FAF8F3" stroke-width="2.4" stroke-linecap="round" fill="none"/><path d="M68 37L75 35.2" stroke="#FAF8F3" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".7"/><path d="M30 44C31 55 33 66 35 76 36 84 36 89 37 93" fill="none" stroke="#FAF8F3" stroke-width="1.5" stroke-linecap="round" opacity=".38"/><path d="M54 70C64 66 78 62 95 60L96 70C80 72 66 76 55 80Z"/><path d="M92 6h5v120h-5z"/><path d="M92 8h23v4H92z"/><path d="M112 12h3v11h-3z"/><ellipse cx="113.5" cy="38" rx="11" ry="15" fill="#AE5540"/><path d="M103 31h21v2.5h-21zM103 43h21v2.5h-21z" fill="#FAF8F3" opacity=".5"/></g></svg></span>
+    <span class="parade"><svg viewBox="0 0 320 132" fill="currentColor"><path d="M12 58Q52 10 92 58Z"/><path d="M36 56q16-30 16-30M68 56q-16-30-16-30" style="stroke:var(--paper)" stroke-width="1.6" fill="none" opacity=".5"/><path d="M49 58h6v46h-6z"/><path d="M52 104q-17 5-20 17h40q-3-12-20-17z"/><circle cx="52" cy="42" r="6" style="fill:var(--paper)"/><circle cx="52" cy="42" r="2.6"/><path d="M49 52h6v11q-3 4-6 0z" fill="#AE5540"/><path d="M120 130l7-44h26l7 44z"/><path d="M126 88q14-8 28 0" stroke="currentColor" stroke-width="3" fill="none"/><path d="M140 86C140 66 162 62 158 46 154 30 130 30 134 16" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none"/><circle cx="134" cy="15" r="13"/><path d="M121 14q13-15 26 0q1-17-13-17t-13 17z"/><path d="M128 15l6 2M141 15l-6 2" style="stroke:var(--paper)" stroke-width="2.6" stroke-linecap="round" fill="none"/><path d="M131 22h6" stroke="#AE5540" stroke-width="2.4" stroke-linecap="round" fill="none"/><g transform="translate(198,4) scale(0.92)"><path d="M38 100C20 102 8 88 10 66 12 46 21 36 31 34C30 46 32 58 34 70 35 82 36 90 38 98Z"/><path d="M50 46C52 56 56 65 59 74 61 88 60 102 57 116L59 126 51 126 50 119 47 126 40 126 38 116C34 96 32 78 32 60 32 52 32 48 33 45Z"/><path d="M32 46C32 34 33 26 36 22L30 2 47 16C50 13 52 11.5 54 13L62 0 60 22C63 26 64 28 66 28L77 33.5 66 40C62 45 57 48 50 49C44 50 36 49 32 46Z"/><path d="M37 19L33 6 44 16Z" fill="#AE5540" opacity=".9"/><path d="M52 16L60 5 59 20Z" fill="#AE5540" opacity=".9"/><path d="M53 27l7 3" style="stroke:var(--paper)" stroke-width="2.4" stroke-linecap="round" fill="none"/><path d="M68 37L75 35.2" style="stroke:var(--paper)" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".7"/><path d="M30 44C31 55 33 66 35 76 36 84 36 89 37 93" fill="none" style="stroke:var(--paper)" stroke-width="1.5" stroke-linecap="round" opacity=".38"/><path d="M54 70C64 66 78 62 95 60L96 70C80 72 66 76 55 80Z"/><path d="M92 6h5v120h-5z"/><path d="M92 8h23v4H92z"/><path d="M112 12h3v11h-3z"/><ellipse cx="113.5" cy="38" rx="11" ry="15" fill="#AE5540"/><path d="M103 31h21v2.5h-21zM103 43h21v2.5h-21z" style="fill:var(--paper)" opacity=".5"/></g></svg></span>
   </div>
 
   <div class="gate-box">
@@ -1356,6 +1414,31 @@
   window.addEventListener('resize', onScroll);
   paint();
 
+  /* ---------- 時刻でテーマを切り替える ----------
+     head で初期値は決めてある。ここでは開きっぱなしの間も追従させる。 */
+  function wantsNight(){
+    var q = (location.search.match(/[?&]theme=(night|day)/) || [])[1];
+    if (q) return q === 'night';
+    var h = new Date().getHours();
+    var os = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+    return os || h >= 17 || h < 6;
+  }
+  function applyTheme(){
+    var want = wantsNight() ? 'night' : 'day';
+    if (root.getAttribute('data-theme') === want) return;
+    // QR を出している最中に画面の色が変わると読み取りの邪魔になる。閉じるまで待つ。
+    if (!ov.hidden) { ov.addEventListener('click', function(){ setTimeout(applyTheme, 400); }, { once: true }); return; }
+    root.setAttribute('data-theme', want);
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', want === 'night' ? '#14131B' : '#FAF8F3');
+  }
+  setInterval(applyTheme, 60000);
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) applyTheme(); });
+  if (window.matchMedia) {
+    var mq = matchMedia('(prefers-color-scheme: dark)');
+    if (mq.addEventListener) mq.addEventListener('change', applyTheme);
+  }
+
   /* ---------- 注記を開いた時、本文が画面外に出ないよう寄せる ----------
      画面下端近くの ⓘ を開くと本文が折り返しの下に出てしまい、
      「押しても何も起きない」ように見える。足りない分だけ動かす。
@@ -1475,6 +1558,7 @@
         ['lanterns found', document.querySelectorAll('.proc i').length],
         ['enso anims', (function(){ var c=document.querySelector('.enso circle'); return c && c.getAnimations ? c.getAnimations().length : 'n/a'; })()],
         ['page bytes-ish', document.documentElement.outerHTML.length],
+        ['theme', root.getAttribute('data-theme') + ' (h=' + new Date().getHours() + ')'],
         ['build', BUILD.indexOf('__') === 0 ? '<span class="n">dev (未スタンプ)</span>' : BUILD],
         ['UA', navigator.userAgent]
       ];
