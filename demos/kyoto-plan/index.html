@@ -321,6 +321,34 @@
     display:block;margin:14px 0 0;font-size:11px;color:var(--ai);letter-spacing:.1em;
   }
 
+  /* 映画村の入村券（リンク） */
+  .eiga{
+    margin-top:16px;background:var(--card);border:1px solid var(--line);
+    border-radius:5px;padding:18px 18px 16px;
+  }
+  .eiga-h{
+    font-family:var(--serif);font-size:15px;letter-spacing:.05em;
+    margin:0 0 4px;color:var(--ink);
+  }
+  .eiga-sub{
+    font-size:11.5px;color:var(--ink-3);letter-spacing:.04em;margin:0 0 14px;
+    font-variant-numeric:tabular-nums;
+  }
+  .eiga-btns{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  @media(max-width:380px){.eiga-btns{grid-template-columns:1fr}}
+  .eiga-btn{
+    display:block;text-align:center;text-decoration:none;
+    border:1px solid var(--night);border-radius:4px;
+    padding:11px 8px;color:var(--night);transition:.2s;
+    font-family:var(--serif);font-size:14.5px;letter-spacing:.08em;
+  }
+  .eiga-btn span{
+    display:block;font-family:var(--sans);font-size:10.5px;
+    color:var(--ink-3);letter-spacing:.06em;margin-top:3px;
+    font-variant-numeric:tabular-nums;
+  }
+  .eiga-btn:hover{background:var(--paper-2)}
+
   /* ---------- timeline ---------- */
   .tl{position:relative;padding-left:26px}
   .tl::before{
@@ -776,10 +804,22 @@
       </div>
     </details>
 
-    <details class="note">
-      <summary><span class="ico">i</span>映画村のチケットについて</summary>
+    <div class="eiga">
+      <p class="eiga-h">東映太秦映画村 ナイトタイム入村券</p>
+      <p class="eiga-sub">2026/09/20 ・ 17:00–21:00 ・ 大人（中学生以上）・ 当日限り有効</p>
+      <div class="eiga-btns">
+        <a class="eiga-btn" data-link="tomochan" target="_blank" rel="noopener">ともちゃん<span>ID 553425</span></a>
+        <a class="eiga-btn" data-link="haku" target="_blank" rel="noopener">ハク<span>ID 553426</span></a>
+      </div>
+    </div>
+
+    <details class="note warn">
+      <summary><span class="ico">i</span>入村券の見せ方 — 自分では押さないこと</summary>
       <div class="note-body">
-        <p>東映太秦映画村の<strong>ナイトタイム入村券（17:00〜）</strong>は、ともちゃんが持っています。このページには入っていないので、当日忘れずに。</p>
+        <p>券面のいちばん上に「<strong>スタッフが操作する画面です</strong>」と書かれています。水族館のQRのように読み取ってもらうのではなく、<strong>この画面をスタッフに渡して操作してもらう</strong>形です。</p>
+        <p><strong>自分でボタンを押さないでください。</strong>当日限り有効の券なので、うっかり使用済みになると戻せません。</p>
+        <p>リンクを開く形なので<strong>通信が必要</strong>です。園内は電波が届きにくいこともあるので、<strong>太秦駅を出たあたりで先に開いておく</strong>と安心です。</p>
+        <p>２枚は同じ券種で、ID だけが違います（553425 / 553426）。ふたりで<strong>別々のリンク</strong>を開いてください。</p>
       </div>
     </details>
   </div>
@@ -963,7 +1003,7 @@
           <li><time>20:45</time><span>鴨川・四条大橋を少し歩く</span></li>
           <li><time>21:00</time><span>阪急 発</span></li>
         </ul>
-        <p class="home">大阪梅田 着 <b>21:45</b></p>
+        <p class="home">帰宅 <b>21:40〜22:00</b> ごろ</p>
         <ul class="pros">
           <li><span class="m">◯</span><span>京都のおばんざいを、ちゃんと座って食べられる</span></li>
           <li><span class="m">◯</span><span>20:00の閉園ラッシュに巻き込まれない</span></li>
@@ -980,7 +1020,7 @@
           <li><time>21:00</time><span>京都河原町 着・鴨川を少し歩く</span></li>
           <li><time>21:30</time><span>阪急 発</span></li>
         </ul>
-        <p class="home">大阪梅田 着 <b>22:15</b></p>
+        <p class="home">帰宅 <b>22:10〜22:30</b> ごろ</p>
         <ul class="pros">
           <li><span class="m">◯</span><span>今夜のメインを最後まで見られる</span></li>
           <li><span class="x">✕</span><span>座ってちゃんと食べる夕食はなし</span></li>
@@ -995,7 +1035,7 @@
       <div class="note-body">
         <p>18:30〜19:30 は<strong>待ち時間しかない</strong>ので、そこまで残ると実質Bを選んだことになります。「決めないまま気づいたらB」を避けるため、<strong>18:15ごろに一度話しましょう</strong>。</p>
         <p>ごはんに行くなら第一希望は <strong>京家 きよみず</strong>（京都らしいおばんざいのお店）。<strong>園内から電話して席を聞いておく</strong>と確実です（<a href="tel:0752011127">075-201-1127</a>）。プランAなら18:00までに、プランBなら19:00ごろまでに。日曜の夜は混みやすい時間帯です。</p>
-        <p>Bを選んだあとに「やっぱり食べたい」となっても大丈夫。21:15ごろから食べられるお店も下に載せてあります。ただしその場合、<strong>梅田着は23:15</strong>になります。</p>
+        <p>Bを選んだあとに「やっぱり食べたい」となっても大丈夫。21:15ごろから食べられるお店も下に載せてあります。ただしその場合、<strong>帰宅は23:00過ぎ</strong>になります。</p>
       </div>
     </details>
 
@@ -1113,7 +1153,7 @@
     <div class="memo rv">
       <h3>帰りの電車</h3>
       <p>阪急 <strong>京都河原町は始発駅</strong>なので、並べば座って帰れます。一日歩いたあとなので、ここは素直に座りましょう。</p>
-      <p>大阪梅田まで直通する最終は <strong>23:15（準特急）</strong>。それ以降は高槻市・正雀・桂止まりで梅田まで行きません。とはいえどちらのプランでも、まったく余裕があります。</p>
+      <p>「22:00〜22:30 に出れば23:00ごろ着く」とのことだったので、<strong>どちらのプランもかなり余裕があります</strong>。プランAなら21:00発、プランBでも21:30発です。</p>
     </div>
 
     <div class="rv memo home-add">
@@ -1124,8 +1164,8 @@
     </div>
 
     <div class="rv memo assume">
-      <h3>この予定で仮に決めていること</h3>
-      <p>帰りは <strong>大阪梅田まで</strong>と仮定して時間を計算しています（未確認）。降りる駅が違う場合は、到着時刻が変わります。</p>
+      <h3>この予定で決めていること</h3>
+      <p>帰宅時刻は、教えてもらった「22:00〜22:30 に出れば23:00ごろ」を元にした<strong>おおよその目安</strong>です。</p>
       <p>待ち合わせは <strong>阪急 大宮駅の改札前</strong>としています。</p>
     </div>
   </div>
@@ -1183,6 +1223,20 @@
       "salt": "kp-haku",
       "sum": "6815b864",
       "ct": "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"
+    }
+  };
+  /* 映画村の入村券はリンク。公開リポジトリなので URL も暗号化して置く
+     （素のリンクを置くと誰でも券を開けてしまう）。 */
+  var LINKS = {
+    "tomochan": {
+      "salt": "lk-tomochan",
+      "sum": "af979668",
+      "ct": "IMNxAwocDvo5U5ZomciwbIBsLO2QOOiYUykomcO64OHI6JYglrM6FFLDRUeAXp1yWjOKRp43H00CLldmGgUe0KbZOl874RcKlW7718iF61Ci3HatzxrwIafuHCHPlLk="
+    },
+    "haku": {
+      "salt": "lk-haku",
+      "sum": "95ffc0fe",
+      "ct": "+9LYd/UhA13tDnsAx2Yd93Gurmu9ryXxyVpo4RLlyLsJqiiT9O3wtojqss5dXS5/FOjcEGMeGyVB0nueL1my0zZXqmBU24aZVyjJ8A5hHhzEteLrV9nAd+lJ/L5OpVk="
     }
   };
   var QR = {};
@@ -1254,6 +1308,22 @@
         out[k] = 'data:image/png;base64,' + bytesToB64(pt);
       } catch (e) { return null; }
     }
+    // 映画村のリンク（PNG ではなく文字列）
+    out._links = {};
+    for (var j in LINKS) {
+      if (!Object.prototype.hasOwnProperty.call(LINKS, j)) continue;
+      var lb = LINKS[j];
+      try {
+        var lct = b64ToBytes(lb.ct);
+        var lks = keystream(fnv1aStr(pw + '|' + lb.salt), lct.length);
+        var lpt = new Uint8Array(lct.length);
+        for (var n = 0; n < lct.length; n++) lpt[n] = lct[n] ^ lks[n];
+        if (hex8(fnv1aBytes(lpt)) !== lb.sum) return null;
+        out._links[j] = (window.TextDecoder
+          ? new TextDecoder('utf-8').decode(lpt)
+          : String.fromCharCode.apply(null, lpt));
+      } catch (e) { return null; }
+    }
     return out;
   }
 
@@ -1267,6 +1337,11 @@
     [].slice.call(document.querySelectorAll('.ticket')).forEach(function(btn){
       var k = btn.getAttribute('data-key');
       if (QR[k]) btn.querySelector('.qr-thumb').src = QR[k];
+    });
+    var lk = map._links || {};
+    [].slice.call(document.querySelectorAll('[data-link]')).forEach(function(a){
+      var k = a.getAttribute('data-link');
+      if (lk[k]) a.href = lk[k];
     });
   }
   function hideGate(){
