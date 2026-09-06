@@ -296,29 +296,30 @@
   .lede{margin:14px 0 0;color:var(--ink-2);font-size:14px;line-height:1.9}
 
   /* ---------- ticket ---------- */
-  .tickets{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media(max-width:420px){.tickets{grid-template-columns:1fr}}
+  .tickets{display:grid;gap:10px}
   .ticket{
     background:var(--card);border:1px solid var(--line);border-radius:5px;
-    padding:20px 16px 18px;text-align:center;cursor:pointer;
-    transition:.2s;font-family:inherit;width:100%;display:block;
+    padding:13px 15px;cursor:pointer;font-family:inherit;width:100%;
+    display:grid;grid-template-columns:52px 1fr auto;
+    gap:14px;align-items:center;text-align:left;
   }
   .ticket:hover{border-color:var(--ai);box-shadow:0 3px 14px rgba(110,139,158,.11)}
   .ticket-name{
-    font-family:var(--serif);font-size:17px;letter-spacing:.1em;
-    margin:0 0 3px;color:var(--ink);
+    display:block;font-family:var(--serif);font-size:16px;letter-spacing:.09em;
+    margin:0 0 2px;color:var(--ink);
   }
-  .ticket-meta{font-size:11px;color:var(--ink-3);letter-spacing:.07em;margin:0 0 15px}
+  .ticket-meta{
+    display:block;font-size:11px;color:var(--ink-3);letter-spacing:.05em;margin:0;
+    font-variant-numeric:tabular-nums;
+  }
+  /* 拡大しないと読めないので、ここは「ちゃんと出ている」ことが
+     わかる程度の小さな印でよい。場所を取らせない。 */
   .ticket .qr-thumb{
-    width:100%;max-width:158px;aspect-ratio:1/1;display:block;margin:0 auto;
+    width:52px;height:52px;display:block;
     background:var(--paper-2);border-radius:3px;image-rendering:pixelated;
   }
-  .ticket-date{
-    font-size:11px;color:var(--ink-3);letter-spacing:.05em;
-    margin:12px 0 0;font-variant-numeric:tabular-nums;
-  }
   .ticket-tap{
-    display:block;margin:14px 0 0;font-size:11px;color:var(--ai);letter-spacing:.1em;
+    display:block;font-size:11px;color:var(--ai);letter-spacing:.08em;white-space:nowrap;
   }
 
   /* 映画村の入村券（リンク） */
@@ -488,6 +489,16 @@
   .pros li:last-child{margin:0}
   .pros .m{color:var(--ok);flex-shrink:0;font-family:var(--serif)}
   .pros .x{color:var(--warn);flex-shrink:0;font-family:var(--serif)}
+
+  .deadline{
+    margin:18px 0 0;padding:14px 16px;
+    background:var(--paper-2);border-left:2px solid var(--ok);border-radius:0 3px 3px 0;
+    font-size:13px;line-height:1.9;color:var(--ink-2);
+  }
+  .deadline b{
+    font-family:var(--serif);font-size:17px;color:var(--ink);font-weight:500;
+    letter-spacing:.06em;font-variant-numeric:tabular-nums;
+  }
 
   /* ---------- shop cards ---------- */
   .shops{display:grid;gap:14px}
@@ -780,18 +791,20 @@
 
     <div class="tickets">
       <button class="ticket" data-key="tomochan" data-name="ともちゃん">
-        <p class="ticket-name">ともちゃん</p>
-        <p class="ticket-meta">大人（大学生含む） 1 / 2</p>
-        <img class="qr-thumb" alt="京都水族館 Web入場券 ともちゃん">
-        <p class="ticket-date">2026年9月20日（日）10:30〜11:00</p>
-        <span class="ticket-tap">タップで拡大</span>
+        <img class="qr-thumb" alt="">
+        <span class="ticket-body">
+          <span class="ticket-name">ともちゃん</span>
+          <span class="ticket-meta">大人（大学生含む） 1 / 2 ・ 10:30〜11:00</span>
+        </span>
+        <span class="ticket-tap">タップで表示</span>
       </button>
       <button class="ticket" data-key="haku" data-name="ハク">
-        <p class="ticket-name">ハク</p>
-        <p class="ticket-meta">大人（大学生含む） 2 / 2</p>
-        <img class="qr-thumb" alt="京都水族館 Web入場券 ハク">
-        <p class="ticket-date">2026年9月20日（日）10:30〜11:00</p>
-        <span class="ticket-tap">タップで拡大</span>
+        <img class="qr-thumb" alt="">
+        <span class="ticket-body">
+          <span class="ticket-name">ハク</span>
+          <span class="ticket-meta">大人（大学生含む） 2 / 2 ・ 10:30〜11:00</span>
+        </span>
+        <span class="ticket-tap">タップで表示</span>
       </button>
     </div>
 
@@ -1029,6 +1042,12 @@
       </div>
 
     </div>
+
+    <p class="deadline">
+      <b>22:30</b> までに乗れれば、ゆっくり帰れるとのこと。
+      プランAは <strong>21:00 発</strong>、プランBでも <strong>21:30 発</strong>なので、
+      どちらを選んでも１時間以上の余裕があります。急がなくて大丈夫です。
+    </p>
 
     <details class="note warn">
       <summary><span class="ico">i</span>18:30 を過ぎると、自動的にプランBになります</summary>
