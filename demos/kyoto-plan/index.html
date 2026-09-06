@@ -156,7 +156,7 @@
   /* ---------- header ---------- */
   header{
     position:relative;overflow:hidden;
-    padding:74px 0 66px;text-align:center;
+    padding:74px 0 92px;text-align:center;   /* 下の 26px は提灯の光暈が切られないための余地 */
   }
   header .wrap{position:relative;z-index:2}
 
@@ -190,7 +190,7 @@
 
   /* 提灯の行列がゆっくり通り過ぎる（百鬼夜行のほのめかし）。
      数は少なく、ひとつを大きく — 5x8px では実機でまず見えなかった。 */
-  .proc{position:absolute;left:0;right:0;bottom:16px;height:22px}
+  .proc{position:absolute;left:0;right:0;bottom:42px;height:22px}
   .proc i{
     position:absolute;bottom:0;left:0;width:12px;height:22px;
     animation:walk 22s linear infinite;
