@@ -230,12 +230,16 @@
   }
   @keyframes charIn{to{opacity:1;transform:none}}
 
-  .kicker,.date,.rule{
+  .hero-note{
+    margin:14px 0 0;font-size:12.5px;color:var(--ink-3);letter-spacing:.1em;
+  }
+  .kicker,.date,.hero-note,.rule{
     opacity:0;animation:fadeUp .9s cubic-bezier(.2,.8,.2,1) forwards;
   }
   .kicker{animation-delay:.15s}
   .date{animation-delay:1.22s}
-  .rule{animation-delay:1.4s}
+  .hero-note{animation-delay:1.38s}
+  .rule{animation-delay:1.54s}
   @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
   /* パスワード画面が出ているあいだ hero の入場アニメを一時停止する。
@@ -262,7 +266,7 @@
     .proc i{animation:none;left:calc(7% + var(--i) * 33%)}
     .proc i::before{animation:none}
     h1 .c{opacity:1;transform:none;animation:none}
-    .kicker,.date,.rule{opacity:1;transform:none;animation:none}
+    .kicker,.date,.hero-note,.rule{opacity:1;transform:none;animation:none}
   }
   .kicker{
     font-family:var(--serif);font-size:12px;letter-spacing:.32em;
@@ -834,6 +838,7 @@
     <p class="kicker">Kyoto · One Day</p>
     <h1><span class="ln"><span class="c" style="--i:0">水</span><span class="c" style="--i:1">族</span><span class="c" style="--i:2">館</span><span class="c" style="--i:3">か</span><span class="c" style="--i:4">ら</span></span><span class="ln"><span class="c" style="--i:5">百</span><span class="c" style="--i:6">鬼</span><span class="c" style="--i:7">夜</span><span class="c" style="--i:8">行</span><span class="c" style="--i:9">ま</span><span class="c" style="--i:10">で</span></span></h1>
     <p class="date">2026年9月20日（日）</p>
+    <p class="hero-note">ぜんぶまわらなくて大丈夫な一日です</p>
     <div class="rule"></div>
   </div>
 </header>
@@ -902,8 +907,9 @@
     <div class="sec-head rv">
       <span class="sec-no">02</span>
       <h2>一日の流れ</h2>
-      <p class="lede">午前は水族館、午後は三条会商店街でおそばと甘いもの、夜は太秦映画村。ⓘ を押すと「なぜそうしたか」が出てきます。</p>
-      <p class="lede" style="margin-top:10px"><strong>時刻はぜんぶ「だいたい」です。</strong>どこも20〜30分の余裕をとってあるので、急ぐ必要はありません。きっちり守らないといけないのは<strong>水族館の入場時間（10:30〜11:00）だけ</strong>。電車やバスの実際の時刻は、各区間の「ルートを見る」から見てください。</p>
+      <p class="lede">これは予定表ではなく、<strong>行き先の候補</strong>です。気に入ったところに長くいても、気になった道にそれても、まるごと飛ばしても大丈夫。<strong>ぜんぶまわる必要はまったくありません。</strong></p>
+      <p class="lede" style="margin-top:10px">はじめて会う日なので、<strong>当日に迷ったり困ったりしないぶんだけ</strong>調べました。ⓘ を押すと「なぜそうしたか」が出てきます。</p>
+      <p class="lede" style="margin-top:10px">時刻はぜんぶ「だいたい」で、どこも20〜30分の余裕をとってあります。きっちりしているのは<strong>水族館の入場時間（10:30〜11:00）だけ</strong>。電車やバスの実際の時刻は、各区間の「ルートを見る」から見てください。</p>
       <button type="button" class="jump-now" id="jump-now">いまの予定へ</button>
     </div>
 
