@@ -1,0 +1,2282 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>京都・家族の七日 — 2026.9.17–23</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F5EE">
+<script>
+/* 夜のテーマは描画前に決める。あとから付けると一瞬白く光る。
+   時刻だけで判断する — OS のダーク設定には従わない（昼間に暗くなると紙のほうが読みにくい）。 */
+(function(){
+  try{
+    var q=(location.search.match(/[?&]theme=(night|day)/)||[])[1];
+    var pref=null; try{ pref=localStorage.getItem('kf.theme'); }catch(e){}
+    var h=new Date().getHours();
+    var night = q ? (q==='night') : (pref==='night' ? true : pref==='day' ? false : (h>=17||h<6));
+    if(night){
+      document.documentElement.setAttribute('data-theme','night');
+      var m=document.querySelector('meta[name="theme-color"]'); if(m)m.setAttribute('content','#151814');
+    }
+  }catch(e){}
+})();
+</script>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="京都七日">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<style>
+/* ==========================================================================
+   秋雨・苔（あきさめ・こけ）
+
+   9月の京都は「降ったり止んだり」。晴れ前提の配色にしない。
+   地は生成り、線は髪の毛ほど、見出しは明朝。
+   箱で囲うのは「押す・見せる・気をつける」ものだけ。
+   それ以外は余白と罫線で分ける — 全部を箱にすると帳簿になる。
+   ========================================================================== */
+:root{
+  color-scheme: light;
+  --paper:#F7F5EE;
+  --paper-2:#F0EDE2;
+  --card:#FFFDF8;
+  --line:#DCD8C9;
+  --line-soft:#E9E5D8;
+  --ink:#2B2F29;
+  --ink-2:#5E6459;
+  --ink-3:#928F82;
+  --moss:#4A6042;
+  --moss-d:#2E3A2E;
+  --moss-l:#E8EDE3;
+  --gold:#9A7C42;
+  --gold-l:#F4EEDD;
+  --rain:#4C6B7D;
+  --rain-l:#E5EDF1;
+  --warn:#A4452B;
+  --warn-l:#F8E8E2;
+  /* 枠線・文字色。夜で入れ替えるのでここに出しておく */
+  --moss-b:#C9D7C2;
+  --gold-b:#E1D2B1;
+  --warn-b:#E6C4B7;
+  --gold-t:#6B5423;
+  --warn-t:#6D2D1B;
+  --on-moss:#F1F5EE;
+  --top-bg:rgba(247,245,238,.90);
+  --mist-a:rgba(255,255,255,.9);
+  --mist-b:rgba(247,245,238,0);
+
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Hiragino Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+  --serif:"Songti TC","Noto Serif TC","Source Han Serif TC","Hiragino Mincho ProN",serif;
+  /* 日本語は必ず日本語フォントで。中文フォントだと「条」「直」などの字形が変わり、
+     駅員に見せたときに一瞬引っかかる。 */
+  --ja:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",sans-serif;
+
+  --pad:22px;
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-t:env(safe-area-inset-top,0px);
+}
+
+/* ==========================================================================
+   夜のいろ — 秋雨の夜
+   17:00 を境に、攻略ページ自身も暗くなる。
+   九月の京都は 18 時過ぎにはもう暗い。
+   夕方に駅のホームで出すものが白く光るのは、目にも電池にもよくない。
+   ========================================================================== */
+:root[data-theme="night"]{
+  color-scheme:dark;
+  --paper:#151814;
+  --paper-2:#1C201A;
+  --card:#1D211B;
+  --line:#363D33;
+  --line-soft:#2A3027;
+  --ink:#E9ECE2;
+  --ink-2:#AAB1A3;
+  --ink-3:#7B8276;
+  --moss:#8CA882;
+  --moss-d:#0E120C;
+  --moss-l:#232B20;
+  --moss-b:#3C4A37;
+  --gold:#C3A468;
+  --gold-l:#2A2519;
+  --gold-b:#4A4029;
+  --gold-t:#D9BE86;
+  --rain:#8FB2C6;
+  --rain-l:#1B242A;
+  --warn:#DB8168;
+  --warn-l:#2C1B15;
+  --warn-b:#4E2E23;
+  --warn-t:#E8A18C;
+  --on-moss:#121611;
+  --top-bg:rgba(21,24,20,.92);
+  --mist-a:rgba(190,205,185,.13);
+  --mist-b:rgba(21,24,20,0);
+}
+/* 夜は霧と青海波を弱める — 暗い地の上だと模様のほうが前に出てしまう */
+:root[data-theme="night"] .seigaiha{opacity:.16}
+:root[data-theme="night"] .m1,
+:root[data-theme="night"] .m2{filter:blur(10px)}
+/* 抽斗と門は元から暗い。夜はさらに一段落として地と差をつける */
+:root[data-theme="night"] #drawer{box-shadow:-2px 0 30px rgba(0,0,0,.55)}
+:root[data-theme="night"] .fork-h{background:#0E120C}
+/* QR と日本語カードの白は残す。読み取りと視認は暗転より優先。 */
+:root[data-theme="night"] .qrbox img{background:#fff}
+:root[data-theme="night"] .showcard{background:#F2F0E8}
+:root[data-theme="night"] .showcard .jp{color:#16180F}
+:root[data-theme="night"] .showcard .lb{color:#6E6A5C}
+:root[data-theme="night"] .card-shadow{box-shadow:0 6px 22px rgba(0,0,0,.35)}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:15.5px;
+  line-height:1.86;
+  letter-spacing:.012em;
+  -webkit-font-smoothing:antialiased;
+}
+html.locked,html.locked body{overflow:hidden;height:100%}
+
+.wrap{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:0 var(--pad)}
+
+/* ---------- 上部 ---------- */
+.top{
+  position:sticky;top:0;z-index:40;
+  background:var(--top-bg);
+  backdrop-filter:saturate(180%) blur(12px);
+  -webkit-backdrop-filter:saturate(180%) blur(12px);
+  border-bottom:1px solid var(--line-soft);
+  padding-top:var(--safe-t);
+}
+.top-in{
+  max-width:600px;margin:0 auto;padding:0 var(--pad);
+  display:flex;align-items:center;gap:14px;height:52px;
+}
+.burger{
+  width:34px;height:34px;margin-right:-7px;flex:0 0 auto;
+  border:0;background:transparent;cursor:pointer;padding:0;
+  display:grid;place-items:center;
+}
+.burger i{
+  display:block;width:19px;height:1.5px;background:var(--ink);
+  position:relative;transition:.24s cubic-bezier(.2,.8,.2,1);
+}
+.burger i::before,.burger i::after{
+  content:'';position:absolute;left:0;width:19px;height:1.5px;background:var(--ink);
+  transition:.24s cubic-bezier(.2,.8,.2,1);
+}
+.burger i::before{top:-6px}
+.burger i::after{top:6px}
+html.drawer .burger i{background:transparent}
+html.drawer .burger i::before{top:0;transform:rotate(45deg)}
+html.drawer .burger i::after{top:0;transform:rotate(-45deg)}
+
+.top-title{
+  font-family:var(--serif);font-size:14.5px;letter-spacing:.16em;color:var(--ink-2);
+  flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  border:0;background:transparent;padding:0;margin:0;text-align:left;cursor:pointer;
+}
+.top-title:active{opacity:.6}
+.top-title b{color:var(--ink);font-weight:600}
+.top-day{
+  font-family:var(--serif);font-size:12.5px;letter-spacing:.1em;color:var(--ink-3);
+  flex:0 0 auto;font-variant-numeric:tabular-nums;
+}
+
+/* ---------- 抽斗 ---------- */
+#scrim{
+  position:fixed;inset:0;z-index:60;background:rgba(30,34,29,.42);
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+html.drawer #scrim{opacity:1;pointer-events:auto}
+#drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:70;width:min(85vw,330px);
+  background:var(--moss-d);color:#E9EDE4;
+  transform:translateX(101%);transition:transform .34s cubic-bezier(.2,.85,.25,1);
+  overflow:auto;padding:calc(26px + var(--safe-t)) 0 calc(26px + var(--safe-b));
+  box-shadow:-2px 0 30px rgba(0,0,0,.2);
+}
+html.drawer #drawer{transform:none}
+.dw-head{
+  display:block;width:100%;padding:0 24px 18px;border:0;background:transparent;
+  text-align:left;cursor:pointer;font-family:inherit;
+}
+.dw-head .t{display:block;font-family:var(--serif);font-size:19px;letter-spacing:.14em;color:#F1F4EC}
+.dw-head .s{display:block;font-size:11.5px;letter-spacing:.12em;color:#8D9C88;margin-top:3px}
+.dw-head:active{opacity:.7}
+.dw-sec{
+  font-family:var(--serif);font-size:10.5px;letter-spacing:.3em;color:#7C8C78;
+  padding:20px 24px 7px;
+}
+.dw-i{
+  display:flex;align-items:center;gap:12px;width:100%;
+  padding:11px 24px;border:0;background:transparent;color:#DDE4D8;
+  font-family:inherit;font-size:15px;text-align:left;cursor:pointer;letter-spacing:.03em;
+  border-right:2px solid transparent;
+}
+.dw-i:hover{background:rgba(255,255,255,.05)}
+.dw-i[aria-current="true"]{background:rgba(255,255,255,.09);border-right-color:#C3A468;color:#FFF}
+.dw-i .d{
+  font-family:var(--serif);font-size:13px;color:#93A38E;min-width:38px;
+  font-variant-numeric:tabular-nums;flex:0 0 auto;
+}
+.dw-i[aria-current="true"] .d{color:#C3A468}
+.dw-i .x{font-size:10.5px;color:#8D9C88;margin-left:auto;letter-spacing:.06em;flex:0 0 auto}
+.dw-i .ic{width:20px;text-align:center;flex:0 0 auto;opacity:.9}
+.dw-rule{height:1px;background:rgba(255,255,255,.09);margin:14px 24px}
+
+/* ---------- 日の扉 ---------- */
+.daytop{position:relative;overflow:hidden;padding:44px 0 4px}
+.daytop .wrap{position:relative;z-index:2}
+.art{position:absolute;inset:0;z-index:1;pointer-events:none}
+.mist{
+  position:absolute;left:-28%;width:156%;border-radius:50%;
+  background:radial-gradient(58% 50% at 50% 50%,
+    var(--mist-a), var(--mist-b) 72%);
+  filter:blur(6px);
+}
+.m1{top:18%;height:130px;animation:drift 26s ease-in-out infinite alternate}
+.m2{top:52%;height:96px;opacity:.66;animation:drift 36s ease-in-out infinite alternate-reverse}
+@keyframes drift{from{transform:translateX(-6%)}to{transform:translateX(6%)}}
+/* 足元の青海波。雨の日の水たまりのつもり。 */
+.seigaiha{
+  position:absolute;left:0;right:0;bottom:0;height:88px;opacity:.085;
+  background-image:radial-gradient(circle at 50% 100%,
+    transparent 44%, var(--moss) 44%, var(--moss) 47.5%, transparent 47.5%);
+  background-size:58px 29px;
+  -webkit-mask-image:linear-gradient(to top,#000 6%,transparent 100%);
+  mask-image:linear-gradient(to top,#000 6%,transparent 100%);
+  animation:sDrift 40s ease-in-out infinite alternate;
+}
+@keyframes sDrift{from{background-position:0 0}to{background-position:58px 0}}
+
+.kicker{
+  font-family:var(--serif);font-size:11px;letter-spacing:.34em;color:var(--ink-3);
+  margin:0 0 14px;display:flex;align-items:center;gap:11px;flex-wrap:wrap;
+}
+.dayh{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(25px,7vw,33px);line-height:1.46;letter-spacing:.05em;
+  margin:0;
+}
+.rule{width:40px;height:1px;background:var(--ink-3);opacity:.45;margin:22px 0 0}
+.lede{margin:18px 0 0;color:var(--ink-2);font-size:14.5px;line-height:1.92}
+.lede b{color:var(--ink);font-weight:600}
+
+.chip{
+  display:inline-flex;align-items:center;
+  border-radius:100px;padding:1px 10px 2px;font-size:10.5px;letter-spacing:.1em;
+  border:1px solid var(--line);color:var(--ink-2);font-family:var(--sans);
+}
+.chip.hol{background:var(--warn-l);border-color:var(--warn-b);color:var(--warn)}
+.chip.solo{background:var(--gold-l);border-color:var(--gold-b);color:var(--gold)}
+.chip.free{background:var(--moss-l);border-color:var(--moss-b);color:var(--moss)}
+
+/* ---------- 天気 ---------- */
+.wx{
+  display:flex;align-items:baseline;gap:9px;margin:20px 0 0;
+  font-size:13px;color:var(--ink-2);letter-spacing:.04em;
+  padding-bottom:14px;border-bottom:1px solid var(--line-soft);
+}
+.wx .ic{font-size:17px;line-height:1}
+.wx .c{font-family:var(--serif);font-size:15px;color:var(--ink);letter-spacing:.08em}
+.wx .t{font-variant-numeric:tabular-nums}
+.wx .pop{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--rain);font-weight:600;font-size:15px}
+.wx .pop em{font-style:normal;font-weight:400;font-size:10.5px;color:var(--ink-3);letter-spacing:.1em;margin-left:3px}
+.wx.wait,.wx.wait .c{color:var(--ink-3)}
+.wx .est{font-size:10.5px;color:var(--ink-3);letter-spacing:.08em}
+
+/* ---------- 時間軸 ---------- */
+.tl{margin:4px 0 0}
+.blk{
+  position:relative;padding:22px 0 22px 62px;
+  border-bottom:1px solid var(--line-soft);
+}
+.blk:last-child{border-bottom:0}
+.blk .tm{
+  position:absolute;left:0;top:24px;width:50px;
+  font-family:var(--serif);font-variant-numeric:tabular-nums;
+  font-size:14.5px;letter-spacing:.04em;color:var(--moss);line-height:1.4;
+}
+.blk .tm::after{
+  content:'';position:absolute;right:-7px;top:7px;width:5px;height:5px;border-radius:50%;
+  background:var(--line);
+}
+.blk.hi .tm::after{background:var(--moss);box-shadow:0 0 0 3px rgba(74,96,66,.13)}
+.blk.warn .tm::after{background:var(--warn);box-shadow:0 0 0 3px rgba(164,69,43,.13)}
+.blk.quiet{padding-top:16px;padding-bottom:16px}
+.blk.quiet .tm::after{background:transparent;border:1px solid var(--line)}
+
+.nm{
+  font-family:var(--serif);font-size:19.5px;font-weight:600;line-height:1.52;
+  letter-spacing:.035em;margin:0;
+}
+.nm .ja{
+  font-family:var(--ja);font-weight:400;font-size:12.5px;color:var(--ink-3);
+  letter-spacing:.04em;display:block;margin-top:1px;
+}
+.sub{margin:8px 0 0;font-size:14.5px;color:var(--ink-2);line-height:1.88}
+.sub b{color:var(--ink);font-weight:600}
+
+/* 移動 */
+.move{
+  display:flex;align-items:center;gap:10px;margin:12px 0 0;
+  font-size:13px;color:var(--ink-2);letter-spacing:.03em;
+  padding:10px 0;border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);
+}
+.move b{color:var(--ink);font-weight:600;font-family:var(--serif);font-size:14px}
+.move .arw{color:var(--ink-3)}
+.move .meta{margin-left:auto;text-align:right;font-size:11.5px;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;line-height:1.6;flex:0 0 auto}
+
+/* 押すところ */
+.acts{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0 0}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid var(--line);background:var(--card);color:var(--ink-2);
+  border-radius:8px;padding:6px 12px;font-family:inherit;font-size:12.5px;
+  text-decoration:none;cursor:pointer;transition:.18s;letter-spacing:.05em;
+}
+.btn:hover{border-color:var(--ink-3);color:var(--ink)}
+.btn:active{transform:translateY(1px)}
+.btn .g{font-size:12px;opacity:.75}
+.btn.ja{border-color:var(--gold-b);background:var(--gold-l);color:var(--gold-t)}
+.btn.qr{border-color:var(--moss);background:var(--moss);color:var(--on-moss)}
+.btn.tel{border-color:var(--warn-b);background:var(--warn-l);color:var(--warn)}
+
+/* 注意 */
+.note{
+  margin:13px 0 0;padding:11px 0 11px 14px;border-left:2px solid var(--line);
+  font-size:13.5px;line-height:1.86;color:var(--ink-2);
+}
+.note.warn{border-left-color:var(--warn);color:var(--warn-t)}
+.note.warn b{color:var(--warn)}
+.note.ok{border-left-color:var(--moss)}
+.note.gold{border-left-color:var(--gold)}
+.note .h{display:block;font-family:var(--serif);font-size:14.5px;color:var(--ink);margin-bottom:2px}
+
+/* 名寄せリスト */
+.row{margin:14px 0 0;padding:0 0 0 14px;border-left:1px solid var(--line-soft)}
+.row .h{font-family:var(--serif);font-size:16px;letter-spacing:.03em}
+.row p{margin:3px 0 0;font-size:13.5px;color:var(--ink-2);line-height:1.86}
+
+/* 店 — 参考用。決めるのは当日のおなか。カードにするのは「電話する・地図を開く」ものだから。 */
+.shop-lead{margin:12px 0 0;font-size:12.5px;color:var(--ink-3);letter-spacing:.05em;line-height:1.8}
+.shops{display:grid;gap:12px;margin:12px 0 0}
+.shop{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 16px 14px}
+.shop-top{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.shop-nm{font-family:var(--serif);font-size:16.5px;font-weight:600;letter-spacing:.03em;margin:0;line-height:1.5}
+.shop-nm .z{font-family:var(--sans);font-weight:400;font-size:12px;color:var(--ink-3);margin-left:7px;letter-spacing:.06em;white-space:nowrap}
+.badge{font-size:10px;letter-spacing:.12em;padding:2px 8px;border-radius:100px;background:var(--paper-2);color:var(--ink-2);white-space:nowrap}
+.badge.pick{background:var(--moss-l);color:var(--moss)}
+.badge.easy{background:var(--gold-l);color:var(--gold-t)}
+.shop > p{margin:8px 0 0;font-size:13.5px;color:var(--ink-2);line-height:1.86}
+.shop > p b{color:var(--ink);font-weight:600}
+.shop .yen{font-size:.9em;color:var(--ink-3)}
+.shop-meta{display:flex;flex-wrap:wrap;gap:5px 18px;margin:11px 0 0;padding:10px 0 0;border-top:1px solid var(--line-soft)}
+.shop-meta div{font-size:12px;color:var(--ink-2);line-height:1.7;min-width:0;max-width:100%}
+.shop-meta dt{font-family:var(--serif);font-size:10px;letter-spacing:.14em;color:var(--ink-3);margin:0 0 1px}
+.shop-meta dd{margin:0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;line-break:anywhere}
+.shop-meta dd b{font-family:var(--serif);font-size:13.5px;font-weight:600;color:var(--ink)}
+.shop .acts{margin-top:11px}
+.shop .note{margin-top:10px;padding-top:5px;padding-bottom:5px;font-size:12.5px}
+
+/* 分岐 */
+.fork{margin:14px 0 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
+.fork-h{
+  background:var(--moss-d);color:#E9EDE4;padding:11px 15px;
+  font-family:var(--serif);font-size:14px;letter-spacing:.08em;
+}
+.fork-h .p{display:block;font-family:var(--sans);font-size:11px;color:#96A691;letter-spacing:.12em;margin-bottom:1px}
+.fork-l{padding:13px 15px;font-size:13.5px;color:var(--ink-2);line-height:1.86;border-bottom:1px solid var(--line-soft)}
+.branch{padding:14px 15px}
+.branch + .branch{border-top:1px solid var(--line-soft)}
+.branch h4{
+  margin:0 0 6px;font-family:var(--serif);font-size:15.5px;letter-spacing:.05em;
+  display:flex;align-items:center;gap:8px;
+}
+.branch.dry h4{color:var(--moss)}
+.branch.wet h4{color:var(--rain)}
+.branch p{margin:0;font-size:13.5px;color:var(--ink-2);line-height:1.86}
+
+/* チェック */
+.todo{margin:14px 0 0;padding:0;list-style:none}
+.todo li{
+  display:flex;gap:12px;align-items:flex-start;padding:9px 0;cursor:pointer;
+  font-size:14px;line-height:1.8;border-bottom:1px solid var(--line-soft);
+}
+.todo li:last-child{border-bottom:0}
+.todo li .bx{
+  flex:0 0 auto;width:19px;height:19px;border:1px solid var(--line);border-radius:5px;
+  margin-top:4px;display:grid;place-items:center;font-size:12px;color:transparent;transition:.16s;
+  background:var(--card);
+}
+.todo li[data-on="1"] .bx{background:var(--moss);border-color:var(--moss);color:var(--on-moss)}
+.todo li[data-on="1"] .tx{color:var(--ink-3)}
+
+
+/* 首頁 —— 「有哪些東西」を一望する。慌てている人が最初に見る画面。 */
+.home{padding-top:40px}
+.home .hero{position:relative;overflow:hidden;margin:0 calc(var(--pad)*-1);padding:0 var(--pad) 30px}
+.home h1{font-family:var(--serif);font-weight:600;font-size:clamp(27px,8vw,37px);letter-spacing:.08em;margin:0;line-height:1.42}
+.home .sub{margin:14px 0 0;font-size:13px;color:var(--ink-3);letter-spacing:.12em;font-family:var(--serif)}
+.home .now{
+  margin:22px 0 0;padding:14px 16px;border-radius:12px;
+  background:var(--moss-l);border:1px solid var(--moss-b);
+  font-size:14px;color:var(--ink-2);line-height:1.8;
+}
+.home .now b{color:var(--moss);font-family:var(--serif);font-size:16px;letter-spacing:.04em}
+.home .now .go{display:block;margin-top:9px}
+
+.hsec{margin:34px 0 0}
+.hsec > h2{
+  margin:0 0 12px;font-family:var(--serif);font-size:13px;font-weight:600;letter-spacing:.22em;
+  color:var(--ink-3);display:flex;align-items:center;gap:12px;
+}
+.hsec > h2::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+
+.hdays{display:grid;gap:0;border-top:1px solid var(--line-soft)}
+.hday{
+  display:flex;align-items:center;gap:13px;width:100%;
+  padding:13px 2px;border:0;border-bottom:1px solid var(--line-soft);
+  background:transparent;font-family:inherit;font-size:15px;color:var(--ink);
+  text-align:left;cursor:pointer;
+}
+.hday:active{background:var(--paper-2)}
+.hday .d{
+  font-family:var(--serif);font-size:13.5px;color:var(--ink-3);
+  min-width:52px;flex:0 0 auto;font-variant-numeric:tabular-nums;letter-spacing:.02em;
+}
+.hday .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.03em}
+.hday .x{font-size:10.5px;letter-spacing:.08em;flex:0 0 auto;color:var(--ink-3)}
+.hday.today{background:var(--gold-l)}
+.hday.today .d{color:var(--gold)}
+.hday.today .x{color:var(--gold)}
+
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hcard{
+  display:block;text-align:left;padding:15px 14px;border-radius:12px;cursor:pointer;
+  background:var(--card);border:1px solid var(--line);font-family:inherit;color:var(--ink);
+}
+.hcard:active{background:var(--paper-2)}
+.hcard .ic{display:block;font-size:17px;color:var(--moss);line-height:1;margin-bottom:9px}
+.hcard .t{display:block;font-family:var(--serif);font-size:15.5px;letter-spacing:.04em;font-weight:600}
+.hcard .s{display:block;margin-top:4px;font-size:11.5px;color:var(--ink-3);line-height:1.7;letter-spacing:.02em}
+
+/* 独立ページ */
+.page{padding-top:40px}
+.page h1{font-family:var(--serif);font-weight:600;font-size:28px;letter-spacing:.06em;margin:0;line-height:1.44}
+.sec{margin:34px 0 0}
+.sec > h2{
+  margin:0 0 14px;font-family:var(--serif);font-size:15px;font-weight:600;letter-spacing:.18em;
+  color:var(--ink-2);display:flex;align-items:center;gap:12px;
+}
+.sec > h2::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:7px 16px;font-size:14px;margin:0}
+.kv dt{color:var(--ink-3);font-size:12.5px;letter-spacing:.08em;white-space:nowrap;padding-top:2px}
+.kv dd{margin:0;color:var(--ink)}
+.kv dd b{font-family:var(--serif);letter-spacing:.04em}
+
+/* 見せる用の大きな日本語 */
+.showcard{
+  border:1px solid var(--line);border-radius:12px;padding:20px 18px;margin:12px 0 0;
+  text-align:center;background:var(--card);
+}
+.showcard .lb{font-size:11px;color:var(--ink-3);letter-spacing:.16em;margin:0 0 12px;font-family:var(--serif)}
+.showcard .jp{font-family:var(--ja);font-size:25px;font-weight:600;line-height:1.6;margin:0;color:var(--ink);letter-spacing:.02em}
+.showcard .jp.sm{font-size:19px;line-height:1.72}
+
+.qrbox{text-align:center;margin:14px 0 0}
+.qrbox img{width:100%;max-width:320px;height:auto;image-rendering:pixelated;border:1px solid var(--line);border-radius:8px;background:#fff}
+.qrbox .code{font-family:var(--serif);font-variant-numeric:tabular-nums;font-size:27px;letter-spacing:.12em;margin:12px 0 0}
+.qrbox .cl{font-size:11px;color:var(--ink-3);letter-spacing:.16em;margin:1px 0 0}
+
+.bigno{font-family:var(--serif);font-size:40px;letter-spacing:.24em;line-height:1.3;color:var(--ink);margin:2px 0 4px}
+
+/* シート */
+#sheet{position:fixed;inset:0;z-index:90;display:none;background:rgba(30,34,29,.46);align-items:flex-end;justify-content:center}
+#sheet.on{display:flex}
+.sheet-in{
+  width:100%;max-width:600px;background:var(--paper);
+  border-radius:16px 16px 0 0;padding:24px var(--pad) calc(24px + var(--safe-b));
+  max-height:88vh;overflow:auto;animation:up .3s cubic-bezier(.2,.8,.3,1);
+}
+@keyframes up{from{transform:translateY(24px);opacity:.5}to{transform:none;opacity:1}}
+.sheet-in h3{margin:0;font-family:var(--serif);font-size:18px;letter-spacing:.06em;font-weight:600}
+.sheet-in .lb{font-size:11px;letter-spacing:.2em;color:var(--gold);margin:0 0 6px;font-family:var(--serif)}
+.sheet-in p.tip{margin:14px 0 0;font-size:12.5px;color:var(--ink-3);line-height:1.85}
+.sheet-close{
+  display:block;width:100%;margin:20px 0 0;padding:13px;border:1px solid var(--line);
+  background:transparent;border-radius:10px;font-family:var(--serif);font-size:14px;
+  letter-spacing:.16em;cursor:pointer;color:var(--ink-2);
+}
+
+/* 門 */
+#gate{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--moss-d);padding:26px;overflow:hidden}
+#gate[hidden]{display:none}
+.gate-art{position:absolute;inset:0;pointer-events:none;opacity:.5}
+.gate-art .r{
+  position:absolute;left:50%;top:44%;width:620px;height:620px;margin:-310px 0 0 -310px;
+  border:1px solid rgba(195,164,104,.5);border-radius:50%;
+  transform:scale(.2);opacity:0;animation:rip 14s ease-out infinite;animation-delay:var(--d,0s);
+}
+@keyframes rip{0%{transform:scale(.2);opacity:.34}100%{transform:scale(1);opacity:0}}
+.gate-box{width:100%;max-width:290px;text-align:center;position:relative;z-index:2}
+.gate-box img{width:64px;height:64px;border-radius:16px;margin:0 0 20px;box-shadow:0 6px 26px rgba(0,0,0,.28)}
+.gate-box h2{margin:0 0 6px;font-family:var(--serif);font-size:20px;letter-spacing:.16em;color:#F1F4EC;font-weight:600}
+.gate-box .s{margin:0 0 24px;font-size:12px;color:#93A38E;letter-spacing:.14em;line-height:1.9;font-family:var(--serif)}
+#gate input{
+  width:100%;padding:13px;border-radius:10px;border:1px solid #4B5B49;background:#222D25;
+  color:#F0F2EA;font-family:inherit;font-size:16px;text-align:center;letter-spacing:.16em;
+}
+#gate input:focus{outline:none;border-color:#93A38E}
+#gate button{
+  width:100%;margin-top:10px;padding:13px;border-radius:10px;border:0;background:#E9EDE4;
+  color:#2E3A2E;font-family:var(--serif);font-size:15px;font-weight:600;letter-spacing:.2em;cursor:pointer;
+}
+.gate-err{margin:14px 0 0;font-size:12.5px;color:#DFA089;min-height:1.3em;letter-spacing:.06em}
+
+footer{
+  margin:44px 0 0;padding:20px 0 calc(34px + var(--safe-b));
+  border-top:1px solid var(--line-soft);
+  font-size:11.5px;color:var(--ink-3);line-height:2;letter-spacing:.05em;
+}
+footer b{color:var(--ink-2);font-weight:500}
+
+/* 入ってくる */
+.js .rv{opacity:0;transform:translateY(14px);
+  transition:opacity .66s cubic-bezier(.22,.7,.2,1) var(--d,0s),
+             transform .66s cubic-bezier(.22,.7,.2,1) var(--d,0s)}
+.js .rv.in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  .js .rv{opacity:1!important;transform:none!important;transition:none!important}
+  .mist,.seigaiha,.gate-art .r{animation:none}
+  .gate-art .r{opacity:.12;transform:scale(.6)}
+  .sheet-in{animation:none}
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<div id="gate" hidden>
+  <div class="gate-art" aria-hidden="true">
+    <span class="r" style="--d:0s"></span>
+    <span class="r" style="--d:4.6s"></span>
+    <span class="r" style="--d:9.2s"></span>
+  </div>
+  <div class="gate-box">
+    <img src="icon-192.png" alt="">
+    <h2>京都・家族の七日</h2>
+    <p class="s">2026.9.17 – 9.23<br>請輸入通關碼</p>
+    <form id="gate-form" novalidate>
+      <input id="gate-pw" type="password" enterkeyhint="go" autocomplete="current-password"
+             maxlength="40" aria-label="通關碼" autocapitalize="off" autocorrect="off" spellcheck="false">
+      <button type="submit">進入</button>
+    </form>
+    <p class="gate-err" id="gate-err"></p>
+  </div>
+</div>
+
+<header class="top">
+  <div class="top-in">
+    <button class="top-title" type="button" data-view="phome" aria-label="回首頁"><b>京都</b>・家族の七日</button>
+    <span class="top-day" id="top-day"></span>
+    <button class="burger" id="burger" type="button" aria-label="選單" aria-expanded="false"><i></i></button>
+  </div>
+</header>
+
+<div id="scrim"></div>
+<nav id="drawer" aria-label="選單"></nav>
+
+<main id="stage"></main>
+
+<div class="wrap">
+  <footer>
+    <b>媽媽・姊姊・岳</b>　2026年9月17日（木）– 9月23日（水）<br>
+    住：Ken House Kyoto（京都市中京区壬生御所ノ内町10-14）<br>
+    天氣每次打開都會重新抓。沒有網路時顯示的是行前預報值，並會標明。<br>
+    <span id="build-stamp"></span>
+  </footer>
+</div>
+
+<div id="sheet" role="dialog" aria-modal="true">
+  <div class="sheet-in" id="sheet-in"></div>
+</div>
+
+<script>
+/* ==========================================================================
+   行程的內容全部在這裡，畫面那一層只負責讀它。
+
+   語氣的原則：這份攻略不是「因為你們做不到所以我幫你決定」，
+   而是「東西都備好了，所以不用一路擔心有沒有漏掉」。
+   凡是讀起來像在交代一個不會處理事情的人的句子，都要改掉。
+
+   日文卡只出現在「岳不在的那幾段」。他在的時候不需要，
+   多放只會讓畫面變吵。
+   ========================================================================== */
+
+var HOUSE   = '京都市中京区壬生御所ノ内町10-14';
+var HOUSE_Q = 'Ken House Kyoto 京都市中京区壬生御所ノ内町10-14';
+
+/* 給對方看的一句話。開口說不出來也沒關係，把手機轉過去就好。 */
+var JA = {
+  kixBus:   {zh:'在 T2 找免費接駁巴士', jp:'第1ターミナル・関西空港駅ゆき\n無料連絡バス'},
+  haruka:   {zh:'月台上找這幾個字', jp:'特急 はるか　京都ゆき'},
+  harukaKix:{zh:'月台上找這幾個字', jp:'特急 はるか　関西空港ゆき'},
+  toNijo:   {zh:'要去二条站', jp:'二条（にじょう）まで行きたいです'},
+  house:    {zh:'給計程車司機看（回民宿）', jp:'四条通から北へ、坊城通に入ってください。公園の20メートル先でお願いします。住所は京都市中京区壬生御所ノ内町10-14', sm:1},
+  toHachijo:{zh:'給計程車司機看（去集合點）', jp:'京都駅八条口の貸切バス乗降場、アバンティの前までお願いします', sm:1},
+  meetTime: {zh:'沒聽清楚集合時間時', jp:'次の集合時間を\nここに書いてください'},
+  hankyu:   {zh:'要去河原町', jp:'阪急で京都河原町（かわらまち）まで行きたいです', sm:1},
+  three:    {zh:'進店時', jp:'三人です'},
+  menu:     {zh:'點餐', jp:'日本語がわかりません。英語か写真のメニューはありますか？', sm:1},
+  taxfree:  {zh:'退稅', jp:'免税できますか？パスポートです'},
+  checkin:  {zh:'找報到櫃台', jp:'台北ゆきのチェックインカウンターはどこですか？', sm:1},
+  lost:     {zh:'想問路的時候', jp:'すみません、道に迷いました。\nここへ行きたいです。', sm:1}
+};
+
+var DAYS = [
+/* ──────────────────────── 9/17 木 ──────────────────────── */
+{
+  d:'9/17', dow:'木', iso:'2026-09-17', no:'一日目', tag:'抵達', soloShort:'機場段自己走',
+  title:'抵達日 — 京都車站會合',
+  lede:'今天只有一件事要做：平安到民宿。<b>岳早上就到京都了</b>，他會在京都車站的月台上等你們，從那裡開始就有人帶路。',
+  plan:{cond:'多雲', hi:31, lo:23, pop:60},
+  soloNote:'從關西機場到京都車站這一段是你們自己走。只有兩個動作：搭一班免費接駁巴士、上一班直達車。',
+  blocks:[
+   {k:'note', t:'', tone:'gold', quiet:1, n:'岳今天早上就到了',
+    s:'岳 07:40 從成田飛，09:15 落地關西，中午前就會進民宿把行李放好。你們不用等他、也不用在機場找他 —— 約在<b>京都車站的月台</b>。'},
+
+   {k:'do', t:'07:00', n:'桃園機場 T1', s:'國際線抓起飛前 2.5 小時。9/17 是連假前一天，出境人潮已經開始了。',
+    todoLead:'這幾樣勾完，機場那段就不用再想了：',
+    todo:['Visit Japan Web 的入境 QR 已經產生、<b>截圖存在相簿</b>','HARUKA 電子票已經選好班次、劃好位，QR 也截圖了','行動電源<b>關機、各自裝進夾鏈袋</b>，放隨身小包（台灣規定機上全程禁用）','行動電源<b>不能托運</b>、每人最多 2 個']},
+
+   {k:'go', t:'09:30', hi:1, n:'TPE → KIX　樂桃 MM024', move:{f:'桃園 T1',t:'關西 T2',by:'Peach MM024',min:'3小時55分'},
+    s:'降落的是<b>第 2 航廈（T2）</b>，是廉航專用的那一棟，跟主航廈分開。',
+    note:{tone:'', html:'樂桃櫃台<b>起飛前 120 分開、前 30 分關</b> → <b>07:30 開櫃、09:00 關櫃</b>。'
+      + '07:00 到的話櫃台還沒開，<b>先去排隊就好</b>，連假前一天隊伍本來就會提早排。'}},
+
+   {k:'at', t:'13:25', hi:1, solo:1, n:'關西機場 T2 落地', nja:'関西国際空港 第2ターミナル',
+    s:'下機後跟著人群走：<b>入国審査</b>（掃 Visit Japan Web 的 QR ＋ 護照）→ 領行李 → <b>税関</b>。連假前一天，這段抓 60 分鐘比較安心。',
+    note:{tone:'', html:'出關後不用急著找電車 —— <b>T2 沒有車站</b>，要先搭一段免費巴士過去。'}},
+
+   {k:'go', t:'14:30', hi:1, solo:1, n:'免費接駁巴士 → 関西空港駅',
+    move:{f:'T2 國際線到達口',t:'関西空港駅',by:'無料連絡バス',min:'合計約15分',fare:'免費'},
+    s:'走出<b>國際線到達口</b>，巴士站就在正前方，不用過馬路也不用上下樓。車程 7–9 分到「エアロプラザ」，下車後照指標走 5 分鐘就是車站。',
+    acts:[{type:'ja',k:'kixBus'}]},
+
+   {k:'go', t:'15:14', hi:1, solo:1, n:'HARUKA 特急 → 京都', nja:'特急 はるか',
+    move:{f:'関西空港',t:'京都',by:'JR 特急 はるか',min:'1小時20分'},
+    s:'手機上的 <b>HARUKA 電子票 QR 直接刷閘門</b>，不用換票也不用找機器。上車後照票上的車廂號碼和座位號碼坐。',
+    note:{tone:'ok', html:'沒趕上 15:14 完全沒關係 —— <b>每小時 :14 和 :44 各一班</b>。下一班 15:44 到京都是 17:04，岳那邊照樣等得到。'},
+    acts:[{type:'ja',k:'haruka'},{type:'transit',f:'関西空港駅',t:'京都駅'}]},
+
+   {k:'at', t:'16:34', hi:1, n:'京都車站 — 岳在月台上', nja:'京都駅',
+    s:'下車不用走動，<b>岳會直接上月台來接</b>。從這裡開始今天就結束了，剩下的路有人帶。',
+    note:{tone:'', html:'萬一手機沒訊號、一時找不到人：<b>就待在下車的那個月台上</b>。京都車站很大，各自走動反而更難碰到。<br>'
+      + '岳的日本手機在<a href="#" data-page="sos">求救卡</a>那一頁（打電話不用網路）。'},
+    acts:[{type:'yuetel'}]},
+
+   {k:'go', t:'16:50', n:'JR 嵯峨野線 → 二条', nja:'JR嵯峨野線（山陰本線）',
+    move:{f:'京都',t:'二条',by:'JR 嵯峨野線',min:'6分',fare:'¥190'},
+    s:'從京都車站往民宿只有 <b>2 站</b>。'},
+
+   {k:'at', t:'17:10', hi:1, n:'Ken House Kyoto', nja:'京都市中京区壬生御所ノ内町10-14',
+    s:'二条駅走路約 10 分鐘。整棟兩房的房子，三個人住。',
+    secret:'house',
+    acts:[{type:'map',q:'HOUSE_Q'}]},
+
+   {k:'eat', t:'18:30', n:'三条会商店街', nja:'三条会商店街',
+    s:'民宿走路就到的<b>全罩式拱廊商店街</b>，約 800 公尺，下雨完全不影響。第一晚不跑遠，在這裡挑一家坐下來。',
+    acts:[{type:'map',q:'三条会商店街 京都'}],
+    shops:[
+     {n:'魏飯夷堂 三条店', z:'中華', badge:'首選', pick:1,
+      p:'三条会商店街裡的老味噌店改建，中華居酒屋。菜單上有<b>台湾牛肉麺（¥1,200）</b>和小籠包四種拼盤（¥1,480），第一晚吃個熟悉的味道最省力。',
+      yen:'晚餐一人約 ¥2,000–3,000',
+      hrs:'11:30–14:30 / 17:30–22:00（L.O. 21:30）', off:'火曜（9/17 四・營業）',
+      loc:'三条通岩上西入 橋西町661・50 席', ord:'圖片菜單・可線上訂位',
+      q:'魏飯夷堂 三条店 京都市中京区三条通岩上西入る橋西町661'},
+     {n:'どんぐり 四条大宮店', z:'御好燒・鐵板燒',
+      p:'京都在地的御好燒連鎖，<b>86 席</b>的大店，不用等位的機率高。自己在鐵板上翻也可以請店員代勞。',
+      yen:'晚餐一人約 ¥2,000–3,000',
+      hrs:'17:00–翌 01:00（L.O. 00:30）', off:'不定休',
+      loc:'四条通大宮東入南側・走路 10 分', ord:'圖片菜單',
+      tel:'075-813-1888', q:'どんぐり 四条大宮店 京都市下京区四条通大宮東入ル南側'}]},
+
+   {k:'do', t:'21:30', quiet:1, n:'睡前', s:'明天要進山，把東西先放門口就可以睡了。',
+    todo:['雨傘放門口','好走的鞋','手機充電','06:50 的鬧鐘']}
+  ]
+},
+
+/* ──────────────────────── 9/18 金 ──────────────────────── */
+{
+  d:'9/18', dow:'金', iso:'2026-09-18', no:'二日目', tag:'鞍馬・貴船', free:1,
+  title:'鞍馬〜貴船 — 全程唯一的平日',
+  lede:'明天開始連假，今天是七天裡<b>唯一一個正常的平日</b>。把最怕人潮的貴船放在今天，是整份行程刻意的安排。',
+  plan:{cond:'多雲', hi:32, lo:24, pop:40},
+  blocks:[
+   {k:'do', t:'06:50', quiet:1, n:'起床', s:'不趕，07:30 出門就好。',
+    todo:['好走的鞋（今天走山路）','雨傘','水','行動電源']},
+
+   {k:'go', t:'07:40', hi:1, n:'市バス 201 → 出町柳', nja:'201系統',
+    move:{f:'四条大宮',t:'出町柳駅前',by:'市バス 201',min:'約30分',fare:'¥230'},
+    s:'<b>直達，不用轉車。</b>車頭的電子看板會寫「千本今出川・出町柳駅・百万遍」。',
+    acts:[{type:'transit',f:'四条大宮',t:'出町柳駅'}]},
+
+   {k:'go', t:'08:30', hi:1, n:'叡山電車 鞍馬線', nja:'叡山電車 鞍馬線',
+    move:{f:'出町柳',t:'貴船口 / 鞍馬',by:'叡山電車',min:'28 / 31分',fare:'¥430〜470'},
+    s:'一到兩節的小電車，日間約 15 分鐘一班。<b>先上車就好，要在哪一站下等一下再看。</b>'},
+
+   {k:'fork', t:'08:58', at:'貴船口駅',
+    title:'今天唯一要決定的事',
+    lead:'車子停在貴船口。<b>抬頭看天、順便看一下上面的降雨機率</b>，然後二選一。兩邊下午都會在一乗寺會合，所以怎麼選都不會壞掉。',
+    dry:{h:'沒下雨 → 翻山',
+      p:'<b>不要下車</b>，再坐一站（2 分鐘）到終點<b>鞍馬</b>。從仁王門入山，搭纜車上去參拜本殿金堂，走木の根道翻過山頭，從西門下到貴船。官方牌示：<b>山門到西門約 100 分、2.5 公里</b>。',
+      acts:[{type:'map',q:'鞍馬寺'}]},
+    wet:{h:'在下雨 / 剛下過 → 不翻山',
+      p:'<b>在這裡下車。</b>站前搭京都巴士 33 上貴船（約 5 分），只走<b>貴船神社 本宮 → 結社 → 奧宮</b>。沿著溪流的平緩鋪面路，來回約 40 分鐘 —— 森林和溪水一樣都有。<br>'
+       + '走完大概才 10:30，<b>這條路會比翻山早兩三個小時到一乗寺</b> —— 多出來的時間拿去看下面那兩間寺院，都是<b>坐在室內看庭園</b>的，下雨天反而更好。',
+      acts:[{type:'map',q:'貴船神社'},{type:'map',q:'詩仙堂丈山寺 京都市左京区一乗寺門口町27'}]}},
+
+   {k:'note', t:'', quiet:1, tone:'rain', n:'雨天那條才看：詩仙堂 ・ 圓光寺', nja:'詩仙堂丈山寺・圓光寺',
+    s:'下車走貴船的話，<b>10:30 就走完了</b>，會比翻山早兩三個小時到一乗寺。多出來的時間拿這兩間填：'
+      + '都在一乗寺駅走路 10–15 分的山邊，<b>彼此只隔 3 分鐘</b>。'
+      + '<b>詩仙堂</b>是坐在榻榻米上往外看庭園（9:00–17:00・受付到 16:45・¥700）；'
+      + '<b>圓光寺</b>的「十牛之庭」是一整片苔庭（9:00–17:00・¥500）。<b>兩間都是坐著看的</b>，雨聲反而是加分。',
+    note:{tone:'', html:'<b>翻山的人不用看這一段</b> —— 你們下山到一乗寺已經 14:00 了，直接去吃拉麵。'},
+    acts:[{type:'map',q:'詩仙堂丈山寺 京都市左京区一乗寺門口町27'},{type:'map',q:'圓光寺 京都市左京区一乗寺小谷町13'}]},
+
+   {k:'at', t:'09:05', n:'鞍馬寺', nja:'鞍馬寺',
+    s:'愛山費 ¥500。<b>本殿金堂 9:00 開</b>，纜車（牛若号・¥200 寄付）約 20 分一班、首班上行 8:40。搭纜車可以省掉仁王門到多宝塔那段約 25 分鐘的石階。',
+    acts:[{type:'map',q:'鞍馬寺'}]},
+
+   {k:'at', t:'11:30', n:'木の根道 → 奧の院 → 西門', nja:'木の根道',
+    s:'裸露的杉樹根鋪滿整條山徑，是鞍馬山最有名的一段。過了奧の院魔王殿之後就是下坡石階，慢慢走、扶著欄杆。西門出來過橋，走 5 分鐘就是貴船神社本宮。'},
+
+   {k:'at', t:'12:00', n:'貴船神社', nja:'貴船神社',
+    s:'免費。本宮 → 結社 → 奧宮 沿著貴船川往上，平緩鋪面路，單程約 15 分鐘。水占みくじ（把籤紙浮在水面上才會顯字）在本宮。',
+    acts:[{type:'map',q:'貴船神社'}]},
+
+   {k:'eat', t:'12:40', n:'貴船簡單吃就好',
+    s:'貴船的店以川床料理為主，一客四五千円起跳，而且雨天店家自己會停掉川床。這裡喝個東西、吃碗蕎麥麵，正餐留到下午的一乗寺。',
+    shopLead:'貴船這一段吃得輕一點就好，<b>正餐留到下午的一乗寺</b>。下面兩家都不用訂位。',
+    shops:[
+     {n:'貴船倶楽部', z:'咖啡・甜點', badge:'首選', pick:1,
+      p:'貴船神社參道上的木造咖啡店，薪柴暖爐。抹茶拿鐵、抹茶聖代、蕨餅。',
+      yen:'一人約 ¥700–1,200',
+      hrs:'約 10:00–17:00・季節調整', off:'不定休',
+      loc:'鞍馬貴船町74・貴船巴士站走路 8 分', tone:'warn',
+      note:'<b>湯葉丼、釜飯這類鹹食只在 10 月–5 月供應</b>，九月去只有喝的和甜的。要吃鹹的看下面那家。',
+      q:'貴船倶楽部 京都市左京区鞍馬貴船町74'},
+     {n:'兵衛 Cafe', z:'川床咖啡', badge:'最便宜的川床',
+      p:'貴船少數<b>一千多円就能坐上川床</b>的地方（正式的川床料理要四五千起跳）。紅豆最中之類的和風甜點，可以把腳泡在溪水裡。',
+      yen:'一人約 ¥1,300',
+      hrs:'11:00–16:30（L.O. 16:00）', off:'不定休',
+      loc:'貴船神社附近', tone:'warn',
+      note:'<b>下雨、溪水上漲或發布警報時，川床店家自己會停掉。</b>走到門口沒開是正常的，不用等。',
+      q:'兵衛 Cafe 貴船 京都'},
+     {n:'雍州路（ようしゅうじ）', z:'精進料理・蕎麥', badge:'走鞍馬那條才會經過',
+      p:'鞍馬寺山門前的精進料理店。名物<b>雲珠そば ¥1,100</b>（七種山菜）、くらま山精進膳 ¥2,750。<b>只有走「不翻山」以外的路線、或早上在鞍馬多留一下才會經過</b>。',
+      yen:'一人約 ¥1,100–2,750',
+      hrs:'10:00–18:00', off:'火曜（9/18 五・營業）',
+      loc:'鞍馬本町1074-2・鞍馬駅走路 3 分',
+      tel:'075-741-2848', q:'雍州路 京都市左京区鞍馬本町1074-2'}]},
+
+   {k:'go', t:'14:00', n:'叡電 → 一乗寺', move:{f:'貴船口',t:'一乗寺',by:'叡山電車',min:'約20分'},
+    acts:[{type:'transit',f:'貴船口駅',t:'一乗寺駅'}]},
+
+   {k:'eat', t:'14:30', hi:1, n:'一乗寺 — 京都的拉麵街',
+    s:'一乗寺是京都拉麵密度最高的一條街，車站出來沿著東大路通就是。這個時間剛好避開午餐尖峰。',
+    shopLead:'這兩家都<b>整天不休息</b>，14:30 到也還在賣。岳在，點餐不用擔心。',
+    shops:[
+     {n:'中華そば 高安', z:'雞白湯・清爽', badge:'首選', pick:1,
+      p:'一乗寺最有名的一家，雞白湯但意外清爽。另一個名物是<b>巨大的唐揚炸雞</b>，可以三個人分。',
+      yen:'一碗 ¥900 上下，一人 ¥1,000 內',
+      hrs:'11:30–翌 02:00（中間不休息）', off:'不定休',
+      loc:'一乗寺高槻町10・一乗寺駅走路 5 分・24 席',
+      ord:'<b>只收現金</b>・沒有食券機', tone:'warn',
+      note:'<b>刷卡和電子支付都不能用</b>，進去前先確認身上有現金。',
+      tel:'075-721-4878', q:'中華そば 高安 京都市左京区一乗寺高槻町10'},
+     {n:'麺屋 極鶏（ごっけい）', z:'濃厚雞白湯',
+      p:'湯濃到<b>湯匙插著會站起來</b>，是一乗寺的招牌奇景。連續多年入選食べログ百名店。喜歡濃的選這家，但媽媽可能會覺得太厚。',
+      yen:'一碗 ¥900–1,100',
+      hrs:'11:30–22:00', off:'月曜（月曜逢假日則改隔天休）→ <b>9/18 五・營業</b>',
+      loc:'一乗寺西閉川原町29-7・一乗寺駅走路 3 分',
+      ord:'常有排隊，尖峰可排 30 分以上',
+      q:'麺屋 極鶏 京都市左京区一乗寺西閉川原町29-7'}]},
+
+   {k:'at', t:'15:30', hi:1, n:'恵文社 一乗寺店', nja:'恵文社 一乗寺店',
+    s:'<b>11:00–19:00・年中無休</b>（元旦除外），一乗寺駅走路 3 分。選書和生活雜貨的獨立書店，常年被選進「世界最美書店」的名單。',
+    acts:[{type:'map',q:'恵文社 一乗寺店'}]},
+
+   {k:'at', t:'17:30', n:'出町ふたば の 豆餅', nja:'出町ふたば',
+    s:'出町柳站旁的<b>出町桝形商店街</b>，名代豆餅。會排隊但隊伍移動很快。當天現做、當天吃掉最好。',
+    acts:[{type:'map',q:'出町ふたば'}]},
+
+   {k:'go', t:'18:10', quiet:1, n:'回民宿', move:{f:'出町柳駅前',t:'四条大宮',by:'市バス 201',min:'約30分'},
+    acts:[{type:'transit',f:'出町柳駅',t:'四条大宮'}]},
+
+   {k:'eat', t:'19:00', n:'三条会商店街 或 民宿附近', s:'走了一天山路，晚餐不要再移動了。',
+    shopLead:'走了一天山路，<b>不要再移動了</b>。這兩家都在走路範圍內，也都不用訂位。',
+    shops:[
+     {n:'どんぐり 四条大宮店', z:'御好燒・鐵板燒', badge:'首選', pick:1,
+      p:'86 席的大店，走山回來不用擔心排隊。鐵板上熱熱地吃，累的時候最舒服。',
+      yen:'晚餐一人約 ¥2,000–3,000',
+      hrs:'17:00–翌 01:00（L.O. 00:30）', off:'不定休',
+      loc:'四条通大宮東入南側・民宿走路 10 分', ord:'圖片菜單',
+      tel:'075-813-1888', q:'どんぐり 四条大宮店 京都市下京区四条通大宮東入ル南側'},
+     {n:'三条会商店街 隨便挑一家', z:'商店街',
+      p:'800 公尺的<b>全罩拱廊</b>，下雨完全不影響。定食、拉麵、燒肉、中華都有，走到哪家順眼就進去。',
+      yen:'一人 ¥1,000–2,000 居多',
+      hrs:'多數店 11:00–21:00 前後', loc:'民宿走路 5 分・二条駅與四条大宮之間',
+      q:'三条会商店街 京都'}]}
+  ]
+},
+
+/* ──────────────────────── 9/19 土 ──────────────────────── */
+{
+  d:'9/19', dow:'土', iso:'2026-09-19', no:'三日目', tag:'下鴨・清水寺', hol:'連假第1天',
+  title:'糺の森 ＋ 清水寺の夕方',
+  lede:'今天是<b>七天裡天氣最好的一天</b>。上午是人少的原始林，傍晚才上清水寺 —— 那時候旅行團剛好退潮。',
+  plan:{cond:'多雲後晴', hi:31, lo:24, pop:30},
+  blocks:[
+   {k:'note', t:'', tone:'ok', quiet:1, n:'今天不用早起',
+    s:'原本的草稿是 07:30 衝清水寺避開人潮。改成傍晚，是因為<b>早起的效果要靠人每天爬得起來，退潮卻不用靠任何人努力</b>。'},
+
+   {k:'do', t:'08:30', quiet:1, n:'起床', s:'慢慢吃個早餐，09:30 出門就好。'},
+
+   {k:'go', t:'09:40', n:'市バス 201 → 出町柳', move:{f:'四条大宮',t:'出町柳駅前',by:'市バス 201',min:'約30分',fare:'¥230'},
+    acts:[{type:'transit',f:'四条大宮',t:'出町柳駅'}]},
+
+   {k:'at', t:'10:20', hi:1, n:'鴨川デルタ 跳石', nja:'鴨川デルタ（飛び石）',
+    s:'高野川和賀茂川在這裡匯流成鴨川。水面上排著烏龜和千鳥形狀的石頭，可以踩著過河。',
+    note:{tone:'warn', html:'<b>下過大雨、水位高的時候就不要踩。</b>石頭會沒入水面而且很滑。看到水淹過石頭，在岸邊看就好。'},
+    acts:[{type:'map',q:'鴨川デルタ'}]},
+
+   {k:'at', t:'10:50', hi:1, n:'下鴨神社 糺の森', nja:'下鴨神社 糺の森',
+    s:'世界遺產。參道兩側是<b>約三萬坪的原始林</b>，樹齡數百年的樹木成蔭 —— 即使是連假第一天，走進森林裡人也會突然變少。地面平坦好走。',
+    acts:[{type:'map',q:'下鴨神社'}]},
+
+   {k:'eat', t:'12:30', n:'出町柳 附近吃午餐', s:'<b>出町ふたば</b>的豆餅也在這附近（昨天沒買到的話今天補）。',
+    acts:[{type:'map',q:'出町ふたば'}],
+    shopLead:'下鴨神社走出來就是出町桝形商店街，吃的都集中在那一段。',
+    shops:[
+     {n:'出町ろろろ', z:'京都家常菜 おばんざい', badge:'首選', pick:1,
+      p:'用大原無農藥蔬菜做的おばんざい，招牌是一格一格裝滿的<b>ろろろ弁当</b>。份量不大、味道很淡雅，是媽媽會喜歡的那種。',
+      yen:'午餐一人約 ¥1,500–2,000',
+      hrs:'週六 11:30–13:30（L.O.）・晚餐 18:00–20:30', off:'月曜・第2第4日曜（9/19 六・營業）',
+      loc:'今出川通寺町東入 一真町67-1・出町柳駅走路 5 分',
+      ord:'座位不多，<b>最好先打電話訂</b>；午餐 L.O. 13:30 要抓好時間', tone:'warn',
+      note:'午餐只做到 <b>13:30 最後點餐</b>，12:30 到剛好。沒訂到位就走下面那家。',
+      tel:'075-213-2772', q:'出町ろろろ 京都市上京区今出川通寺町東入一真町67-1'},
+     {n:'出町桝形商店街', z:'商店街', badge:'不用訂位',
+      p:'有頂拱廊，出町ふたば的豆餅就在入口。裡面有定食、咖哩、麵包、咖啡，走一圈再決定也可以。<b>下雨照樣走得動。</b>',
+      yen:'一人 ¥800–1,500 居多',
+      hrs:'多數店 10:00–18:00 前後', loc:'出町柳駅走路 4 分',
+      q:'出町桝形商店街 京都'}]},
+
+   {k:'do', t:'14:15', n:'回民宿休息一下',
+    s:'傍晚才上清水寺，中間這段回去躺一下。<b>這是今天刻意留的空白。</b><br>'
+      + '從出町柳搭 201 回四条大宮約 30 分，所以實際上只躺得到<b>差不多一小時</b> —— 覺得不划算的話，'
+      + '直接在鴨川邊或商店街的咖啡店坐著也可以，重點是<b>不要一直走路</b>。'},
+
+   {k:'go', t:'15:20', n:'市バス 206 → 清水道', move:{f:'四条大宮',t:'清水道',by:'市バス',min:'約30分',fare:'¥230'},
+    s:'也可以搭阪急到京都河原町再走過去。連假的公車會塞，時間抓寬一點。',
+    acts:[{type:'transit',f:'四条大宮',t:'清水寺'}]},
+
+   {k:'at', t:'16:00', hi:1, n:'清水寺', nja:'清水寺',
+    s:'<b>6:00–18:00</b>（¥500）。16:00 之後旅行團陸續下山，同樣的地方人會少掉一大截，而且夕陽會斜照在清水舞台上。',
+    acts:[{type:'map',q:'清水寺'}]},
+
+   {k:'at', t:'17:10', hi:1, n:'三年坂 → 二年坂 → 八坂の塔 → 八坂神社',
+    nja:'産寧坂・二年坂・法観寺・八坂神社',
+    s:'<b>全程下坡</b>，一路走到八坂神社，出來就是祇園四条站。這個時間石板路上的店還開著，遊客密度也比白天低很多。',
+    note:{tone:'warn', html:'石板坂道<b>下雨時很滑</b>，尤其三年坂。慢慢走、走邊邊，不要踩中間被磨亮的地方。'},
+    acts:[{type:'map',q:'八坂の塔 法観寺'}]},
+
+   {k:'eat', t:'19:00', hi:1, n:'祇園 / 河原町 晚餐',
+    s:'<b>這是七晚裡建議先訂位的兩晚之一。</b>連假第一天的晚上，不訂位大概要排 40 分鐘以上。',
+    shopLead:'八坂神社出來就是祇園四条，往西過鴨川就是木屋町。<b>第一家要先訂</b>，第二家不用。',
+    shops:[
+     {n:'御料理めなみ', z:'京都家常菜 おばんざい', badge:'首選・要訂位', pick:1,
+      p:'木屋町三条的老店。吧台上一整排大缽的<b>おばんざい盛り合わせ</b>（每天五種）、生湯葉春捲、おから。這是「今晚吃好一點」的那一餐。',
+      yen:'一人約 ¥4,000–6,000',
+      hrs:'15:00–22:00（L.O. 21:30）', off:'水曜（9/19 六・營業）',
+      loc:'木屋町通三条上ル 中島町96・祇園四条走路 8 分',
+      ord:'<b>只接受電話訂位</b>（官網明寫）', tone:'warn',
+      note:'訂位電話是 <b>080-9308-5905</b>（和店裡的市話不同）。<b>請岳先打</b>，不用你們自己打。',
+      tel:'075-231-1095', url:'https://www.menami.jp/',
+      q:'御料理めなみ 京都市中京区木屋町通三条上ル中島町96'},
+     {n:'京 権太呂 本店', z:'烏龍麵鍋・蕎麥', badge:'可線上訂位',
+      p:'1923 年創業。招牌是<b>うどんすき</b>（烏龍麵火鍋），三個人一鍋剛好，也可以單點蕎麥麵。町家建築，坐下來很舒服。',
+      yen:'晚餐一人約 ¥3,000–5,000',
+      hrs:'11:00–21:00', off:'水曜（9/19 六・營業）',
+      loc:'麸屋町通四条上ル・河原町走路 5 分', ord:'可線上訂位（ヒトサラ／一休）',
+      url:'https://gontaro.co.jp/kyoto/',
+      q:'権太呂 本店 京都市中京区麸屋町通四条上ル'}]},
+
+   {k:'do', t:'21:30', hi:1, n:'先把明天的東西備好',
+    s:'明天是一日遊，岳不在。這幾件今晚做完，明天早上就只剩出門而已。',
+    todoLead:'勾完就可以不用再想了：',
+    todo:[
+     '打開 email，找 <b>KKday／EasyGo 的出團通知</b>（他們會在日本時間 21:00 前寄集合地點和導遊聯絡方式）—— <b>順便看一下垃圾信件匣</b>',
+     '同一個信箱確認<b>沒有收到取消通知</b>（惡劣天候時他們會在前一天中午 12:00 決定）',
+     '<b>去便利商店買明天的午餐</b>（這個團不含午餐）',
+     '跟午餐一起帶一個<b>裝垃圾的塑膠袋</b> —— 日本街上沒有垃圾桶',
+     '06:50 的鬧鐘']}
+  ]
+},
+
+/* ──────────────────────── 9/20 日 ──────────────────────── */
+{
+  d:'9/20', dow:'日', iso:'2026-09-20', no:'四日目', tag:'天橋立', hol:'連假第2天', solo:'岳整天不在', soloShort:'岳整天不在',
+  title:'天橋立・伊根舟屋 一日遊',
+  lede:'今天是<b>唯一不能改期的行程</b>。早上準時上車之後，剩下一整天都交給導遊 —— 你們只要跟著車走就好。',
+  plan:{cond:'多雲', hi:30, lo:25, pop:60},
+  soloNote:'今天整天只有你們兩個。集合的位置、要找什麼樣子的人、幾點在哪裡，下面都寫好了；<a href="#" data-page="sos">求救卡</a>也隨時打得開。',
+  blocks:[
+   {k:'do', t:'06:50', solo:1, n:'起床', todoLead:'昨晚備好的東西，出門前對一下：',
+    todo:['便利商店的午餐','裝垃圾的塑膠袋','雨傘','行動電源','憑證＝這個 app 裡就有，不用列印']},
+
+   {k:'go', t:'07:50', hi:1, warn:1, solo:1, n:'叫計程車到京都駅八条口',
+    move:{f:'民宿',t:'京都駅八条口',by:'計程車',min:'約20分',fare:'約¥1,800'},
+    s:'今天不搭電車。把下面那張日文給司機看就好。',
+    acts:[{type:'ja',k:'toHachijo'},{type:'map',q:'京都駅八条口 貸切バス乗降場 アバンティ前'}]},
+
+   {k:'at', t:'08:15', hi:1, warn:1, solo:1, n:'京都駅八条口 貸切バス乗降場',
+    nja:'京都駅八条口 貸切バス乗降場〈アバンティ前〉',
+    s:'在<b>アバンティ（Avanti）這棟樓的正前方</b>。到了就站在那裡等，不用再走動。',
+    note:{tone:'warn', html:'找身上穿<b>橘色「EasyGo」背心</b>的導遊報到，他手上會拿著 EASY GO 的旗子。報到時說訂位人的名字：<b>陳柏岳</b>，或直接把 QR 打開給他看。'},
+    acts:[{type:'map',q:'京都駅八条口 アバンティ'},{type:'qr'}]},
+
+   {k:'go', t:'08:45', hi:1, solo:1, n:'發車', move:{f:'京都駅八条口',t:'天橋立',by:'專車',min:'約1小時35分'},
+    s:'集合 08:30、發車 08:45。車程比較長，<b>午餐可以在車上吃</b>。'},
+
+   {k:'at', t:'10:20', hi:1, solo:1, n:'天橋立 View Land', nja:'天橋立ビューランド',
+    s:'停留 <b>140 分鐘</b>。南側山上的展望台，這裡看到的是有名的「飛龍観」。上山可以搭<b>單人吊椅</b>或<b>單軌電車</b>。',
+    note:{tone:'gold', html:'<b>吊椅是開放式的單人座。</b>怕高或下雨的話，可以現場請導遊改安排單軌電車，<b>不用加錢</b>。但單軌 20 分鐘才一班，會吃掉停留時間，所以要早點講。'},
+    acts:[{type:'ja',k:'meetTime'},{type:'map',q:'天橋立ビューランド'}]},
+
+   {k:'eat', t:'12:40', solo:1, n:'吃自己帶的午餐',
+    s:'這個團不含午餐，昨晚買的便利商店食物就是這一餐。垃圾裝進自己帶的塑膠袋帶回車上。'},
+
+   {k:'at', t:'13:30', hi:1, solo:1, n:'伊根灣遊覽船 ＋ 伊根舟屋', nja:'伊根湾めぐり遊覧船・伊根の舟屋',
+    s:'停留 <b>90 分鐘</b>。舟屋是一樓停船、二樓住人的傳統房子，沿著海灣排了兩百多棟。遊覽船上可以餵海鷗。',
+    note:{tone:'', html:'遊覽船<b>沒有無障礙設施</b>。船上風大，外套帶著。'},
+    acts:[{type:'ja',k:'meetTime'},{type:'map',q:'伊根の舟屋'}]},
+
+   {k:'go', t:'15:30', solo:1, n:'回程', move:{f:'伊根',t:'京都駅八条口',by:'專車',min:'約2小時'},
+    s:'連假的週日，回程可能塞車。<b>晚點是正常的。</b>'},
+
+   {k:'at', t:'17:30', hi:1, solo:1, n:'京都駅八条口 解散',
+    s:'解散的地方就是早上集合的地方。而且剛好就站在最好逛的地方 —— 下面三家全在車站周邊，走路就到。'},
+
+   {k:'at', t:'18:00', hi:1, solo:1, n:'車站周邊逛一下（想逛才逛）',
+    s:'解散的地方就在最好逛的一區。<b>跑了一整天，不想逛就直接去吃飯、回去睡</b> —— 9/21 下午整個下午都是逛街。',
+    list:[
+     ['ヨドバシカメラ 京都','烏丸口走路 2 分。<b>B1–3F 家電 9:30–22:00</b>：手機配件區極大，波浪殼、iFace、透明殼都有，展示品可以直接摸。<b>4–5F 服飾 11:00–22:00</b>，裡面有 ユニクロ。','ヨドバシカメラ マルチメディア京都'],
+     ['ビックカメラ JR京都駅店','直通京都站西口（近鐵／JR 轉乘處旁）。同樣有整區手機殼與配件，免稅櫃台好找。','ビックカメラ JR京都駅店'],
+     ['3COINS 京都ポルタ店','京都站地下街 PORTA。<b>11:00–20:30</b> —— 關得比車站早，要逛先逛這家。','3COINS 京都ポルタ店']],
+    note:{tone:'', html:'完整的清單在 <a href="#" data-page="buy">姊姊的清單</a> 那一頁，隨時打得開。'},
+    acts:[{type:'ja',k:'taxfree'}]},
+
+   {k:'eat', t:'19:30', hi:1, solo:1, n:'京都車站裡面吃晚餐',
+    s:'<b>京都拉麺小路</b>在京都駅ビル 10 樓，大階段南側（從伊勢丹那側的電梯上去）。全館 10 家，<b>每一家都是門口先買食券</b>，全程不用開口。',
+    acts:[{type:'map',q:'京都拉麺小路 京都駅ビル10F'},{type:'ja',k:'menu'}],
+    shopLead:'今天是你們兩個自己吃，所以<b>先照「不用講話」排</b>。三家都是先買票再坐下。',
+    shops:[
+     {n:'中村商店', z:'鹽味・雞白湯', badge:'首選', pick:1, easy:0,
+      p:'大阪高槻來的鹽味拉麵，湯是雞清湯加魚介，<b>清爽不油</b>。招牌「金の塩」加溏心蛋約 ¥1,100。可以加小炒飯。',
+      yen:'一人約 ¥1,000–1,300',
+      hrs:'11:00–22:00（L.O. 21:30）', off:'年中無休（1/1 除外）',
+      loc:'京都駅ビル 10F 拉麺小路・19 席',
+      ord:'<b>門口食券機</b>・食べログ登錄有<b>英文／簡體中文／韓文菜單</b>',
+      tel:'075-341-5022', q:'中村商店 京都拉麺小路 京都駅ビル10F'},
+     {n:'ワンタンメンの満月', z:'餛飩麵', badge:'席多・排隊快', easy:1,
+      p:'山形酒田昭和 35 年的老店，<b>薄皮餛飩</b>加清澈醬油湯 —— 對台灣人來說是最熟悉的一碗。約 30 席，是小路裡座位較多的一家。',
+      yen:'一人約 ¥1,000–1,500',
+      hrs:'11:00–22:00（L.O. 21:30）', off:'依館內・無定休',
+      loc:'京都駅ビル 10F 拉麺小路（中村商店隔壁）',
+      ord:'<b>門口食券機</b>・可刷卡、電子錢包、QR',
+      tel:'075-330-6746', q:'ワンタンメンの満月 京都拉麺小路 京都駅ビル10F'},
+     {n:'杵屋 京都ポルタ店', z:'讚岐烏龍麵', badge:'不想吃拉麵的話',
+      p:'車站前地下街 PORTA 裡的烏龍麵連鎖，關西的薄味高湯。<b>不用出站、不會淋到雨</b>，價位也最低。',
+      yen:'一人約 ¥800–1,400',
+      hrs:'11:00–22:00（L.O. 未確認）', off:'依 PORTA',
+      loc:'京都駅前地下街 PORTA B1F 西エリア',
+      ord:'圖片菜單・部分時段用手機掃碼點餐',
+      tel:'075-343-2562', q:'杵屋 京都ポルタ店 京都駅前地下街ポルタ'}],
+    note:{tone:'', html:'<b>拉麵小路全館 11:00–22:00、最後點餐 21:30。</b>19:30 上去就算排 30 分鐘也來得及。哪一家隊伍短就進哪一家，不用堅持。'}},
+
+   {k:'go', t:'20:40', solo:1, n:'回民宿', move:{f:'京都',t:'二条',by:'JR 嵯峨野線',min:'6分',fare:'¥190'},
+    acts:[{type:'ja',k:'toNijo'},{type:'transit',f:'京都駅',t:'二条駅'}]}
+  ]
+},
+
+/* ──────────────────────── 9/21 月 ──────────────────────── */
+{
+  d:'9/21', dow:'月', iso:'2026-09-21', no:'五日目', tag:'河原町', hol:'敬老の日', solo:'岳 17:00 歸隊', soloShort:'岳 17:00 才到',
+  title:'三条通の建築 ＋ 河原町逛街',
+  lede:'今天<b>全程用走的、零轉乘</b>：阪急坐兩站到河原町，剩下整天都在同一區裡繞。<b>姊姊想逛的幾乎都在這一天</b>。岳 17:00 到河原町會合。',
+  plan:{cond:'多雲', hi:31, lo:24, pop:60},
+  soloNote:'今天整天的範圍就在四条河原町方圓一公里，而且大半路段有屋頂。回家只要記得一件事：<b>阪急「京都河原町」站</b>。<br>完整的店家清單在 <a href="#" data-page="buy">姊姊的清單</a>。',
+  blocks:[
+   {k:'go', t:'09:40', hi:1, solo:1, n:'阪急 → 京都河原町', nja:'阪急京都線',
+    move:{f:'大宮',t:'京都河原町',by:'阪急京都線',min:'4分',fare:'約¥170'},
+    s:'<b>2 站，不用轉車。</b>大宮站是地下站，從民宿走路約 10 分鐘。',
+    acts:[{type:'ja',k:'hankyu'},{type:'transit',f:'阪急大宮駅',t:'京都河原町駅'}]},
+
+   {k:'at', t:'10:10', hi:1, solo:1, n:'三条通 近代建築散步', nja:'三条通',
+    s:'從河原町往西沿著三条通走，一路上是明治大正時期的紅磚與石造建築。免費、好走、下雨也還走得動。',
+    list:[
+     ['京都文化博物館 別館','辰野金吾設計的舊日本銀行京都分行（1906）。<b>別館大廳免費進去</b>，挑高的紅磚空間很好拍。','京都文化博物館 別館'],
+     ['中京郵便局','1902 年的紅磚郵局，外牆保存、內部改建，現在還在營業。','中京郵便局'],
+     ['1928ビル・SACRAビル','舊大阪每日新聞社京都分社與舊不動貯金銀行。現在是藝廊和小店。','1928ビル 京都']]},
+
+   {k:'at', t:'11:20', solo:1, n:'新風館', nja:'新風館',
+    s:'烏丸御池。舊京都中央電話局改建，隈研吾操刀。中庭、選物店、咖啡。<b>室內，下雨時的第一順位。</b>',
+    acts:[{type:'map',q:'新風館 京都'}]},
+
+   {k:'eat', t:'12:20', hi:1, solo:1, n:'錦市場', nja:'錦市場',
+    s:'四百年的「京都的廚房」，約 400 公尺的<b>有頂商店街</b>。連假會很擠，但完全不怕下雨。',
+    note:{tone:'', html:'錦市場現在原則上<b>禁止邊走邊吃</b>，多數店家門口有內用的小空間。逛完想坐下來吃，走到西邊出口就是下面這家。'},
+    acts:[{type:'map',q:'錦市場'},{type:'ja',k:'menu'}],
+    shopLead:'今天白天也是你們兩個。錦市場裡面站著吃的很多、坐下來的少，所以<b>先寫一家一定坐得下、也一定點得到餐的</b>。',
+    shops:[
+     {n:'名代とんかつ かつくら 四条東洞院店', z:'炸豬排', badge:'首選・最好點', pick:1, easy:1,
+      p:'京都自己的炸豬排老店，<b>這裡是創始店</b>。上桌會給一缽芝麻讓你自己磨，高麗菜絲、飯、味噌湯都可以續。<b>全年無休</b>，不用擔心假日。',
+      yen:'午餐一人約 ¥1,500–2,200',
+      hrs:'11:00–21:00（L.O. 20:30）', off:'<b>無休</b>（9/21 敬老の日・照常）',
+      loc:'東洞院通四条上ル 阪東屋町674・42 席・錦市場西口走路 5 分',
+      ord:'<b>有圖片菜單</b>・大型連鎖・觀光客多，指著點就可以',
+      tel:'075-221-4191', url:'https://www.katsukura.jp/shops/shijotoin/',
+      q:'名代とんかつ かつくら 四条東洞院店 京都市中京区東洞院通四条上る阪東屋町674'},
+     {n:'錦市場 逛著吃', z:'市場', badge:'想吃小東西的話',
+      p:'玉子燒、豆乳甜甜圈、漬物、章魚小丸子。<b>多數店門口有一小塊內用空間</b>，買了就在那裡吃完再走 —— 不要邊走邊吃。',
+      yen:'一樣 ¥300–800',
+      hrs:'多數店 10:00–18:00', off:'各店不同（部分水曜休）',
+      loc:'錦小路通・寺町到高倉 約 400 公尺',
+      q:'錦市場 京都'}]},
+
+   {k:'at', t:'13:40', solo:1, n:'DAISO 京都四条通店', nja:'ダイソー 京都四条通店',
+    s:'從錦市場往南走出來就是四条通。<b>2 樓是大創</b>，<b>1 樓是 Standard Products</b>（大創的質感線，¥300 起）。',
+    note:{tone:'', html:'<b>9:30–21:00</b>，是這一帶開最早、關最晚的一家 —— 所以排在這裡，晚點沒逛完也還回得來。'},
+    acts:[{type:'map',q:'DAISO 京都四条通店 京都市下京区四条通柳馬場東入ル立売東町12-1'}]},
+
+   {k:'at', t:'14:10', solo:1, n:'寺町京極 ・ 新京極商店街', nja:'寺町京極・新京極商店街',
+    s:'兩條平行的<b>全罩拱廊</b>。這是<b>藥妝的主場</b> —— マツモトキヨシ 京都新京極店在蛸薬師上ル，同一條街上還有好幾家可以比價。',
+    acts:[{type:'map',q:'マツモトキヨシ 京都新京極店'},{type:'ja',k:'taxfree'}]},
+
+   {k:'at', t:'15:00', hi:1, solo:1, n:'河原町OPA — 3COINS ＋ 扭蛋', nja:'河原町オーパ 5F',
+    s:'阪急京都河原町站走路 1 分鐘。<b>5 樓有 3COINS＋plus</b>，同一層還有 <b>#C-pla mini</b>（扭蛋）。',
+    acts:[{type:'map',q:'3COINS 河原町オーパ'}]},
+
+   {k:'at', t:'15:30', hi:1, solo:1, n:'画箋堂', nja:'画箋堂（がせんどう）',
+    s:'河原町五条，從四条往南走約 10 分鐘。<b>1913 年（大正2年）創業</b>的美術用品專門店，三層樓 —— 顏料、日本畫岩彩、畫布、紙、模型材料。',
+    note:{tone:'warn', html:'<b>今天是假日，只到 18:00</b>（平日到 19:00），所以排在 EDION 前面 —— <b>EDION 開到 21:00，晚點回來都可以</b>。全年無休；學生證有 9 折。'},
+    acts:[{type:'map',q:'画箋堂 京都'}]},
+
+   {k:'at', t:'16:40', hi:1, solo:1, n:'EDION — 扭蛋 800 面 ＋ 手機殼', nja:'エディオン 京都四条河原町店',
+    s:'走回四条河原町約 10 分鐘。<b>地下一樓整層是「ガシャポンのデパート」，800 面扭蛋機</b>（萬代直營）；樓上是家電，手機配件區就在這裡。<b>兩件事一棟解決。</b>',
+    note:{tone:'warn', html:'扭蛋機多數吃 <b>¥100 硬幣</b>，兌幣機假日會排隊 —— <b>身上先留一些百元硬幣</b>。<br>這裡<b>就在阪急京都河原町站出口旁</b>，所以等一下跟岳會合不用移動。'},
+    acts:[{type:'map',q:'ガシャポンのデパート エディオン京都四条河原町店'}]},
+
+   {k:'at', t:'17:00', hi:1, n:'岳在河原町會合', s:'就約在 <b>EDION 門口</b>（阪急京都河原町站出口旁），不用另外走。'},
+
+   {k:'at', t:'17:20', hi:1, n:'ミーナ京都 ＋ 無印良品', nja:'ミーナ京都・無印良品 京都BAL',
+    s:'從河原町站往北走到三条。<b>ユニクロ（B1–3F）和 GU（7F）在同一棟「ミーナ京都」</b>；再走 2 分鐘就是<b>無印良品 京都BAL 5 樓</b>。',
+    note:{tone:'warn', html:'<b>無印 20:00 就關</b>（ミーナ 到 21:00）—— 想逛無印的話先去那家。<br>ミーナ的<b>ユニクロ 1 樓在改裝</b>，其他樓層照常。'},
+    acts:[{type:'map',q:'ミーナ京都 京都市中京区河原町通三条下ル大黒町58'},{type:'map',q:'無印良品 京都BAL'}]},
+
+   {k:'eat', t:'18:30', n:'晚餐 — 三個人會合之後', s:'河原町周邊。岳 17:00 到了，這一餐不用擔心點餐。',
+    shopLead:'都在阪急京都河原町站走得到的範圍，不用訂位。',
+    shops:[
+     {n:'京極スタンド', z:'昭和大眾食堂', badge:'首選', pick:1,
+      p:'<b>1927 年（昭和2年）創業</b>，大理石吧台和桌子都是開業時的原件。定食、下酒菜、洋食一百多種，<b>一道一道分開點</b>，想吃多少點多少。跟陌生人併桌是這裡的常態。',
+      yen:'一人 ¥1,500–2,000',
+      hrs:'12:00–21:00', off:'火曜（<b>9/21 一・營業</b>）',
+      loc:'新京極通四条上ル 中之町546・走路 5 分',
+      ord:'紙本菜單為主，岳在場沒問題',
+      tel:'075-221-4156', url:'https://shinkyogoku-stand.jp/',
+      q:'京極スタンド 京都市中京区新京極通四条上ル中之町546'},
+     {n:'名代とんかつ かつくら 四条東洞院店', z:'炸豬排', badge:'一定有位',
+      p:'中午沒去成、或想吃扎實一點的話。<b>全年無休</b>、L.O. 20:30。',
+      yen:'一人 ¥1,500–2,200',
+      hrs:'11:00–21:00（L.O. 20:30）', off:'無休',
+      loc:'東洞院通四条上ル 阪東屋町674・42 席', ord:'圖片菜單',
+      tel:'075-221-4191', q:'名代とんかつ かつくら 四条東洞院店 京都市中京区東洞院通四条上る阪東屋町674'}]}
+  ]
+},
+
+/* ──────────────────────── 9/22 火 ──────────────────────── */
+{
+  d:'9/22', dow:'火', iso:'2026-09-22', no:'六日目', tag:'金閣寺', hol:'国民の休日',
+  title:'金閣寺・龍安寺 — 收尾日',
+  lede:'最後一個完整的日子。上午把「久久來一次京都」交代掉，下午照天氣決定，<b>傍晚早點回去整理行李</b>。',
+  plan:{cond:'多雲', hi:30, lo:25, pop:60},
+  blocks:[
+   {k:'note', t:'', tone:'ok', quiet:1, n:'今天刻意不排滿',
+    s:'原本這天是大文字山火床健行，已經拿掉 —— 花崗岩碎石濕了很滑，而且它的價值幾乎全在展望，起霧就等於零。在 60% 降雨機率下押一整個上午在它身上，不划算。'},
+
+   {k:'go', t:'08:20', n:'市バス 205 → 金閣寺道', move:{f:'四条大宮',t:'金閣寺道',by:'市バス 205',min:'約30分',fare:'¥230'},
+    acts:[{type:'transit',f:'四条大宮',t:'金閣寺'}]},
+
+   {k:'at', t:'09:00', hi:1, n:'金閣寺（鹿苑寺）', nja:'金閣寺（鹿苑寺）',
+    s:'<b>9:00 開門，第一批進去</b>（¥500）。單向參觀動線，全程鋪面平路，走完約 40 分鐘。',
+    note:{tone:'ok', html:'<b>下雨其實不減分</b> —— 金箔映在被雨打濕的鏡湖池上，比大晴天更有層次。'},
+    acts:[{type:'map',q:'金閣寺'}]},
+
+   {k:'at', t:'10:20', hi:1, n:'龍安寺', nja:'龍安寺',
+    s:'<b>8:00–17:00</b>（¥600）。金閣寺走路約 20 分，或搭市バス 59 兩站。',
+    list:[
+     ['石庭','十五顆石頭的枯山水。<b>從方丈的緣側（有屋簷）往外看</b>，所以下雨天照樣坐得住，雨中的白砂特別安靜。','龍安寺'],
+     ['鏡容池','方丈外面的大池子，繞一圈是平緩的林蔭步道。','龍安寺 鏡容池']]},
+
+   {k:'eat', t:'11:40', hi:1, n:'午餐 — 在回程路上吃', move:{f:'龍安寺',t:'北野天満宮前',by:'市バス 59',min:'約10分'},
+    s:'不用先回市區再找。下面兩家都<b>在金閣寺・龍安寺回四条大宮的那條線上</b>，吃完再搭車回去。',
+    acts:[{type:'transit',f:'龍安寺',t:'北野天満宮'}],
+    shopLead:'兩家都在北野天満宮／北野白梅町一帶，是回程必經的地方。',
+    shops:[
+     {n:'とようけ茶屋', z:'京豆腐', badge:'首選', pick:1,
+      p:'北野天満宮正對面，明治創業的豆腐店直營食堂。名物是<b>生湯葉丼</b>（熱騰騰的湯葉淋在飯上）。清淡、好消化，媽媽會喜歡。',
+      yen:'一人約 ¥1,000–1,800',
+      hrs:'<b>用餐 11:00–15:00</b>・賣店 10:00–18:30', off:'木曜（<b>9/22 二・營業</b>）',
+      loc:'今出川通御前西入 紙屋川町822・北野天満宮前',
+      ord:'會排隊，<b>11:30 前到比較快</b>', tone:'',
+      note:'<b>只做到 15:00</b>。從龍安寺過來約 15 分鐘，12:00 出發剛好。',
+      q:'とようけ茶屋 京都市上京区今出川通御前西入紙屋川町822'},
+     {n:'権太呂 金閣寺店', z:'蕎麥・烏龍麵',
+      p:'1923 年創業的京都麵店。<b>有庭園的座敷</b>，坐下來很鬆。招牌是親子丼和 うどんすき。今天是假日，開到 21:00。',
+      yen:'午餐一人約 ¥1,200–2,000',
+      hrs:'<b>假日 11:00–21:00</b>（平日到 20:00）', off:'水曜（9/22 二・營業）',
+      loc:'北区平野宮敷町26・金閣寺走路 10 分',
+      ord:'圖片菜單・可線上訂位',
+      url:'https://gontaro.co.jp/kyoto/kinkakuji.php',
+      q:'権太呂 金閣寺店 京都市北区平野宮敷町26'}]},
+
+   {k:'go', t:'13:10', n:'回市區', move:{f:'北野天満宮前 / 北野白梅町',t:'四条大宮',by:'市バス / 嵐電',min:'約20分'},
+    s:'北野白梅町搭<b>嵐電</b>到四条大宮是一條直線，不用轉車。',
+    acts:[{type:'transit',f:'北野白梅町',t:'四条大宮'}]},
+
+   {k:'fork', t:'14:00', at:'午餐後',
+    title:'下午看天決定',
+    lead:'今天是第六天，腳一定是累的。兩邊都可以。',
+    dry:{h:'還有體力 / 沒下雨 → 岡崎',
+      p:'<b>無鄰菴</b>（山縣有朋的別墅庭園，坐在屋內看庭，人少，<b>要線上預約</b>）＋ <b>京都市京セラ美術館</b>（青木淳改修，建築本身就好看）＋ 哲学の道。',
+      acts:[{type:'map',q:'無鄰菴 京都'},{type:'map',q:'京都市京セラ美術館'}]},
+    wet:{h:'下雨 / 腳痠 → 室內',
+      p:'回四条大宮休息，傍晚在<b>三条会商店街</b>做最後採買（藥妝、零食、伴手禮），然後早點吃晚餐、回去整理行李。',
+      acts:[{type:'map',q:'三条会商店街 京都'}]}},
+
+   {k:'eat', t:'17:30', hi:1, n:'最後一晚的晚餐',
+    s:'<b>這是建議先訂位的兩晚之二。</b>可以吃得比平常好一點。吃早一點，明天要收行李。',
+    shopLead:'下午走「岡崎」那條的話選第一家（回程順路），走「三条会」那條的話選第二家（就在民宿旁邊）。',
+    shops:[
+     {n:'京 権太呂 本店', z:'烏龍麵鍋 うどんすき', badge:'首選・可訂位', pick:1,
+      p:'1923 年創業的本店。<b>うどんすき</b>是用高湯煮蔬菜、蝦、雞和粗烏龍麵的鍋 —— 三個人圍一鍋，最後一晚的收尾剛好。町家建築，有座敷。',
+      yen:'一人約 ¥3,000–5,000',
+      hrs:'11:00–21:00（17:30 進去沒問題）', off:'水曜（<b>9/22 二・營業</b>）',
+      loc:'麸屋町通四条上ル・阪急京都河原町走路 5 分',
+      ord:'可線上訂位（ヒトサラ／一休）・也可電話',
+      url:'https://gontaro.co.jp/kyoto/',
+      q:'権太呂 本店 京都市中京区麸屋町通四条上ル'},
+     {n:'どんぐり 四条大宮店', z:'御好燒・鐵板燒', badge:'回民宿最近',
+      p:'下午如果走室內那條、人已經在四条大宮了，就不用再跑河原町。86 席，收行李前熱熱地吃一頓。',
+      yen:'一人約 ¥2,000–3,000',
+      hrs:'17:00–翌 01:00（L.O. 00:30）', off:'不定休',
+      loc:'四条通大宮東入南側・民宿走路 10 分', ord:'圖片菜單',
+      tel:'075-813-1888', q:'どんぐり 四条大宮店 京都市下京区四条通大宮東入ル南側'}]},
+
+   {k:'do', t:'20:00', hi:1, n:'整理行李', s:'明天 10:00 退房，早上不會有時間慢慢收。',
+    todoLead:'勾完就可以不用再想了：',
+    todo:[
+     '<b>行動電源全部拿出來、關機、各自裝進夾鏈袋</b>，放隨身小包（每人最多 2 個・<b>不能托運</b>・不能放頭頂行李櫃・機上不能充電）',
+     '<b>伴手禮翻到背面看成分</b> —— 含肉的（豚骨泡麵、肉乾、肉包）帶回台灣會被沒收並開罰',
+     '超過 100ml 的液體收進托運',
+     '刀具類（指甲剪以外）收進托運',
+     '免稅商品的封條不要拆',
+     '護照、登機證、HARUKA 電子票放同一個地方',
+     '08:00 的鬧鐘']}
+  ]
+},
+
+/* ──────────────────────── 9/23 水 ──────────────────────── */
+{
+  d:'9/23', dow:'水', iso:'2026-09-23', no:'七日目', tag:'返台', hol:'秋分の日', solo:'京都車站分開', soloShort:'車站分開',
+  title:'返台日',
+  lede:'岳送你們上 HARUKA 之後就分開了。<b>從關西機場站到報到櫃台是你們自己走</b> —— 跟來的時候完全一樣，只是反過來。',
+  plan:{cond:'多雲', hi:29, lo:22, pop:50},
+  soloNote:'京都車站之後是你們自己走。只有兩個動作：下車後搭免費接駁巴士到 T2、然後找報到櫃台。',
+  blocks:[
+   {k:'do', t:'08:00', quiet:1, n:'起床・最後檢查',
+    todo:['充電線、轉接頭','浴室、床頭櫃、冰箱都看一遍','護照、登機證、HARUKA QR','行動電源在隨身包裡']},
+
+   {k:'at', t:'10:00', hi:1, n:'退房', nja:'チェックアウト 10:00',
+    s:'<b>退房時間是 10:00，不是 11:00。</b>鑰匙放回鑰匙箱，把扣把壓回去。',
+    secret:'house'},
+
+   {k:'go', t:'10:20', n:'JR 嵯峨野線 → 京都', move:{f:'二条',t:'京都',by:'JR 嵯峨野線',min:'6分',fare:'¥190'},
+    acts:[{type:'transit',f:'二条駅',t:'京都駅'}]},
+
+   {k:'at', t:'10:35', hi:1, n:'京都車站 最後採買 ＋ 買午餐',
+    s:'到發車還有<b>快一小時</b>。今天午餐就是這裡買、上車吃。',
+    list:[
+     ['旅弁当 駅弁にぎわい 京都','在 <b>JR 在來線西口改札 與 新幹線中央口改札 之間的 2 樓</b>。京都的便當幾乎都集中在這一家，¥1,000–2,400。','旅弁当 駅弁にぎわい 京都駅'],
+     ['3COINS 京都ポルタ店','地下街 PORTA。<b>11:00 才開門</b> —— 逛完便當店剛好，但只有 15 分鐘。','3COINS 京都ポルタ店'],
+     ['ジェイアール京都伊勢丹 地下','和菓子、漬物、伴手禮。<b>10:00 開</b>，時間上來得及。','ジェイアール京都伊勢丹']],
+    note:{tone:'warn', html:'<b>伴手禮先確認成分</b> —— 含肉的東西（豚骨風味泡麵、肉乾、肉包、含豬肉萃取的調理包）帶回台灣會被沒收並開罰。<a href="#" data-page="pack">規定那一頁</a>寫得比較清楚。'},
+    acts:[{type:'map',q:'京都駅ビル'}]},
+
+   {k:'go', t:'11:30', hi:1, n:'HARUKA 23号 → 関西空港', nja:'特急 はるか 関西空港ゆき　30番のりば',
+    move:{f:'京都 11:30発',t:'関西空港 12:50着',by:'JR 特急 はるか 23号',min:'1小時20分'},
+    s:'<b>岳送到月台，在這裡分開。</b>京都發的 HARUKA 是<b>每小時 :00 和 :30</b>，月台固定是 <b>30 番のりば</b>（車站最西邊）。<br>剛買的便當在車上吃就好，HARUKA 是對號特急，可以安心吃東西。',
+    note:{tone:'warn', html:'今天是秋分の日、連假最後一天，往機場方向會很滿 —— <b>指定席一定要先劃好</b>，不然要拖著行李站一小時二十分。<br>沒趕上 11:30 的話，下一班是 <b>12:00</b>（12:00 発 → 13:20 着），還是來得及 —— 但就沒有緩衝了。'}},
+
+   {k:'go', t:'12:55', hi:1, warn:1, solo:1, n:'関西空港駅 → T2（免費接駁巴士）',
+    move:{f:'関西空港駅',t:'第2ターミナル',by:'無料連絡バス',min:'約15–20分',fare:'免費'},
+    s:'下車後往<b>エアロプラザ</b>方向走，那裡有往 <b>T2</b> 的免費接駁巴士。跟來的時候是同一條路，反過來走。',
+    note:{tone:'warn', html:'<b>T2 在另外一棟，距離約 4 公里，走不過去。</b>一定要搭這班巴士。看到「第2ターミナル」就上車。'},
+    acts:[{type:'ja',k:'kixBus'}]},
+
+   {k:'at', t:'13:20', hi:1, solo:1, n:'到 T2 — 樂桃 MM027',
+    s:'<b>櫃台 13:30 才開</b>，到了先坐一下沒關係。開櫃之後排隊，時間很夠。',
+    acts:[{type:'ja',k:'checkin'}],
+    note:{tone:'warn', html:'樂桃官網：報到櫃台與行李託運<b>起飛前 120 分開放、起飛前 30 分關閉</b>。'
+      + '15:30 的班機 → <b>13:30 開櫃、15:00 關櫃</b>。過了就不能報到也不能託運。<br>'
+      + 'T2 是獨立的一棟，<b>報到、安檢、登機門都在同一層</b>，不會走很遠。'}},
+
+   {k:'go', t:'15:30', hi:1, n:'KIX → TPE　樂桃 MM027', move:{f:'關西 T2',t:'桃園 T1',by:'Peach MM027',min:'約3小時'},
+    s:'17:30 抵達桃園。辛苦了。'},
+
+   {k:'note', t:'', tone:'gold', quiet:1, n:'岳',
+    s:'岳的飛機是晚上 20:05 從關西回成田，送完你們之後他會去大阪找朋友。'
+      + '從京都車站分開之後到登機，有任何事都還是打得到他。上飛機之前傳個訊息給他。',
+    acts:[{type:'yuetel'}]}
+  ]
+}
+];
+</script>
+<script>
+(function(){
+"use strict";
+document.documentElement.className += ' js';
+
+/* ==========================================================================
+   1. 機密（鍵箱コード・WiFi・KKdayのQR）
+
+   repo は PUBLIC。住所は明文で要る（運転手に見せるものだから）が、
+   住所と鍵箱コードが揃って公開されたら、家の鍵をネットに置くのと同じ。
+   だから鍵の側だけ封じてある。
+
+     鍵     = PBKDF2-HMAC-SHA256(合言葉, salt, 600k, 64B) -> kEnc | kMac
+     鍵流   = HMAC-SHA256(kEnc, BE32(i)) の連結
+     暗号文 = 平文 XOR 鍵流
+     タグ   = HMAC-SHA256(kMac, salt || 暗号文)[:16]
+
+   encrypt-then-MAC。合言葉が違えばタグの段階で弾ける。
+   ========================================================================== */
+var SEALED = {"salt": "kyoto-family-2026", "iter": 600000, "tag": "RqNqq87w1RPDgieixieQKQ==", "ct": "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"};
+var LS_PW = 'kf.pw', LS_VIEW = 'kf.view', LS_TODO = 'kf.todo';
+var SECRET = null;
+
+function b64b(s){var x=atob(s),a=new Uint8Array(x.length);for(var i=0;i<x.length;i++)a[i]=x.charCodeAt(i);return a}
+function be32(n){return new Uint8Array([(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255])}
+
+function unseal(pw){
+  var C = window.crypto && window.crypto.subtle;
+  if (!C) return Promise.reject(new Error('nocrypto'));
+  var enc = new TextEncoder();
+  var salt = enc.encode(SEALED.salt);
+  var ct = b64b(SEALED.ct), tag = b64b(SEALED.tag);
+  return C.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveBits'])
+    .then(function(k){
+      return C.deriveBits({name:'PBKDF2', salt:salt, iterations:SEALED.iter, hash:'SHA-256'}, k, 512);
+    })
+    .then(function(bits){
+      var dk = new Uint8Array(bits);
+      return Promise.all([
+        C.importKey('raw', dk.slice(0,32), {name:'HMAC', hash:'SHA-256'}, false, ['sign']),
+        C.importKey('raw', dk.slice(32),   {name:'HMAC', hash:'SHA-256'}, false, ['sign'])
+      ]);
+    })
+    .then(function(keys){
+      var kE = keys[0], kM = keys[1];
+      var msg = new Uint8Array(salt.length + ct.length);
+      msg.set(salt,0); msg.set(ct, salt.length);
+      // タグを先に照合してから復号する
+      return C.sign('HMAC', kM, msg).then(function(sig){
+        var got = new Uint8Array(sig).slice(0,16), ok = got.length === tag.length;
+        for (var i=0;i<tag.length;i++) ok = ok && (got[i] === tag[i]);
+        if (!ok) throw new Error('bad');
+        var jobs = [];
+        for (var b=0;b<Math.ceil(ct.length/32);b++) jobs.push(C.sign('HMAC', kE, be32(b)));
+        return Promise.all(jobs);
+      });
+    })
+    .then(function(parts){
+      var ks = new Uint8Array(parts.length*32);
+      for (var i=0;i<parts.length;i++) ks.set(new Uint8Array(parts[i]), i*32);
+      var pt = new Uint8Array(ct.length);
+      for (var j=0;j<ct.length;j++) pt[j] = ct[j] ^ ks[j];
+      return JSON.parse(new TextDecoder('utf-8').decode(pt));
+    });
+}
+
+/* ==========================================================================
+   2. 小物
+   ========================================================================== */
+var $ = function(s,r){return (r||document).querySelector(s)};
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function mapURL(q){
+  if (q === 'HOUSE_Q') q = HOUSE_Q;
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
+}
+function transitURL(f,t){
+  return 'https://www.google.com/maps/dir/?api=1&origin=' + encodeURIComponent(f)
+       + '&destination=' + encodeURIComponent(t) + '&travelmode=transit';
+}
+function walkURL(f,t){
+  if (f === 'HOUSE_Q') f = HOUSE_Q;
+  return 'https://www.google.com/maps/dir/?api=1&origin=' + encodeURIComponent(f)
+       + '&destination=' + encodeURIComponent(t) + '&travelmode=walking';
+}
+function lsGet(k,d){try{var v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function isoToday(){
+  var n=new Date(), m=n.getMonth()+1, d=n.getDate();
+  return n.getFullYear()+'-'+(m<10?'0':'')+m+'-'+(d<10?'0':'')+d;
+}
+function tripIdx(){
+  var iso = isoToday();
+  for (var i=0;i<DAYS.length;i++) if (DAYS[i].iso === iso) return i;
+  return -1;
+}
+
+/* ==========================================================================
+   3. 天気（Open-Meteo・APIキー不要・CORS可）
+   7日ぶんまとめて1回。取れなければ行前の予報値を出し、そう書く。
+   ========================================================================== */
+var WX = null, WX_STATE = 'loading';
+var WXCODE = {
+  0:['☀️','晴'], 1:['🌤','大致晴'], 2:['⛅️','多雲時晴'], 3:['☁️','多雲'],
+  45:['🌫','霧'], 48:['🌫','霧'],
+  51:['🌦','毛毛雨'], 53:['🌦','毛毛雨'], 55:['🌦','毛毛雨'], 56:['🌧','凍雨'], 57:['🌧','凍雨'],
+  61:['🌧','小雨'], 63:['🌧','雨'], 65:['🌧','大雨'], 66:['🌧','凍雨'], 67:['🌧','凍雨'],
+  71:['🌨','雪'], 73:['🌨','雪'], 75:['🌨','大雪'], 77:['🌨','雪'],
+  80:['🌦','陣雨'], 81:['🌦','陣雨'], 82:['⛈','強陣雨'],
+  85:['🌨','陣雪'], 86:['🌨','陣雪'], 95:['⛈','雷雨'], 96:['⛈','雷雨'], 99:['⛈','雷雨']
+};
+function loadWx(){
+  var url = 'https://api.open-meteo.com/v1/forecast'
+    + '?latitude=35.0116&longitude=135.7681'
+    + '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max'
+    + '&timezone=Asia%2FTokyo&start_date=2026-09-17&end_date=2026-09-23&_=' + Date.now();
+  return fetch(url, {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .then(function(d){
+      if (!d || !d.daily || !d.daily.time) throw 0;
+      WX = {};
+      d.daily.time.forEach(function(t,i){
+        if (d.daily.temperature_2m_max[i] == null) return;
+        WX[t] = {code:d.daily.weather_code[i],
+                 hi:Math.round(d.daily.temperature_2m_max[i]),
+                 lo:Math.round(d.daily.temperature_2m_min[i]),
+                 pop:d.daily.precipitation_probability_max[i]};
+      });
+      WX_STATE = 'ok';
+    })
+    .catch(function(){ WX_STATE = 'fail'; });
+}
+function wxHTML(day){
+  var live = WX && WX[day.iso];
+  if (WX_STATE === 'loading' && !live) {
+    return '<div class="wx wait"><span class="ic">⋯</span><span class="c">取得中</span>'
+      + '<span class="t">行前 ' + esc(day.plan.cond) + '　' + day.plan.hi + '° / ' + day.plan.lo + '°</span>'
+      + '<span class="pop">' + day.plan.pop + '%<em>降雨</em></span></div>';
+  }
+  var w = live || {code:null, hi:day.plan.hi, lo:day.plan.lo, pop:day.plan.pop};
+  var ic, cond;
+  if (w.code != null && WXCODE[w.code]) { ic = WXCODE[w.code][0]; cond = WXCODE[w.code][1]; }
+  else { ic = (day.plan.pop >= 50 ? '🌧' : '☁️'); cond = day.plan.cond; }
+  return '<div class="wx"><span class="ic">' + ic + '</span>'
+    + '<span class="c">' + esc(cond) + '</span>'
+    + '<span class="t">' + w.hi + '° / ' + w.lo + '°</span>'
+    + (live ? '' : '<span class="est">行前預報</span>')
+    + '<span class="pop">' + (w.pop == null ? '—' : w.pop + '%') + '<em>降雨</em></span></div>';
+}
+
+/* ==========================================================================
+   4. 部品
+   ========================================================================== */
+function actsHTML(acts){
+  var out = [];
+  (acts||[]).forEach(function(a){
+    if (a.type === 'map')     out.push('<a class="btn" target="_blank" rel="noopener" href="' + mapURL(a.q) + '"><span class="g">◎</span>地圖</a>');
+    if (a.type === 'transit') out.push('<a class="btn" target="_blank" rel="noopener" href="' + transitURL(a.f,a.t) + '"><span class="g">⇢</span>即時班次</a>');
+    if (a.type === 'walk')    out.push('<a class="btn" target="_blank" rel="noopener" href="' + walkURL(a.f,a.t) + '"><span class="g">⇢</span>' + esc(a.label || '走路怎麼去') + '</a>');
+    if (a.type === 'ja')      out.push('<button class="btn ja" type="button" data-ja="' + a.k + '">あ ' + esc(JA[a.k].zh) + '</button>');
+    if (a.type === 'qr')      out.push('<button class="btn qr" type="button" data-qr="1">▦ 出示憑證 QR</button>');
+    if (a.type === 'yuetel' && SECRET) out.push('<a class="btn tel" href="tel:' + esc(SECRET.yueTel) + '">☏ 岳　' + esc(SECRET.yuePhone) + '</a>');
+  });
+  return out.length ? '<div class="acts">' + out.join('') + '</div>' : '';
+}
+function listHTML(list){
+  if (!list) return '';
+  return list.map(function(r){
+    return '<div class="row"><div class="h">' + r[0] + '</div><p>' + r[1] + '</p>'
+      + '<div class="acts"><a class="btn" target="_blank" rel="noopener" href="' + mapURL(r[2]) + '"><span class="g">◎</span>地圖</a></div></div>';
+  }).join('');
+}
+function shopsHTML(shops, lead){
+  if (!shops || !shops.length) return '';
+  var h = '<p class="shop-lead">' + (lead || '這幾家是先查好的，<b>參考用</b> —— 當天想吃什麼就吃什麼。') + '</p><div class="shops">';
+  shops.forEach(function(x){
+    h += '<div class="shop">';
+    h += '<div class="shop-top"><p class="shop-nm">' + esc(x.n) + (x.z ? '<span class="z">' + esc(x.z) + '</span>' : '') + '</p>'
+       + (x.badge ? '<span class="badge' + (x.pick ? ' pick' : '') + (x.easy ? ' easy' : '') + '">' + esc(x.badge) + '</span>' : '')
+       + '</div>';
+    if (x.p) h += '<p>' + x.p + (x.yen ? ' <span class="yen">' + esc(x.yen) + '</span>' : '') + '</p>';
+    var m = [];
+    if (x.hrs) m.push(['營業', x.hrs]);
+    if (x.off) m.push(['公休', x.off]);
+    if (x.loc) m.push(['位置', x.loc]);
+    if (x.ord) m.push(['點餐', x.ord]);
+    if (m.length) h += '<dl class="shop-meta">' + m.map(function(r){ return '<div><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>'; }).join('') + '</dl>';
+    if (x.note) h += '<div class="note ' + (x.tone||'') + '">' + x.note + '</div>';
+    var a = [];
+    if (x.tel) a.push('<a class="btn tel" href="tel:' + x.tel.replace(/[^\d+]/g,'') + '">☏ ' + esc(x.tel) + '</a>');
+    a.push('<a class="btn" target="_blank" rel="noopener" href="' + mapURL(x.q || x.n) + '"><span class="g">◎</span>地圖</a>');
+    if (x.url) a.push('<a class="btn" target="_blank" rel="noopener" href="' + esc(x.url) + '">官網</a>');
+    h += '<div class="acts">' + a.join('') + '</div></div>';
+  });
+  return h + '</div>';
+}
+function todoHTML(items, lead, key){
+  var saved = {};
+  try { saved = JSON.parse(lsGet(LS_TODO,'{}')) || {}; } catch(e){}
+  return (lead ? '<p class="sub" class="shop-lead">' + lead + '</p>' : '')
+    + '<ul class="todo">' + items.map(function(it,i){
+        var id = key + '.' + i;
+        return '<li data-todo="' + id + '" data-on="' + (saved[id]?'1':'0') + '">'
+             + '<span class="bx">✓</span><span class="tx">' + it + '</span></li>';
+      }).join('') + '</ul>';
+}
+function secretHTML(kind){
+  if (!SECRET) return '<div class="note warn">尚未解鎖</div>';
+  if (kind === 'house') {
+    return '<div class="note gold">'
+      + '<span class="h">鑰匙箱密碼</span>'
+      + '<div class="bigno">' + esc(SECRET.keybox) + '</div>'
+      + '輸入號碼之後，<b>要用力把扣把往下壓</b>，不然開不了。'
+      + '<div style="margin-top:10px;padding-top:9px;border-top:1px solid var(--gold-b)">'
+      + 'WiFi　<b>' + esc(SECRET.wifiSsid) + '</b><br>密碼　<b>' + esc(SECRET.wifiPass) + '</b></div>'
+      + '</div>';
+  }
+  return '';
+}
+
+/* ==========================================================================
+   5. 一日の描画
+   ========================================================================== */
+function blockHTML(b, di, bi){
+  if (b.k === 'fork') {
+    return '<div class="blk hi rv"><div class="tm">' + esc(b.t||'') + '</div>'
+      + '<p class="nm">' + esc(b.title) + '</p>'
+      + '<div class="fork">'
+      + '<div class="fork-h"><span class="p">決策點</span>' + esc(b.at) + '</div>'
+      + '<div class="fork-l">' + b.lead + '</div>'
+      + '<div class="branch dry"><h4>☀️ ' + esc(b.dry.h) + '</h4><p>' + b.dry.p + '</p>' + actsHTML(b.dry.acts) + '</div>'
+      + '<div class="branch wet"><h4>🌧 ' + esc(b.wet.h) + '</h4><p>' + b.wet.p + '</p>' + actsHTML(b.wet.acts) + '</div>'
+      + '</div></div>';
+  }
+
+  var cls = 'blk rv' + (b.hi ? ' hi' : '') + (b.warn ? ' warn' : '') + (b.quiet ? ' quiet' : '');
+  var h = '<div class="' + cls + '">';
+  h += '<div class="tm">' + esc(b.t || '') + '</div>';
+  if (b.n) h += '<p class="nm">' + b.n + (b.nja ? '<span class="ja">' + esc(b.nja) + '</span>' : '') + '</p>';
+  if (b.s) h += '<p class="sub">' + b.s + '</p>';
+  if (b.move) {
+    h += '<div class="move"><b>' + esc(b.move.f) + '</b><span class="arw">→</span><b>' + esc(b.move.t) + '</b>'
+      + '<span class="meta">' + esc(b.move.by) + '<br>' + esc(b.move.min)
+      + (b.move.fare ? '・' + esc(b.move.fare) : '') + '</span></div>';
+  }
+  if (b.note) h += '<div class="note ' + (b.note.tone||'') + '">' + b.note.html + '</div>';
+  if (b.list) h += listHTML(b.list);
+  if (b.shops) h += shopsHTML(b.shops, b.shopLead);
+  if (b.secret) h += secretHTML(b.secret);
+  if (b.todo) h += todoHTML(b.todo, b.todoLead, di + '.' + bi);
+  h += actsHTML(b.acts);
+  h += '</div>';
+  return h;
+}
+
+function dayHTML(day, di){
+  var chips = [];
+  if (day.hol)  chips.push('<span class="chip hol">' + esc(day.hol) + '</span>');
+  if (day.free) chips.push('<span class="chip free">唯一的平日</span>');
+  if (day.solo) chips.push('<span class="chip solo">' + esc(day.solo) + '</span>');
+
+  var h = '<section class="daytop"><div class="art" aria-hidden="true">'
+    + '<span class="mist m1"></span><span class="mist m2"></span><span class="seigaiha"></span></div>'
+    + '<div class="wrap">'
+    + '<p class="kicker"><span>' + esc(day.no) + '　' + esc(day.d) + '（' + esc(day.dow) + '）</span>' + chips.join('') + '</p>'
+    + '<h1 class="dayh">' + day.title + '</h1>'
+    + '<div class="rule"></div>'
+    + '<p class="lede">' + day.lede + '</p>'
+    + (day.soloNote ? '<div class="note gold" style="margin-top:16px">' + day.soloNote + '</div>' : '')
+    + wxHTML(day)
+    + '</div></section>';
+
+  h += '<div class="wrap"><div class="tl">'
+    + day.blocks.map(function(b,bi){ return blockHTML(b, di, bi); }).join('')
+    + '</div></div>';
+  return h;
+}
+
+/* ==========================================================================
+   6. 独立ページ
+   ========================================================================== */
+function pageShell(kicker, title, body){
+  return '<div class="wrap page"><p class="kicker">' + esc(kicker) + '</p>'
+       + '<h1>' + esc(title) + '</h1><div class="rule"></div>' + body + '</div>';
+}
+
+var PAGES = {
+  home: function(){
+    var ti = tripIdx();
+    var days = DAYS.map(function(d,i){
+      var x = d.soloShort || d.hol || (d.free ? '唯一的平日' : '');
+      return '<button class="hday' + (i===ti?' today':'') + '" data-view="d' + i + '">'
+        + '<span class="d">' + esc(d.d) + '（' + esc(d.dow) + '）</span>'
+        + '<span class="n">' + esc(d.tag) + '</span>'
+        + '<span class="x">' + (i===ti ? '今天' : esc(x)) + '</span></button>';
+    }).join('');
+
+    var cards = [
+      ['tickets','▦','票券・預約','KKday 的 QR、HARUKA、機票、訂房'],
+      ['house',  '⌂','住宿',      '地址、鑰匙箱、WiFi、怎麼回來'],
+      ['sos',    '✆','緊急・求救','走散、跟丟團、生病的時候'],
+      ['ja',     'あ','日文對照卡','把手機轉過去給對方看'],
+      ['buy',    '袋','姊姊的清單','店在哪、幾點關、怎麼走在一起'],
+      ['prep',   '✓','出發前準備','房間有什麼、要帶什麼、洗衣'],
+      ['pack',   '▭','行李・規定','行動電源、免稅、不能帶回台灣的'],
+      ['about',  '※','行程怎麼來的','改了什麼、為什麼']
+    ].map(function(c){
+      return '<button class="hcard" data-view="p' + c[0] + '">'
+        + '<span class="ic">' + c[1] + '</span>'
+        + '<span class="t">' + esc(c[2]) + '</span>'
+        + '<span class="s">' + esc(c[3]) + '</span></button>';
+    }).join('');
+
+    var now = ti >= 0
+      ? '<div class="now">今天是 <b>' + esc(DAYS[ti].d) + '　' + esc(DAYS[ti].tag) + '</b>'
+        + '<span class="go"><button class="btn" type="button" data-view="d' + ti + '">看今天的行程 →</button></span></div>'
+      : '<div class="now">旅行期間，這個 app 每次打開都會<b>自動跳到當天</b>。'
+        + '<span class="go"><button class="btn" type="button" data-view="d0">從第一天看起 →</button></span></div>';
+
+    return '<div class="wrap home">'
+      + '<div class="hero"><div class="art" aria-hidden="true">'
+      + '<span class="mist m1"></span><span class="mist m2"></span><span class="seigaiha"></span></div>'
+      + '<div style="position:relative;z-index:2">'
+      + '<p class="kicker">KYOTO　FAMILY　SEVEN　DAYS</p>'
+      + '<h1>京都・家族の七日</h1>'
+      + '<div class="rule"></div>'
+      + '<p class="sub">2026.9.17（木）– 9.23（水）　媽媽・姊姊・岳</p>'
+      + now
+      + '</div></div>'
+      + '<div class="hsec"><h2>七天</h2><div class="hdays">' + days + '</div></div>'
+      + '<div class="hsec"><h2>隨時打得開</h2><div class="hgrid">' + cards + '</div></div>'
+      + '<div class="hsec"><h2>先看這三個</h2>'
+      + '<div class="note warn"><span class="h">9/20 08:15　京都駅八条口</span>'
+      + '一日遊集合 08:30，憑證明訂<b>逾時不候、不退款</b>。這是整趟唯一一個補救不了的時間點。</div>'
+      + '<div class="note"><span class="h">走散了就站著別動</span>'
+      + '先打給岳：<a class="btn tel" href="tel:' + esc(SECRET.yueTel) + '" style="margin-top:6px">☏ ' + esc(SECRET.yuePhone) + '</a></div>'
+      + '<div class="note"><span class="h">日文講不出來沒關係</span>'
+      + '需要的整句都寫好了，<b>把手機轉過去給對方看就好</b>。'
+      + '<span class="go" style="display:block;margin-top:8px"><button class="btn" type="button" data-view="pja">打開日文對照卡 →</button></span></div>'
+      + '</div>'
+      + '</div>';
+  },
+
+  tickets: function(){
+    if (!SECRET) return pageShell('TICKETS','票券・預約','<div class="note warn">尚未解鎖</div>');
+    return pageShell('TICKETS','票券・預約',
+      '<div class="sec"><h2>KKday　天橋立一日遊</h2>'
+      + '<div class="qrbox"><img src="' + SECRET.kkQr + '" alt="KKday 憑證 QR">'
+      + '<p class="code">' + esc(SECRET.kkCode) + '</p><p class="cl">確認號碼</p></div>'
+      + '<dl class="kv" style="margin-top:20px">'
+      + '<dt>日期</dt><dd><b>9/20（日）</b></dd>'
+      + '<dt>集合</dt><dd><b>08:30</b>　京都駅八条口 貸切バス乗降場〈アバンティ前〉</dd>'
+      + '<dt>發車</dt><dd><b>08:45</b>（逾時不候・不退款）</dd>'
+      + '<dt>解散</dt><dd><b>17:30</b>　同一個地方</dd>'
+      + '<dt>訂單</dt><dd>' + esc(SECRET.kkOrder) + '</dd>'
+      + '<dt>預約人</dt><dd>陳柏岳</dd>'
+      + '<dt>旅客代表</dt><dd>CHIA HAN, CHUANG</dd>'
+      + '<dt>人數</dt><dd>成人 × 2</dd></dl>'
+      + '<div class="note">現場<b>出示這個 QR</b>，或報預約人的名字。導遊穿<b>橘色 EasyGo 背心</b>、拿 EASY GO 的旗子。</div>'
+      + '<div class="note warn">這個團<b>不含午餐</b>，前一晚要先去便利商店買好，並帶一個裝垃圾的塑膠袋。</div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>HARUKA　機場特急</h2>'
+      + '<dl class="kv">'
+      + '<dt>形式</dt><dd><b>電子票</b>　手機 QR 直接刷閘門，不用換票</dd>'
+      + '<dt>去程</dt><dd>9/17　関西空港 → 京都　<b>每小時 :14 / :44</b>　1小時20分</dd>'
+      + '<dt>回程</dt><dd>9/23　京都 → 関西空港　<b>11:15 発</b>　12:35 着</dd>'
+      + '</dl>'
+      + '<div class="note warn">回程 9/23 是<b>秋分の日、連假最後一天</b>，往機場方向會很滿。指定席要先劃好，不然要拖著行李站一小時二十分。</div>'
+      + '<div class="acts"><button class="btn ja" type="button" data-ja="haruka">あ 去程月台</button>'
+      + '<button class="btn ja" type="button" data-ja="harukaKix">あ 回程月台</button></div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>機票　樂桃航空</h2>'
+      + '<dl class="kv">'
+      + '<dt>去程</dt><dd><b>9/17（四）MM024</b>　TPE 桃園 T1 09:30 → KIX 關西 T2 13:25</dd>'
+      + '<dt>回程</dt><dd><b>9/23（三）MM027</b>　KIX 關西 T2 15:30 → TPE 桃園 T1 17:30</dd>'
+      + '<dt>報到</dt><dd>起飛前 <b>120 分開櫃、30 分關櫃</b>（回程＝13:30 開、<b>15:00 關</b>）</dd>'
+      + '<dt>手提行李</dt><dd>每人 <b>2 件、合計 7 kg 以內</b>，三邊合計 <b>115 cm 以內</b>（約 50×40×25，含輪子與把手）</dd>'
+      + '</dl>'
+      + '<div class="note warn">兩班都在<b>關西第 2 航廈</b>。T2 沒有車站，'
+      + '進出都要搭免費接駁巴士到エアロプラザ。</div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>住宿</h2>'
+      + '<dl class="kv">'
+      + '<dt>確認碼</dt><dd><b>' + esc(SECRET.bkRef) + '</b>　PIN ' + esc(SECRET.bkPin) + '</dd>'
+      + '<dt>住客</dt><dd>CHEN PO YUEH　3 位成人・6 晚</dd>'
+      + '<dt>入住</dt><dd>9/17　15:00 起（行李 10:00 起可寄放）</dd>'
+      + '<dt>退房</dt><dd>9/23　<b>10:00 前</b></dd>'
+      + '</dl></div>');
+  },
+
+  house: function(){
+    var s = SECRET
+      ? '<div class="sec"><h2>自助入住</h2>' + secretHTML('house')
+        + '<div class="acts">'
+        + '<a class="btn" target="_blank" rel="noopener" href="' + esc(SECRET.houseGuide) + '">房間・餐廳指南</a>'
+        + '<a class="btn" target="_blank" rel="noopener" href="' + esc(SECRET.form) + '">事前登記表單</a>'
+        + '</div></div>'
+      : '<div class="note warn">尚未解鎖</div>';
+    return pageShell('STAY','Ken House Kyoto',
+      '<div class="sec"><h2>地址・聯絡</h2>'
+      + '<div class="showcard"><p class="lb">地址（給司機看）</p><p class="jp sm">' + esc(HOUSE) + '</p></div>'
+      + '<div class="acts">'
+      + '<a class="btn" target="_blank" rel="noopener" href="' + mapURL('HOUSE_Q') + '"><span class="g">◎</span>地圖</a>'
+      + '<a class="btn tel" href="tel:+817026422345">民宿 070-2642-2345</a>'
+      + '<button class="btn ja" type="button" data-ja="house">あ 計程車用</button>'
+      + '</div></div>'
+      + s
+      + '<div class="sec"><h2>怎麼回來</h2>'
+      + '<dl class="kv">'
+      + '<dt>最近車站</dt><dd><b>JR 二条駅</b>　走路約 10 分</dd>'
+      + '<dt>從京都駅</dt><dd>JR 嵯峨野線 2 站・6 分・¥190</dd>'
+      + '<dt>從河原町</dt><dd>阪急 京都河原町 → 大宮　2 站・4 分</dd>'
+      + '<dt>計程車</dt><dd>京都駅から 約 ¥1,500</dd>'
+      + '</dl>'
+      + '<div class="acts"><button class="btn ja" type="button" data-ja="toNijo">あ 要去二条站</button></div>'
+      + '</div>');
+  },
+
+  sos: function(){
+    return pageShell('HELP','緊急・求救',
+      '<div class="sec"><h2>先打岳</h2>'
+      + '<div class="note gold"><span class="h">岳的日本手機</span>'
+      + '在日本境內直接撥 <b>' + esc(SECRET.yuePhone) + '</b>。這支在日本打得通，台灣的號碼在這裡打不通。</div>'
+      + '<div class="acts"><a class="btn tel" href="tel:' + esc(SECRET.yueTel) + '">☏ 岳　' + esc(SECRET.yuePhone) + '</a></div>'
+      + '<div class="note"><span class="h">先存進手機通訊錄</span>'
+      + '出發前就存好，不要到現場才翻這一頁。沒有網路也打得出去 —— <b>打電話不需要網路</b>。</div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>岳不在的時候（9/20・9/21 白天）</h2>'
+      + '<div class="note"><span class="h">跟丟 KKday 的團（9/20）</span>'
+      + '當地服務商是日本的旅行社，處理的就是這件事。</div>'
+      + '<div class="acts"><a class="btn tel" href="tel:+81662257465">Japan Holiday Travel　+81 66-225-7465</a></div>'
+      + '<div class="note"><span class="h">想找會講中文的人</span>'
+      + 'KKday 客服<b>台灣時間 07:00–24:00</b>（日本時間 08:00–01:00）。<br>'
+      + 'KKday APP →「訂單管理」→「聯絡客服」→ 右上角電話圖示 → <b>免費網路電話</b>。</div>'
+      + '<div class="note warn"><span class="h">走散了</span>'
+      + '<b>留在原地不要動</b>，站在剛才那個地方等，然後打給岳。'
+      + '兩個人都走動的話會越走越遠。</div>'
+      + '<div class="acts"><a class="btn tel" href="tel:' + esc(SECRET.yueTel) + '">☏ 岳　' + esc(SECRET.yuePhone) + '</a></div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>問路</h2>'
+      + '<div class="showcard"><p class="lb">把這一面轉過去給對方看</p>'
+      + '<p class="jp sm">' + esc(JA.lost.jp).replace(/\n/g,'<br>') + '</p></div>'
+      + '<div class="showcard"><p class="lb">要去的地方</p><p class="jp sm">' + esc(HOUSE) + '</p></div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>真的很嚴重</h2>'
+      + '<dl class="kv">'
+      + '<dt>救護車・火災</dt><dd><b>119</b></dd>'
+      + '<dt>警察</dt><dd><b>110</b></dd>'
+      + '<dt>台北駐大阪</dt><dd>緊急聯絡 <b>+81 90-8794-4568</b></dd>'
+      + '<dt>Booking</dt><dd>台灣 02-8793-3062／海外 +852-3077-5532</dd>'
+      + '</dl></div>');
+  },
+
+  ja: function(){
+    var groups = [
+      ['機場・車站', ['kixBus','haruka','harukaKix','toNijo','hankyu','checkin']],
+      ['計程車',     ['house','toHachijo']],
+      ['一日遊',     ['meetTime']],
+      ['店裡',       ['three','menu','taxfree']],
+      ['問路',       ['lost']]
+    ];
+    var body = '<p class="lede">開口說不出來也沒關係 —— <b>把手機轉過去給對方看就好</b>。</p>';
+    groups.forEach(function(g){
+      body += '<div class="sec"><h2>' + g[0] + '</h2>'
+        + g[1].map(function(k){
+            var c = JA[k];
+            return '<div class="showcard"><p class="lb">' + esc(c.zh) + '</p>'
+                 + '<p class="jp' + (c.sm?' sm':'') + '">' + esc(c.jp).replace(/\n/g,'<br>') + '</p></div>';
+          }).join('')
+        + '</div>';
+    });
+    return pageShell('PHRASES','日文對照卡', body);
+  },
+
+  prep: function(){
+    function chk(key, lead, items){
+      var saved = {};
+      try { saved = JSON.parse(lsGet(LS_TODO,'{}')) || {}; } catch(e){}
+      return (lead ? '<p class="shop-lead">' + lead + '</p>' : '')
+        + '<ul class="todo">' + items.map(function(it,i){
+            var id = 'prep.' + key + '.' + i;
+            return '<li data-todo="' + id + '" data-on="' + (saved[id]?'1':'0') + '">'
+                 + '<span class="bx">✓</span><span class="tx">' + it + '</span></li>';
+          }).join('') + '</ul>';
+    }
+
+    return pageShell('BEFORE','出發前準備',
+      '<p class="lede">房間裡已經有的東西<b>不用再帶</b> —— 下面第一段是照訂房確認單一項一項列的。'
+      + '第二段才是真的要自己準備的。</p>'
+
+      + '<div class="sec"><h2>房間裡已經有（不用帶）</h2>'
+      + '<div class="note ok"><span class="h">洗澡・盥洗</span>'
+      + '<b>免費盥洗用品</b>、毛巾、吹風機、浴缸或淋浴間、免治馬桶、<b>廁所衛生紙</b>、手部消毒液、私人衛浴。'
+      + '還有一個<b>熱水按摩池</b>。</div>'
+      + '<div class="note ok"><span class="h">廚房</span>'
+      + '簡易廚房、冰箱、微波爐、<b>電熱水壺</b>、咖啡機、泡茶／泡咖啡器具、烤麵包機、廚房用品、餐具、用餐區、餐桌。</div>'
+      + '<div class="note ok"><span class="h">洗衣</span>'
+      + '<b>洗衣機有</b>、清潔用品有、<b>晾衣架</b>有、折疊床有、衣架、更衣室、衣櫃或衣櫥。</div>'
+      + '<div class="note ok"><span class="h">其他</span>'
+      + '空調、暖氣、電風扇、平面電視、書桌、<b>床邊插座</b>、拖鞋、熨斗與熨燙設施、沙發床、陽台（花園景觀）、私人入口、免費 WiFi。</div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>房間裡「沒有」的兩件事</h2>'
+      + '<div class="note warn"><span class="h">① 沒有烘乾機</span>'
+      + '訂房確認單上有洗衣機、有晾衣架，<b>但沒有列烘乾機</b>。'
+      + '而這七天降雨機率 40–60%，<b>洗了不一定乾得了</b>。<br>'
+      + '真的要烘，走去自助洗衣店（下面有三家，最近的就在同一個壬生町內）。</div>'
+      + '<div class="note warn"><span class="h">② 洗衣精不確定有沒有</span>'
+      + '確認單寫「清潔用品」但沒有指明洗衣精。'
+      + '<b>自助洗衣店的機器多半自動投入洗劑</b>，所以要在房間洗的話，'
+      + '先在便利商店或藥妝店買一包最小包裝的就好，不用從台灣帶。</div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>自助洗衣店</h2>'
+      + '<p class="shop-lead">六晚的行李可以少帶一半。三家都是<b>24 小時</b>，晚上回來洗剛好。</p>'
+      + '<div class="shops">'
+
+      + '<div class="shop"><div class="shop-top">'
+      + '<p class="shop-nm">コインランドリー ピエロ 壬生馬場町店<span class="z">最近</span></p>'
+      + '<span class="badge pick">首選</span></div>'
+      + '<p>和民宿<b>同樣在壬生町內</b>，是三家裡最近的。洗脫烘 2 台、洗衣機 2 台、<b>烘乾機 6 台</b>，'
+      + '還有洗鞋機和棉被烘乾機。<b>可以用電子錢包</b>，不用湊硬幣。冷暖氣完備。</p>'
+      + '<dl class="shop-meta">'
+      + '<div><dt>營業</dt><dd><b>24 小時</b></dd></div>'
+      + '<div><dt>位置</dt><dd>中京区壬生馬場町28</dd></div>'
+      + '<div><dt>付款</dt><dd>現金・電子錢包・專用 IC 卡</dd></div>'
+      + '<div><dt>價格</dt><dd>未確認（現場看機台）</dd></div>'
+      + '</dl>'
+      + '<div class="acts">'
+      + '<a class="btn" target="_blank" rel="noopener" href="' + mapURL('コインランドリーピエロ 壬生馬場町店 京都市中京区壬生馬場町28') + '"><span class="g">◎</span>地圖</a>'
+      + '<a class="btn" target="_blank" rel="noopener" href="' + walkURL('HOUSE_Q','京都市中京区壬生馬場町28') + '"><span class="g">⇢</span>走路怎麼去</a>'
+      + '</div></div>'
+
+      + '<div class="shop"><div class="shop-top">'
+      + '<p class="shop-nm">洗たく館 二条店<span class="z">價格最清楚</span></p>'
+      + '<span class="badge">二条駅走路 5 分</span></div>'
+      + '<p>官網把價錢寫得最清楚，不用到現場猜。16kg 的洗脫烘一次就能把三個人的衣服解決掉。</p>'
+      + '<dl class="shop-meta">'
+      + '<div><dt>營業</dt><dd><b>24 小時・全年無休</b></dd></div>'
+      + '<div><dt>位置</dt><dd>中京区西ノ京小堀町1-5 シャントール二条 1F</dd></div>'
+      + '<div><dt>洗脫烘</dt><dd>16kg <b>60 分 ¥1,800</b>／10kg <b>60 分 ¥1,200</b></dd></div>'
+      + '<div><dt>只烘</dt><dd>14kg　<b>8–10 分 ¥100</b></dd></div>'
+      + '</dl>'
+      + '<div class="acts">'
+      + '<a class="btn" target="_blank" rel="noopener" href="' + mapURL('洗たく館 二条店 京都市中京区西ノ京小堀町1-5') + '"><span class="g">◎</span>地圖</a>'
+      + '<a class="btn" target="_blank" rel="noopener" href="' + walkURL('HOUSE_Q','京都市中京区西ノ京小堀町1-5') + '"><span class="g">⇢</span>走路怎麼去</a>'
+      + '</div></div>'
+
+      + '<div class="shop"><div class="shop-top">'
+      + '<p class="shop-nm">コインランドリー 美・ラブド 壬生川<span class="z">往四条那側</span></p></div>'
+      + '<p>在四条通那一側，逛完四条大宮回來順路。</p>'
+      + '<dl class="shop-meta">'
+      + '<div><dt>營業</dt><dd><b>24 小時</b></dd></div>'
+      + '<div><dt>位置</dt><dd>中京区壬生相合町20-7 アルカディア高辻 1F</dd></div>'
+      + '<div><dt>參考</dt><dd>四条大宮駅走路約 6 分</dd></div>'
+      + '</dl>'
+      + '<div class="acts">'
+      + '<a class="btn" target="_blank" rel="noopener" href="' + mapURL('コインランドリー 美・ラブド 壬生川 京都市中京区壬生相合町20-7') + '"><span class="g">◎</span>地圖</a>'
+      + '<a class="btn" target="_blank" rel="noopener" href="' + walkURL('HOUSE_Q','京都市中京区壬生相合町20-7') + '"><span class="g">⇢</span>走路怎麼去</a>'
+      + '</div></div>'
+
+      + '</div>'
+      + '<div class="note"><span class="h">日本的自助洗衣機怎麼用</span>'
+      + '多數是<b>投幣後自動加洗劑</b>，把衣服丟進去、選行程、投錢就好。'
+      + '烘乾是另外計費、<b>以分鐘賣</b>，通常 ¥100 買 8–10 分鐘，一次抓 30–40 分鐘。</div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>出發前要做完的事</h2>'
+      + chk('todo', '勾完就可以不用再想了：', [
+          '<b>Visit Japan Web</b> 的入境審查＋海關 QR 已經產生，<b>截圖存在相簿</b>（沒網路也打得開）',
+          '<b>HARUKA 電子票</b>：去程與回程都選好班次、<b>劃好指定席</b>，QR 截圖',
+          '回程 9/23 是連假最後一天，往機場方向會很滿 —— <b>指定席不要拖到當天</b>',
+          '護照效期還有 6 個月以上',
+          '<b>網路</b>：eSIM 或 WiFi 分享器已經買好（民宿有 WiFi，但出門在外要自己的）',
+          '<b>現金</b>：日本小店與自助洗衣店還是很吃現金，<b>換一些千元鈔和百元硬幣</b>',
+          '海外刷卡通知、提款卡的海外提款功能',
+          '常吃的藥、常備藥（腸胃藥、止痛藥、OK 繃）',
+          '旅遊平安險'])
+      + '</div>'
+
+      + '<div class="sec"><h2>要帶的東西</h2>'
+      + chk('bag', '房間裡有的就不重複列了：', [
+          '<b>好走的鞋</b> —— 9/18 要走山路，9/21 整天在走',
+          '<b>雨傘或輕便雨衣</b>（七天都有 40–60% 降雨機率）',
+          '薄外套 —— 9/20 的遊覽船上風大',
+          '<b>行動電源</b>（每人最多 2 個・關機・各自裝夾鏈袋・不能托運）',
+          '<b>夾鏈袋幾個</b> —— 裝行動電源用，台灣端規定',
+          '充電線、多孔 USB 充電頭（日本插座和台灣一樣，不用轉接頭）',
+          '<b>環保塑膠袋</b> —— 日本街上沒有垃圾桶，9/20 的一日遊一定要帶',
+          '折疊購物袋（藥妝買多了很重）',
+          '常備藥、護唇膏',
+          '換洗衣物<b>只帶三到四天份</b> —— 房間有洗衣機，走幾步有自助洗衣店'])
+      + '</div>');
+  },
+
+  pack: function(){
+    return pageShell('RULES','行李・規定',
+      '<div class="sec"><h2>行動電源（今年兩邊都改了）</h2>'
+      + '<div class="note"><span class="h">兩邊共通的三件事</span>'
+      + '<b>① 每人最多 2 個</b>（每個 160Wh 以下）。<br>'
+      + '<b>② 全程禁止用它充電</b> —— 不能拿它充手機，也不能用座位的 USB 充它。<br>'
+      + '<b>③ 一律隨身、不能托運。</b></div>'
+      + '<div class="note warn"><span class="h">去程・台灣 2026/4/8 起</span>'
+      + '交通部民航局規定：<b>機上全面禁止使用</b>。'
+      + '要<b>關機、端子貼起來，裝進夾鏈袋之類的絕緣袋</b> —— '
+      + '你聽說的「要放塑膠袋」就是這一條。<br>'
+      + '<span style="color:var(--ink-3)">屢勸不聽最高可罰 NT$10 萬。</span></div>'
+      + '<div class="note warn"><span class="h">回程・日本 2026/4/24 起（樂桃官網）</span>'
+      + '<b>不得放頭頂行李櫃</b> —— 要放前方座位下，或<b>放在自己看得到的地方</b>。<br>'
+      + '機上不能用行動電源充電，也不能用座位 USB 幫行動電源充電。</div>'
+      + '<div class="note ok"><span class="h">最省事的做法</span>'
+      + '出發前一晚就把行動電源<b>全部拿出來、關機、各自裝進夾鏈袋</b>，'
+      + '放進隨身小包 —— 兩邊的規定就一次滿足了。</div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>回台灣不能帶的東西</h2>'
+      + '<div class="note warn"><span class="h">含肉的東西一律不行</span>'
+      + '日本很多伴手禮其實含肉：<b>豚骨／牛肉風味的泡麵與調理包、肉乾、肉包、含豬肉萃取物的即食品</b>。<br>'
+      + '被查到<b>沒收並開罰</b>，動物產品最高可罰 NT$100 萬。買之前翻到背面看成分。</div>'
+      + '<div class="note"><span class="h">新鮮水果、植物</span>也不能帶。加工過的果乾、果醬沒問題。</div>'
+      + '<div class="note"><span class="h">免稅額</span>一般物品 <b>NT$2 萬</b>；菸酒另計（酒 1 公升、菸 200 支）。</div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>免稅</h2>'
+      + '<div class="note">結帳時出示護照。<b>封條不要拆</b>，出境前保持原狀。</div>'
+      + '<div class="acts"><button class="btn ja" type="button" data-ja="taxfree">あ 可以免稅嗎</button></div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>幾個日本的小前提</h2>'
+      + '<div class="note"><b>街上沒有垃圾桶。</b>出門帶一個塑膠袋，垃圾帶回住處丟。9/20 的一日遊尤其需要。</div>'
+      + '<div class="note"><b>自來水可以直接喝。</b>民宿有洗衣機，洗完可以晾在陽台。</div>'
+      + '<div class="note"><b>錦市場原則上禁止邊走邊吃</b>，多數店家門口有內用的小空間。</div>'
+      + '</div>');
+  },
+
+  buy: function(){
+    function card(x){
+      var m = [];
+      if (x.hrs) m.push(['營業', x.hrs]);
+      if (x.off) m.push(['公休', x.off]);
+      if (x.loc) m.push(['位置', x.loc]);
+      var h = '<div class="shop"><div class="shop-top"><p class="shop-nm">' + esc(x.n)
+        + (x.z ? '<span class="z">' + esc(x.z) + '</span>' : '') + '</p>'
+        + (x.badge ? '<span class="badge' + (x.pick?' pick':'') + '">' + esc(x.badge) + '</span>' : '') + '</div>';
+      if (x.p) h += '<p>' + x.p + '</p>';
+      if (m.length) h += '<dl class="shop-meta">' + m.map(function(r){ return '<div><dt>'+r[0]+'</dt><dd>'+r[1]+'</dd></div>'; }).join('') + '</dl>';
+      if (x.note) h += '<div class="note ' + (x.tone||'') + '">' + x.note + '</div>';
+      h += '<div class="acts"><a class="btn" target="_blank" rel="noopener" href="' + mapURL(x.q) + '"><span class="g">◎</span>地圖</a></div></div>';
+      return h;
+    }
+    function group(title, lead, items){
+      return '<div class="sec"><h2>' + esc(title) + '</h2>'
+        + (lead ? '<p class="shop-lead">' + lead + '</p>' : '')
+        + '<div class="shops">' + items.map(card).join('') + '</div></div>';
+    }
+
+    var A = [
+     {n:'ミーナ京都', z:'ユニクロ ＋ GU 同一棟', badge:'一次解決兩家', pick:1,
+      p:'<b>ユニクロ 京都河原町店（B1F–3F）</b>和 <b>GU ミーナ京都店（7F）</b>在同一棟樓裡。河原町通三条下ル，阪急京都河原町站走路約 5 分。',
+      hrs:'11:00–21:00', loc:'河原町通三条下ル 大黒町58',
+      tone:'', note:'官網標示<b>「1F 改裝中」</b>，其他樓層照常營業。（這家店 11 月要改成旗艦店「ユニクロ 京都」，你們去的時候還是現在的樣子。）',
+      q:'ミーナ京都 京都市中京区河原町通三条下ル大黒町58'},
+     {n:'無印良品 京都BAL', z:'無印', badge:'走路 2 分',
+      p:'京都BAL 的 5 樓。從ミーナ京都往北走一下就到，兩家可以一起逛。',
+      hrs:'11:00–20:00（<b>比隔壁早一小時關</b>）', loc:'河原町通三条下ル 山崎町251 京都BAL 5F',
+      q:'無印良品 京都BAL 京都市中京区河原町通三条下ル山崎町251'},
+     {n:'ガシャポンのデパート（EDION 京都四条河原町店 B1F）', z:'扭蛋', badge:'扭蛋主場', pick:1,
+      p:'萬代旗下的大型扭蛋專門店，<b>800 面</b>。就在 EDION 地下一樓 —— 而 EDION 樓上就是要看手機殼的地方，<b>一趟解決兩件事</b>。',
+      hrs:'10:00–21:00', loc:'四条通河原町東入 真町68・阪急京都河原町站出口旁',
+      q:'ガシャポンのデパート エディオン京都四条河原町店'},
+     {n:'DAISO 京都四条通店', z:'大創', badge:'1F 是 Standard Products',
+      p:'2 樓是 DAISO，1 樓是 <b>Standard Products</b>（大創的質感線，¥300 起）。從錦市場走出來就在四条通上。',
+      hrs:'9:30–21:00（<b>最早開的一家</b>）', loc:'四条通柳馬場東入ル 立売東町12-1',
+      q:'DAISO 京都四条通店 京都市下京区四条通柳馬場東入ル立売東町12-1'},
+     {n:'3COINS+plus 河原町オーパ店', z:'3COINS',
+      p:'河原町 OPA 5 樓，阪急京都河原町站走路 1 分。同一層還有 <b>#C-pla mini</b>（另一家扭蛋店）。',
+      hrs:'11:00–21:00（依 OPA）', loc:'河原町通四条上ル 河原町オーパ 5F',
+      q:'3COINS 河原町オーパ 京都'},
+     {n:'マツモトキヨシ 京都新京極店', z:'藥妝', badge:'免稅',
+      p:'新京極拱廊裡面，<b>整條街都有屋頂</b>，下雨照樣逛。藥妝主場就是這一帶，走幾步還有其他家可以比價。',
+      hrs:'約 10:00–21:00 以後', loc:'新京極通蛸薬師上ル 東側町503-17',
+      q:'マツモトキヨシ 京都新京極店 京都市中京区新京極通蛸薬師上ル東側町503-17'},
+     {n:'画箋堂', z:'美術用品', badge:'姊姊指名',
+      p:'1913 年（大正2年）創業，三層樓的美術用品專門店 —— 顏料、日本畫岩彩、紙、模型材料。<b>那篇文章講的就是這家。</b>',
+      hrs:'假日 –18:00 / 平日 –19:00', off:'全年無休', loc:'河原町通五条・四条往南走約 10 分',
+      q:'画箋堂 京都市下京区河原町通五条上ル西橋詰町752'}
+    ];
+
+    var B = [
+     {n:'ヨドバシカメラ マルチメディア京都', z:'家電 ＋ ユニクロ', badge:'手機殼主場', pick:1,
+      p:'京都駅烏丸口走路 2 分。<b>B1–3F 是家電</b>（手機配件區極大，波浪殼、iFace、透明殼、抗黃矽膠殼幾乎集齊，多半可以直接摸）。<b>4–5F 是服飾樓層，裡面有ユニクロ 京都ヨドバシ店</b>。',
+      hrs:'B1–3F 9:30–22:00　／　4–5F 11:00–22:00', loc:'烏丸通七条下ル 東塩小路町590-2',
+      q:'ヨドバシカメラ マルチメディア京都'},
+     {n:'ビックカメラ JR京都駅店', z:'家電',
+      p:'直通京都站西口（近鐵／JR 轉乘處旁）。同樣有整區手機殼與配件，免稅櫃台好找。',
+      hrs:'約 10:00–21:00', loc:'京都駅西口直結',
+      q:'ビックカメラ JR京都駅店'},
+     {n:'3COINS 京都ポルタ店', z:'3COINS',
+      p:'京都站地下街 PORTA，不用出站、不會淋到雨。',
+      hrs:'11:00–20:30（<b>關得比車站早</b>）', loc:'京都駅前地下街 PORTA B1F',
+      q:'3COINS 京都ポルタ店'}
+    ];
+
+    return pageShell('SHOPPING','姊姊的清單',
+      '<p class="lede">姊姊想逛的東西，<b>照「走在一起」分成兩群</b> —— 不是照店名排。'
+      + '兩群各自走得完，不用跨區跑。</p>'
+      + group('河原町・新京極一帶（9/21 下午）',
+          '從阪急<b>京都河原町站</b>出來，往北到三条、往南到五条，全部走得到。'
+          + '<b>扭蛋和手機殼在同一棟（EDION）</b>、<b>ユニクロ 和 GU 在同一棟（ミーナ）</b>。', A)
+      + group('京都車站一帶（9/20 傍晚・9/23 早上）',
+          '一日遊 17:30 在八条口解散，走過去就是。<b>最後一天 10:40 也會再來一次</b>，但只有 30 分鐘。', B)
+      + '<div class="sec"><h2>兩件事先知道</h2>'
+      + '<div class="note"><span class="h">免稅</span>結帳時出示護照，消耗品會封起來，<b>封條不要拆</b>。'
+      + '想問「可以免稅嗎」就按下面那顆。</div>'
+      + '<div class="acts"><button class="btn ja" type="button" data-ja="taxfree">あ 可以免稅嗎</button></div>'
+      + '<div class="note warn"><span class="h">扭蛋要銅板</span>多數扭蛋機吃 <b>¥100 硬幣</b>，'
+      + '大型店會有兌幣機但假日常常要排。<b>身上先留一些百元硬幣。</b></div>'
+      + '</div>');
+  },
+
+  about: function(){
+    return pageShell('NOTES','這份行程怎麼來的',
+      '<p class="lede">原本的草稿查證之後改了幾個地方。理由寫在這裡，不用記，知道有原因就好。</p>'
+      + '<div class="sec"><h2>大前提</h2>'
+      + '<div class="note"><span class="h">9/19–23 是 11 年來第一次的五連休</span>'
+      + '敬老の日 9/21、国民の休日 9/22、秋分の日 9/23。人潮要用「全日本旅遊尖峰」來算，不是一般週末。<br>'
+      + '反過來，<b>9/18（五）是全程唯一的平日</b>。</div>'
+      + '<div class="note"><span class="h">秋の長雨，不是颱風</span>'
+      + '全期間降雨機率 40–60%、最高 29–32°C。型態是「隨時會下、但不是整天暴雨」，'
+      + '所以備案不做「整天取消」，而是<b>換順序</b>。</div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>改了什麼</h2>'
+      + '<div class="row"><div class="h">鞍馬〜貴船 從 9/19 移到 9/18</div>'
+      + '<p>貴船的擠<b>不能靠早起解決</b>（瓶頸是叡電運量和餐廳排隊），清水寺的擠<b>可以</b>。唯一的平日要用在唯一解決不了的地方。</p></div>'
+      + '<div class="row"><div class="h">清水寺 從清晨改成傍晚</div>'
+      + '<p>早攻的前提是「連續多天都爬得起來」；退潮不需要任何人努力。而且動線變成全程下坡。</p></div>'
+      + '<div class="row"><div class="h">大文字山 拿掉</div>'
+      + '<p>價值幾乎全在展望，起霧就等於零；濕滑的花崗岩下坡在 60% 降雨機率下不只是掃興，是危險。</p></div>'
+      + '<div class="row"><div class="h">貴船川床 拿掉</div>'
+      + '<p>貴、要訂位，而且<b>店家雨天自己會停</b>。換成一乗寺的拉麵和恵文社。</p></div>'
+      + '<div class="row"><div class="h">9/20 的團裡沒有美山</div>'
+      + '<p>實際是天橋立 View Land（南側・飛龍観）＋ 伊根舟屋遊船，而且<b>不含午餐</b>。</p></div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>兩個時間要記得</h2>'
+      + '<div class="note warn"><b>9/19 晚上</b>　查 KKday 的出團通知 email（含垃圾信件匣），並買好隔天的午餐。</div>'
+      + '<div class="note warn"><b>9/20 08:15</b>　到京都駅八条口。集合 08:30，逾時不候且不退款。</div>'
+      + '</div>');
+  }
+};
+
+var PAGE_META = {
+  home:   ['⌂','首頁'],
+  tickets:['▦','票券・預約'],
+  house:  ['家','住宿'],
+  sos:    ['✆','緊急・求救'],
+  ja:     ['あ','日文對照卡'],
+  buy:    ['袋','姊姊的清單'],
+  prep:   ['✓','出發前準備'],
+  pack:   ['▭','行李・規定'],
+  about:  ['※','這份行程怎麼來的']
+};
+
+/* ==========================================================================
+   7. シート
+   ========================================================================== */
+var sheet = $('#sheet'), sheetIn = $('#sheet-in');
+function openSheet(html){
+  sheetIn.innerHTML = html + '<button class="sheet-close" type="button" data-close>關閉</button>';
+  sheet.classList.add('on');
+  document.documentElement.classList.add('locked');
+}
+function closeSheet(){
+  sheet.classList.remove('on');
+  document.documentElement.classList.remove('locked');
+}
+sheet.addEventListener('click', function(e){
+  if (e.target === sheet || e.target.hasAttribute('data-close')) closeSheet();
+});
+function jaSheet(key){
+  var c = JA[key]; if (!c) return;
+  openSheet('<p class="lb">給對方看</p><h3>' + esc(c.zh) + '</h3>'
+    + '<div class="showcard"><p class="jp' + (c.sm?' sm':'') + '">' + esc(c.jp).replace(/\n/g,'<br>') + '</p></div>'
+    + (key === 'lost' ? '<div class="showcard"><p class="lb">要去的地方</p><p class="jp sm">' + esc(HOUSE) + '</p></div>' : '')
+    + '<p class="tip">把手機轉過去就好，不用開口。</p>');
+}
+function qrSheet(){
+  if (!SECRET) { openSheet('<h3>尚未解鎖</h3>'); return; }
+  openSheet('<p class="lb">KKday 憑證</p><h3>天橋立一日遊　9/20</h3>'
+    + '<div class="qrbox"><img src="' + SECRET.kkQr + '" alt="KKday 憑證 QR">'
+    + '<p class="code">' + esc(SECRET.kkCode) + '</p><p class="cl">確認號碼</p></div>'
+    + '<p class="tip">把螢幕亮度調到最大再給導遊掃。這張圖已經存在手機裡，沒有網路也打得開。<br>'
+    + '報預約人的名字也可以：<b>陳柏岳</b>。</p>');
+}
+
+/* ==========================================================================
+   8. 抽斗とルーティング
+   ========================================================================== */
+var stage = $('#stage'), drawer = $('#drawer'), topDay = $('#top-day');
+var view = null;
+
+function buildDrawer(){
+  var ti = tripIdx();
+  var h = '<button class="dw-head" type="button" data-view="phome">'
+        + '<span class="t">京都・家族の七日</span>'
+        + '<span class="s">2026.9.17 – 9.23　·　回首頁</span></button>';
+  h += '<div class="dw-sec">日程</div>';
+  h += DAYS.map(function(d,i){
+    var x = d.soloShort || d.hol || (d.free ? '平日' : '');
+    return '<button class="dw-i" data-view="d' + i + '">'
+      + '<span class="d">' + esc(d.d) + '</span>'
+      + '<span>' + esc(d.tag) + '</span>'
+      + (x ? '<span class="x">' + esc(x) + '</span>' : '')
+      + (i===ti ? '<span class="x" style="color:#C3A468">今天</span>' : '')
+      + '</button>';
+  }).join('');
+  h += '<div class="dw-rule"></div><div class="dw-sec">隨時打得開</div>';
+  h += Object.keys(PAGE_META).filter(function(k){ return k !== 'home'; }).map(function(k){
+    return '<button class="dw-i" data-view="p' + k + '">'
+      + '<span class="ic">' + PAGE_META[k][0] + '</span><span>' + PAGE_META[k][1] + '</span></button>';
+  }).join('');
+  h += '<div class="dw-rule"></div>'
+     + '<button class="dw-i" id="theme-btn" type="button" data-theme-btn="1">'
+     + '<span class="ic">☾</span><span class="t">夜</span>'
+     + '<span class="x">按一下切換</span></button>';
+  drawer.innerHTML = h;
+  syncThemeBtn();
+}
+
+function setDrawer(open){
+  document.documentElement.classList.toggle('drawer', !!open);
+  $('#burger').setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) document.documentElement.classList.add('locked');
+  else document.documentElement.classList.remove('locked');
+}
+
+function reveal(){
+  var els = [].slice.call(stage.querySelectorAll('.rv'));
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function(el){ el.classList.add('in'); }); return;
+  }
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {rootMargin:'0px 0px -8% 0px'});
+  els.forEach(function(el,i){
+    el.style.setProperty('--d', Math.min(i,6)*0.045 + 's');
+    io.observe(el);
+  });
+}
+
+function go(v, remember){
+  view = v;
+  if (v.charAt(0) === 'd') {
+    var i = +v.slice(1);
+    stage.innerHTML = dayHTML(DAYS[i], i);
+    topDay.textContent = DAYS[i].d + '（' + DAYS[i].dow + '）';
+  } else {
+    var k = v.slice(1);
+    stage.innerHTML = (PAGES[k] || PAGES.about)();
+    topDay.textContent = PAGE_META[k] ? PAGE_META[k][1] : '';
+  }
+  [].slice.call(drawer.querySelectorAll('[data-view]')).forEach(function(el){
+    el.setAttribute('aria-current', el.getAttribute('data-view') === v ? 'true' : 'false');
+  });
+  if (remember !== false) lsSet(LS_VIEW, v);
+  window.scrollTo(0,0);
+  reveal();
+}
+
+$('#burger').addEventListener('click', function(){
+  setDrawer(!document.documentElement.classList.contains('drawer'));
+});
+$('#scrim').addEventListener('click', function(){ setDrawer(false); });
+
+document.addEventListener('click', function(e){
+  var nav = e.target.closest('[data-view]');
+  if (nav) { setDrawer(false); go(nav.getAttribute('data-view')); return; }
+  var pg = e.target.closest('[data-page]');
+  if (pg) { e.preventDefault(); go('p' + pg.getAttribute('data-page')); return; }
+  if (e.target.closest('[data-theme-btn]')) { cycleTheme(); return; }
+  var ja = e.target.closest('[data-ja]');
+  if (ja) { jaSheet(ja.getAttribute('data-ja')); return; }
+  if (e.target.closest('[data-qr]')) { qrSheet(); return; }
+  var td = e.target.closest('[data-todo]');
+  if (td) {
+    var id = td.getAttribute('data-todo'), on = td.getAttribute('data-on') === '1';
+    td.setAttribute('data-on', on ? '0' : '1');
+    var saved = {};
+    try { saved = JSON.parse(lsGet(LS_TODO,'{}')) || {}; } catch(err){}
+    if (on) delete saved[id]; else saved[id] = 1;
+    lsSet(LS_TODO, JSON.stringify(saved));
+  }
+});
+
+/* ==========================================================================
+   9. 門
+   ========================================================================== */
+var gate = $('#gate'), gErr = $('#gate-err'), gPw = $('#gate-pw');
+
+function start(){
+  buildDrawer();
+  // 旅行中なら「今日」。前に見た画面より、いま必要な画面のほうが大事。
+  var ti = tripIdx();
+  var v = ti >= 0 ? ('d' + ti) : lsGet(LS_VIEW, 'd0');
+  if (!/^([dp])/.test(v)) v = 'd0';
+  go(v, false);
+  loadWx().then(function(){ if (view && view.charAt(0) === 'd') go(view, false); });
+}
+
+function unlockWith(pw, quiet){
+  return unseal(pw).then(function(obj){
+    SECRET = obj;
+    lsSet(LS_PW, pw);
+    gate.hidden = true;
+    document.documentElement.classList.remove('locked');
+    start();
+    return true;
+  }).catch(function(err){
+    if (!quiet) {
+      gErr.textContent = (err && err.message === 'nocrypto')
+        ? '這個瀏覽器不支援解鎖，請用 https 開啟。'
+        : '通關碼不對';
+      try { gPw.select(); } catch(e){}
+    }
+    return false;
+  });
+}
+
+$('#gate-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  gErr.textContent = '解鎖中…';
+  unlockWith(gPw.value.trim(), false);
+});
+
+(function(){
+  function showGate(){
+    gate.hidden = false;
+    document.documentElement.classList.add('locked');
+    setTimeout(function(){ try{ gPw.focus(); }catch(e){} }, 60);
+  }
+  var saved = lsGet(LS_PW, '');
+  if (saved) unlockWith(saved, true).then(function(ok){ if (!ok) showGate(); });
+  else showGate();
+})();
+
+/* ==========================================================================
+   10. 夜
+   17:00〜05:59 は夜。九月の京都は 18 時過ぎにはもう暗い。
+   駅のホームで白い画面を出すのは目にも電池にもよくないので、勝手に落とす。
+   抽斗のスイッチで固定もできる（localStorage に残る）。
+   ========================================================================== */
+var LS_THEME = 'kf.theme';
+function themePref(){ return lsGet(LS_THEME, 'auto'); }
+function wantsNight(){
+  var q = (location.search.match(/[?&]theme=(night|day)/) || [])[1];
+  if (q) return q === 'night';
+  var pref = themePref();
+  if (pref === 'night') return true;
+  if (pref === 'day')   return false;
+  var h = new Date().getHours();
+  return h >= 17 || h < 6;
+}
+function applyTheme(force){
+  var want = wantsNight() ? 'night' : 'day';
+  var root = document.documentElement;
+  if (!force && (root.getAttribute('data-theme') || 'day') === want) return;
+  // QR を出している最中に色が変わると読み取りの邪魔になる。閉じるまで待つ。
+  if (!force && sheet.classList.contains('on') && sheetIn.querySelector('.qrbox')) {
+    sheet.addEventListener('click', function(){ setTimeout(applyTheme, 400); }, {once:true});
+    return;
+  }
+  if (want === 'night') root.setAttribute('data-theme','night');
+  else root.removeAttribute('data-theme');
+  var m = document.querySelector('meta[name="theme-color"]');
+  if (m) m.setAttribute('content', want === 'night' ? '#151814' : '#F7F5EE');
+  syncThemeBtn();
+}
+function syncThemeBtn(){
+  var b = $('#theme-btn'); if (!b) return;
+  var pref = themePref();
+  var isNight = (document.documentElement.getAttribute('data-theme') === 'night');
+  // 表示は「いま実際にどうなっているか」。pref は「固定／自動」の別だけに使う。
+  var lbl = (isNight ? '夜' : '白天') + (pref === 'auto' ? '（自動）' : '（固定）');
+  b.querySelector('.t').textContent = lbl;
+  b.querySelector('.ic').textContent = isNight ? '☾' : '☀';
+}
+function cycleTheme(){
+  var order = ['auto','night','day'];
+  var i = order.indexOf(themePref());
+  lsSet(LS_THEME, order[(i + 1) % order.length]);
+  applyTheme(true);
+}
+setInterval(applyTheme, 60000);
+document.addEventListener('visibilitychange', function(){ if (!document.hidden) applyTheme(); });
+
+/* ==========================================================================
+   11. PWA
+   ========================================================================== */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+var bs = $('#build-stamp');
+if (bs) bs.textContent = 'build __BUILD__';
+
+})();
+</script>
+</body>
+</html>

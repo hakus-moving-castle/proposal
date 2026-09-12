@@ -35,10 +35,14 @@ jobs:
             --exclude '.git' \
             --exclude '.github' \
             --exclude '_site' \
+            --exclude '.claude' \
+            --exclude 'demos/.claude' \
             --exclude 'demos/renovation-plan' \
             --exclude 'demos/*/qr-*.png' \
             --exclude 'demos/*/PROMPT.md' \
             --exclude 'demos/*/CONTEXT.md' \
+            --exclude 'demos/*/SECRETS.md' \
+            --exclude 'demos/*/*.pdf' \
             --exclude 'demos/*/docs' \
             --exclude 'demos/*/logo-source.*'
           echo "--- deployed tree ---"

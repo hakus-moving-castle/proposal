@@ -8,3 +8,13 @@ demos/*/qr-*.png
 
 # アイコンの元画像（1.8MB・サイトでは未使用）
 demos/*/logo-source.*
+
+# 生の予約書類（PDF）— PUBLIC repo なのでコミットしない。
+# KKday バウチャーQR・Booking.com 確認書（個人情報）を含む。
+demos/*/*.pdf
+
+# 宿の鍵箱コード・WiFiパスワード等を含む内部メモ
+demos/*/SECRETS.md
+
+# 平文の鍵（通關碼・鍵箱コード）
+demos/*/docs/tools/secrets.json

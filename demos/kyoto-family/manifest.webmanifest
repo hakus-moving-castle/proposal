@@ -1,0 +1,17 @@
+{
+  "name": "京都・家族の七日 2026.9.17–23",
+  "short_name": "京都七日",
+  "description": "媽媽・姊姊・岳的京都七日行程 — 逐步指示、日文對照、票券與備案",
+  "lang": "zh-Hant",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F6F5EF",
+  "theme_color": "#F6F5EF",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
