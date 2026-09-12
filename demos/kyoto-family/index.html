@@ -385,6 +385,32 @@ html.drawer #drawer{transform:none}
 .shop .acts{margin-top:11px}
 .shop .note{margin-top:10px;padding-top:5px;padding-bottom:5px;font-size:12.5px}
 
+/* 今日つかう券。日の頭に出す。
+   「持っているつもり」で改札に立つのが一番こわい。 */
+.cert{
+  margin:20px 0 0;border:1px solid var(--gold-b);border-radius:12px;
+  background:var(--gold-l);overflow:hidden;
+}
+.cert-h{
+  padding:11px 15px 10px;border-bottom:1px solid var(--gold-b);
+  font-family:var(--serif);font-size:14.5px;letter-spacing:.08em;color:var(--gold-t);
+}
+.cert-h .p{display:block;font-family:var(--sans);font-size:10.5px;letter-spacing:.16em;color:var(--gold);margin-bottom:2px}
+.cert-i{padding:12px 15px;border-bottom:1px solid var(--gold-b)}
+.cert-i:last-child{border-bottom:0}
+.cert-i .nm{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:0 0 4px}
+.cert-i .nm b{font-family:var(--serif);font-size:15px;letter-spacing:.03em;color:var(--ink)}
+.cert-i p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.8}
+.cert-i p b{color:var(--ink)}
+.cert-tag{
+  font-size:10px;letter-spacing:.08em;padding:2px 8px;border-radius:100px;white-space:nowrap;
+  border:1px solid transparent;
+}
+.cert-tag.off{background:var(--moss-l);color:var(--moss);border-color:var(--moss-b)}
+.cert-tag.net{background:var(--warn-l);color:var(--warn);border-color:var(--warn-b)}
+.cert-tag.shot{background:var(--rain-l);color:var(--rain)}
+.cert .acts{margin:9px 0 0}
+
 /* 分岐 */
 .fork{margin:14px 0 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
 .fork-h{
@@ -648,40 +674,90 @@ var DAYS = [
   title:'抵達日 — 京都車站會合',
   lede:'今天只有一件事要做：平安到民宿。<b>岳早上就到京都了</b>，他會在京都車站的月台上等你們，從那裡開始就有人帶路。',
   plan:{cond:'多雲', hi:31, lo:23, pop:60},
-  soloNote:'從關西機場到京都車站這一段是你們自己走。只有兩個動作：搭一班免費接駁巴士、上一班直達車。',
+  cert:{title:'今天有一張券「不能截圖」', items:[
+    {n:'HARUKA 車票', kind:'net',
+     s:'這是 <b>WEST QR</b> 的電子票。JR 西日本官網寫明：<b>「截圖或列印的 QR 無法乘車」</b> —— '
+       + '一定要當場從 WEST QR 的網頁叫出來，<b>手機必須連著網路</b>。<br>'
+       + '而且要<b>當天日本時間 04:00 之後</b>才能按「開始使用」，出發前按不了。'},
+    {n:'Visit Japan Web　入境審査 QR', kind:'shot',
+     s:'這個<b>可以截圖</b>，出發前就截好存在相簿。機場網路常常很慢。'},
+    {n:'Visit Japan Web　海關 QR', kind:'shot',
+     s:'和上面那個<b>是不同的兩張</b>，兩張都要截。'},
+    {n:'樂桃登機證', kind:'shot',
+     s:'線上報到後截圖，或直接在櫃台領紙本。'}]},
+  soloNote:'從關西機場到京都車站這一段是你們自己走，但<b>只有兩個動作</b>：'
+    + '搭一班<b>免費接駁巴士</b>（7 分鐘）、上一班<b>直達的 HARUKA</b>（1 小時 20 分）。'
+    + '中間不用轉車、不用買票、不用問路。下面每一步都寫了「要看到什麼字」。',
   blocks:[
    {k:'note', t:'', tone:'gold', quiet:1, n:'岳今天早上就到了',
     s:'岳 07:40 從成田飛，09:15 落地關西，中午前就會進民宿把行李放好。你們不用等他、也不用在機場找他 —— 約在<b>京都車站的月台</b>。'},
 
    {k:'do', t:'07:00', n:'桃園機場 T1', s:'國際線抓起飛前 2.5 小時。9/17 是連假前一天，出境人潮已經開始了。',
     todoLead:'這幾樣勾完，機場那段就不用再想了：',
-    todo:['Visit Japan Web 的入境 QR 已經產生、<b>截圖存在相簿</b>','HARUKA 電子票已經選好班次、劃好位，QR 也截圖了','行動電源<b>關機、各自裝進夾鏈袋</b>，放隨身小包（台灣規定機上全程禁用）','行動電源<b>不能托運</b>、每人最多 2 個']},
+    todo:[
+     'Visit Japan Web 的<b>入境 QR 和海關 QR</b>都產生了，<b>兩張都截圖存在相簿</b>',
+     'HARUKA <b>指定席已經劃好</b>（在 WEST QR 使用者網站上劃，車站窗口不能劃）',
+     '<b>HARUKA 的 QR 不要截圖</b>，截圖不能用 —— 當天到閘門前再打開網頁按「開始使用」',
+     '手機能上網（eSIM 開好、<b>數據漫遊打開</b>）',
+     '行動電源<b>關機、各自裝進夾鏈袋</b>，放隨身小包（台灣規定機上全程禁用）',
+     '行動電源<b>不能托運</b>、每人最多 2 個']},
 
    {k:'go', t:'09:30', hi:1, n:'TPE → KIX　樂桃 MM024', move:{f:'桃園 T1',t:'關西 T2',by:'Peach MM024',min:'3小時55分'},
     s:'降落的是<b>第 2 航廈（T2）</b>，是廉航專用的那一棟，跟主航廈分開。',
     note:{tone:'', html:'樂桃櫃台<b>起飛前 120 分開、前 30 分關</b> → <b>07:30 開櫃、09:00 關櫃</b>。'
       + '07:00 到的話櫃台還沒開，<b>先去排隊就好</b>，連假前一天隊伍本來就會提早排。'}},
 
-   {k:'at', t:'13:25', hi:1, solo:1, n:'關西機場 T2 落地', nja:'関西国際空港 第2ターミナル',
-    s:'下機後跟著人群走：<b>入国審査</b>（掃 Visit Japan Web 的 QR ＋ 護照）→ 領行李 → <b>税関</b>。連假前一天，這段抓 60 分鐘比較安心。',
-    note:{tone:'', html:'出關後不用急著找電車 —— <b>T2 沒有車站</b>，要先搭一段免費巴士過去。'}},
-
-   {k:'go', t:'14:30', hi:1, solo:1, n:'免費接駁巴士 → 関西空港駅',
-    move:{f:'T2 國際線到達口',t:'関西空港駅',by:'無料連絡バス',min:'合計約15分',fare:'免費'},
-    s:'走出<b>國際線到達口</b>，巴士站就在正前方，不用過馬路也不用上下樓。車程 7–9 分到「エアロプラザ」，下車後照指標走 5 分鐘就是車站。',
+   {k:'at', t:'13:25', hi:1, solo:1, n:'① 落地 — 跟著人群走到出關', nja:'関西国際空港 第2ターミナル',
+    s:'T2 是<b>一層樓的平房</b>，不用上下樓、也沒有電車軌道在裡面，走廊只有一條。<b>跟著前面的人走就對了。</b>',
+    list:[
+     ['入国審査（にゅうこくしんさ）','排「<b>外国人 / Foreign Passports</b>」那一列。把 <b>Visit Japan Web 的入境 QR</b> 打開給機器掃，然後護照、拍照、按指紋。<b>入境卡和海關單都不用寫紙本</b>，QR 就是。','関西国際空港 第2ターミナル'],
+     ['手荷物受取（てにもつうけとり）','看電子看板上的<b>班機號碼 MM024</b>，找到對應的行李轉盤。','関西国際空港 第2ターミナル'],
+     ['税関（ぜいかん）','把 <b>Visit Japan Web 的海關 QR</b> 掃一下就過了。沒有要申報的東西就走綠色通道。','関西国際空港 第2ターミナル']],
+    note:{tone:'warn', html:'<b>兩個 QR 是不一樣的</b> —— 一個入境審查用、一個海關用，Visit Japan Web 裡面分開的兩頁。'
+      + '<b>出發前兩個都截圖存進相簿</b>，機場的網路常常很慢。'},
     acts:[{type:'ja',k:'kixBus'}]},
 
-   {k:'go', t:'15:14', hi:1, solo:1, n:'HARUKA 特急 → 京都', nja:'特急 はるか',
-    move:{f:'関西空港',t:'京都',by:'JR 特急 はるか',min:'1小時20分'},
-    s:'手機上的 <b>HARUKA 電子票 QR 直接刷閘門</b>，不用換票也不用找機器。上車後照票上的車廂號碼和座位號碼坐。',
-    note:{tone:'ok', html:'沒趕上 15:14 完全沒關係 —— <b>每小時 :14 和 :44 各一班</b>。下一班 15:44 到京都是 17:04，岳那邊照樣等得到。'},
+   {k:'note', t:'', quiet:1, tone:'gold', n:'出關之後：先不要找電車',
+    s:'<b>T2 這一棟裡面沒有車站。</b>車站在 4 公里外，走不過去，中間隔著跑道。'
+      + '唯一的方法是搭一班<b>免費</b>的接駁巴士。下面第 ② 步就是。'},
+
+   {k:'go', t:'14:30', hi:1, warn:1, solo:1, n:'② 免費接駁巴士 → 関西空港駅',
+    nja:'無料連絡バス　第1ターミナル・エアロプラザ ゆき',
+    move:{f:'T2 國際線到達口',t:'関西空港駅',by:'無料連絡バス',min:'車程 7 分・全程約 15 分',fare:'免費'},
+    s:'走出<b>國際線到達口</b>的自動門，<b>巴士站就在正前方</b> —— 不用過馬路、不用上下樓、不用轉彎。'
+      + '看到寫著 <b>T1</b> 的巴士就上去。',
+    list:[
+     ['上車','<b>不用買票、不用刷卡、不用跟司機說話。</b>前門後門都可以上。行李自己拿上車就好（車上有放行李的地方）。','関西国際空港 第2ターミナル'],
+     ['要坐幾分鐘','<b>車程 7 分鐘</b>。白天<b>每 4–5 分鐘一班</b>，錯過一班完全沒差。','関西国際空港'],
+     ['在哪裡下車','<b>終點下車</b>，不用數站。下車的地方叫「エアロプラザ」的 1 樓。','エアロプラザ 関西空港'],
+     ['下車之後','下車後<b>左前方有電扶梯</b>，搭上去到 2 樓 → <b>往右</b>走過一條有頂的空橋 → 就是<b>関西空港駅</b>。走路約 5 分鐘。','関西空港駅']],
+    note:{tone:'warn', html:'<b>不要搭錯成計程車或利木津巴士。</b>要找的是<b>免費</b>的那一班，車身和站牌上會寫 <b>「無料」</b>或 <b>Free Shuttle</b>，'
+      + '目的地寫 <b>第1ターミナル・エアロプラザ</b>。<br>'
+      + '看不懂的時候，把下面那張日文卡轉給地勤看就好。'},
+    acts:[{type:'ja',k:'kixBus'},{type:'map',q:'関西国際空港 第2ターミナル 無料連絡バスのりば'}]},
+
+   {k:'at', t:'14:50', hi:1, warn:1, solo:1, n:'③ 関西空港駅 — 進閘門前先把 QR 叫出來', nja:'関西空港駅　JR',
+    s:'車站裡面<b>JR 和南海電鐵並排</b>，閘門是分開的兩個。<b>走 JR 那邊</b>（藍色的 JR 標誌），不是南海。',
+    list:[
+     ['先確定手機有網路','HARUKA 的 QR <b>每次都要即時產生</b>，沒網路就叫不出來。沒訊號的話連機場的免費 WiFi：<b>_FreeWiFi-KansaiAirports</b>（不用註冊，按「同意」就好）。','関西空港駅'],
+     ['打開 WEST QR 的網頁，按「開始使用」','<b>要走到閘門前才按。</b>按下去才會出現能刷的 QR。','関西空港駅'],
+     ['刷閘門','把手機螢幕朝下貼在閘門的讀取區上。<b>螢幕亮度開到最大</b>比較好讀。','関西空港駅'],
+     ['找月台','進去之後看指標找 <b>「特急 はるか 京都」</b>。月台只有兩個，走錯也走得回來。','関西空港駅']],
+    note:{tone:'warn', html:'<b>刷不過就不要硬擠。</b>走到旁邊有站務員的那一格窗口，把手機畫面給他看。<br>'
+      + '如果連網頁都打不開（網路真的不通），在那個窗口出示 Klook 的訂單畫面，讓站務員處理。'},
+    acts:[{type:'ja',k:'haruka'}]},
+
+   {k:'go', t:'15:14', hi:1, solo:1, n:'④ HARUKA 特急 → 京都（直達，不用轉車）', nja:'特急 はるか　京都ゆき',
+    move:{f:'関西空港 15:14発',t:'京都 16:34着',by:'JR 特急 はるか 34号',min:'1小時20分'},
+    s:'上車後照票上的<b>車廂號碼</b>和<b>座位號碼</b>坐。中途只停天王寺和新大阪，<b>不用轉車、不用看站名</b> —— 坐到終點前一站就是京都，車上有中文廣播和跑馬燈。',
+    note:{tone:'ok', html:'<b>沒趕上 15:14 完全沒關係。</b>関西空港発是<b>每小時 :14 和 :44</b> 各一班。'
+      + '下一班 15:44 → 京都 17:04，岳照樣等得到。<b>不要為了趕車用跑的。</b>'},
     acts:[{type:'ja',k:'haruka'},{type:'transit',f:'関西空港駅',t:'京都駅'}]},
 
-   {k:'at', t:'16:34', hi:1, n:'京都車站 — 岳在月台上', nja:'京都駅',
-    s:'下車不用走動，<b>岳會直接上月台來接</b>。從這裡開始今天就結束了，剩下的路有人帶。',
+   {k:'at', t:'16:34', hi:1, n:'⑤ 京都車站 — 岳在月台上', nja:'京都駅',
+    s:'<b>下車之後就站在原地不要走。</b>岳會直接上月台來接。從這裡開始今天就結束了，剩下的路有人帶。',
     note:{tone:'', html:'萬一手機沒訊號、一時找不到人：<b>就待在下車的那個月台上</b>。京都車站很大，各自走動反而更難碰到。<br>'
-      + '岳的日本手機在<a href="#" data-page="sos">求救卡</a>那一頁（打電話不用網路）。'},
-    acts:[{type:'yuetel'}]},
+      + '有網路的話直接傳 LINE 就好；真的要打電話，號碼在<a href="#" data-page="sos">求救卡</a>那一頁。'}},
 
    {k:'go', t:'16:50', n:'JR 嵯峨野線 → 二条', nja:'JR嵯峨野線（山陰本線）',
     move:{f:'京都',t:'二条',by:'JR 嵯峨野線',min:'6分',fare:'¥190'},
@@ -689,12 +765,17 @@ var DAYS = [
 
    {k:'at', t:'17:10', hi:1, n:'Ken House Kyoto', nja:'京都市中京区壬生御所ノ内町10-14',
     s:'二条駅走路約 10 分鐘。整棟兩房的房子，三個人住。',
-    secret:'house',
-    acts:[{type:'map',q:'HOUSE_Q'}]},
+    note:{tone:'gold', html:'<b>屋主自己做了一份指南</b>，裡面有房間怎麼用、還有一整頁附近的吃的。'
+      + '比我這邊寫的更在地，<b>到了先點開來看一遍</b>。'},
+    acts:[{type:'guide'},{type:'map',q:'HOUSE_Q'}],
+    secret:'house'},
 
    {k:'eat', t:'18:30', n:'三条会商店街', nja:'三条会商店街',
     s:'民宿走路就到的<b>全罩式拱廊商店街</b>，約 800 公尺，下雨完全不影響。第一晚不跑遠，在這裡挑一家坐下來。',
-    acts:[{type:'map',q:'三条会商店街 京都'}],
+    note:{tone:'', html:'<b>不一定要照下面走。</b>屋主的指南裡也有一整頁附近的店，'
+      + '而且這條街走一走看到順眼的就進去最快 —— 下面兩家只是「不想再想的時候」的答案。'},
+    acts:[{type:'guide'},{type:'map',q:'三条会商店街 京都'}],
+    shopLead:'先查好的兩家，<b>參考用</b>。想自己找完全沒問題。',
     shops:[
      {n:'魏飯夷堂 三条店', z:'中華', badge:'首選', pick:1,
       p:'三条会商店街裡的老味噌店改建，中華居酒屋。菜單上有<b>台湾牛肉麺（¥1,200）</b>和小籠包四種拼盤（¥1,480），第一晚吃個熟悉的味道最省力。',
@@ -939,6 +1020,14 @@ var DAYS = [
   title:'天橋立・伊根舟屋 一日遊',
   lede:'今天是<b>唯一不能改期的行程</b>。早上準時上車之後，剩下一整天都交給導遊 —— 你們只要跟著車走就好。',
   plan:{cond:'多雲', hi:30, lo:25, pop:60},
+  cert:{title:'今天這張不怕沒網路', items:[
+    {n:'KKday 憑證 QR', kind:'off',
+     s:'這張圖<b>已經存在這個 app 裡面</b>，沒有網路、飛航模式都打得開。'
+       + '集合的時候把它叫出來給導遊掃就好，<b>不用先下載、不用開網頁</b>。<br>'
+       + '報預約人的名字 <b>陳柏岳</b> 也可以。',
+     acts:[{type:'qr'}]},
+    {n:'昨晚那封出團通知 email', kind:'net',
+     s:'裡面有導遊的聯絡方式。<b>昨晚就先截圖</b>，早上不用再找信箱。'}]},
   soloNote:'今天整天只有你們兩個。集合的位置、要找什麼樣子的人、幾點在哪裡，下面都寫好了；<a href="#" data-page="sos">求救卡</a>也隨時打得開。',
   blocks:[
    {k:'do', t:'06:50', solo:1, n:'起床', todoLead:'昨晚備好的東西，出門前對一下：',
@@ -1212,10 +1301,17 @@ var DAYS = [
   title:'返台日',
   lede:'岳送你們上 HARUKA 之後就分開了。<b>從關西機場站到報到櫃台是你們自己走</b> —— 跟來的時候完全一樣，只是反過來。',
   plan:{cond:'多雲', hi:29, lo:22, pop:50},
+  cert:{title:'今天要用兩張券', items:[
+    {n:'HARUKA 回程車票', kind:'net',
+     s:'一樣是 <b>WEST QR</b>，<b>不能截圖</b>，要當場從網頁叫出來，手機要有網路。<br>'
+       + '今天才能按「開始使用」，<b>走到京都車站的閘門前再按</b>。'
+       + '<b>指定席記得早點劃好</b> —— 今天是連假最後一天，往機場方向很滿。'},
+    {n:'樂桃 MM027 登機證', kind:'shot',
+     s:'線上報到後截圖，或到 T2 櫃台領紙本（13:30 開櫃）。'}]},
   soloNote:'京都車站之後是你們自己走。只有兩個動作：下車後搭免費接駁巴士到 T2、然後找報到櫃台。',
   blocks:[
    {k:'do', t:'08:00', quiet:1, n:'起床・最後檢查',
-    todo:['充電線、轉接頭','浴室、床頭櫃、冰箱都看一遍','護照、登機證、HARUKA QR','行動電源在隨身包裡']},
+    todo:['充電線、轉接頭','浴室、床頭櫃、冰箱都看一遍','護照、登機證','<b>手機有網路</b>（HARUKA 的 QR 要即時叫出來）','行動電源在隨身包裡']},
 
    {k:'at', t:'10:00', hi:1, n:'退房', nja:'チェックアウト 10:00',
     s:'<b>退房時間是 10:00，不是 11:00。</b>鑰匙放回鑰匙箱，把扣把壓回去。',
@@ -1235,7 +1331,9 @@ var DAYS = [
 
    {k:'go', t:'11:30', hi:1, n:'HARUKA 23号 → 関西空港', nja:'特急 はるか 関西空港ゆき　30番のりば',
     move:{f:'京都 11:30発',t:'関西空港 12:50着',by:'JR 特急 はるか 23号',min:'1小時20分'},
-    s:'<b>岳送到月台，在這裡分開。</b>京都發的 HARUKA 是<b>每小時 :00 和 :30</b>，月台固定是 <b>30 番のりば</b>（車站最西邊）。<br>剛買的便當在車上吃就好，HARUKA 是對號特急，可以安心吃東西。',
+    s:'<b>岳送到月台，在這裡分開。</b>京都發的 HARUKA 是<b>每小時 :00 和 :30</b>，月台固定是 <b>30 番のりば</b>（車站最西邊）。<br>'
+      + '進閘門前，<b>岳會陪你們把 WEST QR 的「開始使用」按好</b>，所以這一段不用自己弄。<br>'
+      + '剛買的便當在車上吃就好，HARUKA 是對號特急，可以安心吃東西。',
     note:{tone:'warn', html:'今天是秋分の日、連假最後一天，往機場方向會很滿 —— <b>指定席一定要先劃好</b>，不然要拖著行李站一小時二十分。<br>沒趕上 11:30 的話，下一班是 <b>12:00</b>（12:00 発 → 13:20 着），還是來得及 —— 但就沒有緩衝了。'}},
 
    {k:'go', t:'12:55', hi:1, warn:1, solo:1, n:'関西空港駅 → T2（免費接駁巴士）',
@@ -1256,8 +1354,7 @@ var DAYS = [
 
    {k:'note', t:'', tone:'gold', quiet:1, n:'岳',
     s:'岳的飛機是晚上 20:05 從關西回成田，送完你們之後他會去大阪找朋友。'
-      + '從京都車站分開之後到登機，有任何事都還是打得到他。上飛機之前傳個訊息給他。',
-    acts:[{type:'yuetel'}]}
+      + '從京都車站分開之後到登機，有任何事 LINE 他就好。上飛機之前傳個訊息給他。'}
   ]
 }
 ];
@@ -1422,6 +1519,7 @@ function actsHTML(acts){
     if (a.type === 'walk')    out.push('<a class="btn" target="_blank" rel="noopener" href="' + walkURL(a.f,a.t) + '"><span class="g">⇢</span>' + esc(a.label || '走路怎麼去') + '</a>');
     if (a.type === 'ja')      out.push('<button class="btn ja" type="button" data-ja="' + a.k + '">あ ' + esc(JA[a.k].zh) + '</button>');
     if (a.type === 'qr')      out.push('<button class="btn qr" type="button" data-qr="1">▦ 出示憑證 QR</button>');
+    if (a.type === 'guide' && SECRET) out.push('<a class="btn ja" target="_blank" rel="noopener" href="' + esc(SECRET.houseGuide) + '">☞ 屋主的房間・餐廳指南</a>');
     if (a.type === 'yuetel' && SECRET) out.push('<a class="btn tel" href="tel:' + esc(SECRET.yueTel) + '">☏ 岳　' + esc(SECRET.yuePhone) + '</a>');
   });
   return out.length ? '<div class="acts">' + out.join('') + '</div>' : '';
@@ -1484,7 +1582,26 @@ function secretHTML(kind){
 /* ==========================================================================
    5. 一日の描画
    ========================================================================== */
+var CERT_TAG = {
+  off:  ['離線也打得開', 'off'],
+  net:  ['一定要有網路', 'net'],
+  shot: ['截圖就可以',   'shot']
+};
+function certHTML(c){
+  return '<div class="cert"><div class="cert-h"><span class="p">今天要用到的憑證</span>'
+    + esc(c.title || '出門前先確認打得開') + '</div>'
+    + c.items.map(function(it){
+        var t = CERT_TAG[it.kind] || CERT_TAG.off;
+        return '<div class="cert-i"><p class="nm"><b>' + esc(it.n) + '</b>'
+          + '<span class="cert-tag ' + t[1] + '">' + t[0] + '</span></p>'
+          + '<p>' + it.s + '</p>'
+          + actsHTML(it.acts) + '</div>';
+      }).join('')
+    + '</div>';
+}
+
 function blockHTML(b, di, bi){
+  if (b.k === 'cert') return certHTML(b);
   if (b.k === 'fork') {
     return '<div class="blk hi rv"><div class="tm">' + esc(b.t||'') + '</div>'
       + '<p class="nm">' + esc(b.title) + '</p>'
@@ -1532,6 +1649,8 @@ function dayHTML(day, di){
     + (day.soloNote ? '<div class="note gold" style="margin-top:16px">' + day.soloNote + '</div>' : '')
     + wxHTML(day)
     + '</div></section>';
+
+  if (day.cert) h += '<div class="wrap">' + certHTML(day.cert) + '</div>';
 
   h += '<div class="wrap"><div class="tl">'
     + day.blocks.map(function(b,bi){ return blockHTML(b, di, bi); }).join('')
@@ -1596,7 +1715,8 @@ var PAGES = {
       + '<div class="note warn"><span class="h">9/20 08:15　京都駅八条口</span>'
       + '一日遊集合 08:30，憑證明訂<b>逾時不候、不退款</b>。這是整趟唯一一個補救不了的時間點。</div>'
       + '<div class="note"><span class="h">走散了就站著別動</span>'
-      + '先打給岳：<a class="btn tel" href="tel:' + esc(SECRET.yueTel) + '" style="margin-top:6px">☏ ' + esc(SECRET.yuePhone) + '</a></div>'
+      + '站在原地等，先 LINE 岳。沒網路的時候才需要打電話 —— 號碼在求救卡那一頁。'
+      + '<span class="go" style="display:block;margin-top:8px"><button class="btn" type="button" data-view="psos">打開求救卡 →</button></span></div>'
       + '<div class="note"><span class="h">日文講不出來沒關係</span>'
       + '需要的整句都寫好了，<b>把手機轉過去給對方看就好</b>。'
       + '<span class="go" style="display:block;margin-top:8px"><button class="btn" type="button" data-view="pja">打開日文對照卡 →</button></span></div>'
@@ -1624,12 +1744,23 @@ var PAGES = {
       + '</div>'
 
       + '<div class="sec"><h2>HARUKA　機場特急</h2>'
+      + '<div class="note warn"><span class="h">這張票不能截圖</span>'
+      + 'JR 西日本官網原文：<b>「スマートフォン画面のスクリーンショットや印刷したQRコードではご乗車いただけません」</b>'
+      + '（截圖或列印的 QR 無法乘車）。<br>'
+      + '所以它<b>沒辦法放進這個 app</b>，一定要當場從 WEST QR 的網頁叫出來，<b>手機要連著網路</b>。</div>'
       + '<dl class="kv">'
-      + '<dt>形式</dt><dd><b>電子票</b>　手機 QR 直接刷閘門，不用換票</dd>'
+      + '<dt>形式</dt><dd><b>WEST QR 電子票</b>　手機即時顯示 QR 刷閘門</dd>'
+      + '<dt>開通</dt><dd>只能在<b>搭乘當天 日本時間 04:00 之後</b>按「開始使用」<br>'
+      + '<b>走到閘門前再按</b>，不要提早按</dd>'
+      + '<dt>劃位</dt><dd>在 <b>WEST QR 使用者網站</b>上劃。發車前 30 天〜發車前 3 分鐘都可以。<br>'
+      + '<b>車站的綠色窗口和售票機不能劃</b></dd>'
       + '<dt>去程</dt><dd>9/17　関西空港 → 京都　<b>每小時 :14 / :44</b>　1小時20分</dd>'
-      + '<dt>回程</dt><dd>9/23　京都 → 関西空港　<b>11:15 発</b>　12:35 着</dd>'
+      + '<dt>回程</dt><dd>9/23　京都 → 関西空港　<b>每小時 :00 / :30</b>　30番のりば</dd>'
       + '</dl>'
       + '<div class="note warn">回程 9/23 是<b>秋分の日、連假最後一天</b>，往機場方向會很滿。指定席要先劃好，不然要拖著行李站一小時二十分。</div>'
+      + '<div class="note"><span class="h">刷不過怎麼辦</span>'
+      + '不要硬擠。走到旁邊<b>有站務員的那一格窗口</b>，把手機畫面給他看。'
+      + '網路真的不通就出示 Klook 的訂單畫面。</div>'
       + '<div class="acts"><button class="btn ja" type="button" data-ja="haruka">あ 去程月台</button>'
       + '<button class="btn ja" type="button" data-ja="harukaKix">あ 回程月台</button></div>'
       + '</div>'
@@ -1662,8 +1793,14 @@ var PAGES = {
         + '<a class="btn" target="_blank" rel="noopener" href="' + esc(SECRET.form) + '">事前登記表單</a>'
         + '</div></div>'
       : '<div class="note warn">尚未解鎖</div>';
+    var guide = SECRET
+      ? '<div class="note gold" style="margin-top:0"><span class="h">屋主的房間・餐廳指南</span>'
+        + '房間怎麼用、電器怎麼開、附近吃什麼，屋主自己整理了一份。<b>比這個 app 更在地。</b>'
+        + '<div class="acts"><a class="btn ja" target="_blank" rel="noopener" href="' + esc(SECRET.houseGuide) + '">☞ 點開來看</a></div></div>'
+      : '';
     return pageShell('STAY','Ken House Kyoto',
-      '<div class="sec"><h2>地址・聯絡</h2>'
+      guide
+      + '<div class="sec"><h2>地址・聯絡</h2>'
       + '<div class="showcard"><p class="lb">地址（給司機看）</p><p class="jp sm">' + esc(HOUSE) + '</p></div>'
       + '<div class="acts">'
       + '<a class="btn" target="_blank" rel="noopener" href="' + mapURL('HOUSE_Q') + '"><span class="g">◎</span>地圖</a>'
@@ -1684,12 +1821,33 @@ var PAGES = {
 
   sos: function(){
     return pageShell('HELP','緊急・求救',
-      '<div class="sec"><h2>先打岳</h2>'
-      + '<div class="note gold"><span class="h">岳的日本手機</span>'
-      + '在日本境內直接撥 <b>' + esc(SECRET.yuePhone) + '</b>。這支在日本打得通，台灣的號碼在這裡打不通。</div>'
+      '<div class="sec"><h2>找岳</h2>'
+      + '<div class="note ok"><span class="h">有網路 → 傳 LINE</span>'
+      + '平常就用 LINE，最快也最省事。'
+      + '<b>只有在沒網路的時候才需要打電話。</b></div>'
+      + '<div class="note gold"><span class="h">沒網路 → 打這支</span>'
+      + '岳的日本手機 <b>' + esc(SECRET.yuePhone) + '</b>。這支在日本境內直接撥。<br>'
+      + '<b>打電話不需要網路</b>，只要手機還抓得到訊號就打得出去。</div>'
       + '<div class="acts"><a class="btn tel" href="tel:' + esc(SECRET.yueTel) + '">☏ 岳　' + esc(SECRET.yuePhone) + '</a></div>'
-      + '<div class="note"><span class="h">先存進手機通訊錄</span>'
-      + '出發前就存好，不要到現場才翻這一頁。沒有網路也打得出去 —— <b>打電話不需要網路</b>。</div>'
+      + '<div class="note"><span class="h">出發前先存進通訊錄</span>'
+      + '不要到現場才翻這一頁。</div>'
+      + '</div>'
+
+      + '<div class="sec"><h2>eSIM 沒網路的時候</h2>'
+      + '<div class="note warn"><span class="h">九成是這一條：數據漫遊沒開</span>'
+      + 'eSIM 是靠<b>當地電信漫遊</b>才有網路的，所以<b>「數據漫遊」一定要開</b>。'
+      + '很多人以為漫遊＝會被多收錢而把它關掉，結果 eSIM 就完全不通。</div>'
+      + '<div class="note"><span class="h">iPhone　照這個順序檢查</span>'
+      + '① <b>設定 → 行動服務</b>：eSIM 那個方案要是「<b>開啟</b>」的<br>'
+      + '② <b>行動數據</b>這一欄選的要是 <b>eSIM</b>，不是台灣門號<br>'
+      + '③ <b>點進那個 eSIM → 把「數據漫遊」打開</b>　←  最常忘記的就是這個<br>'
+      + '④ 台灣門號那一張，<b>數據漫遊要關</b>（不然帳單會爆）</div>'
+      + '<div class="note"><span class="h">Android</span>'
+      + '設定 → 網路與網際網路 → SIM 卡 → 選 eSIM → <b>「行動數據」和「漫遊」兩個都要開</b>。</div>'
+      + '<div class="note"><span class="h">上面都對了還是不通</span>'
+      + '① <b>飛航模式開 10 秒再關</b>（重新抓訊號，最常見的解法）<br>'
+      + '② 還是不行就<b>重新開機</b><br>'
+      + '③ 都不行的話先連機場或店家的免費 WiFi，用 LINE 跟岳說一聲</div>'
       + '</div>'
 
       + '<div class="sec"><h2>岳不在的時候（9/20・9/21 白天）</h2>'
@@ -1837,10 +1995,14 @@ var PAGES = {
       + '<div class="sec"><h2>出發前要做完的事</h2>'
       + chk('todo', '勾完就可以不用再想了：', [
           '<b>Visit Japan Web</b> 的入境審查＋海關 QR 已經產生，<b>截圖存在相簿</b>（沒網路也打得開）',
-          '<b>HARUKA 電子票</b>：去程與回程都選好班次、<b>劃好指定席</b>，QR 截圖',
+          '<b>HARUKA</b>：去程與回程都在 <b>WEST QR 使用者網站</b>上<b>劃好指定席</b>（發車前 30 天就能劃）',
+          '<b>HARUKA 的 QR 不要截圖</b> —— 官網明寫截圖不能用，當天到閘門前才按「開始使用」',
           '回程 9/23 是連假最後一天，往機場方向會很滿 —— <b>指定席不要拖到當天</b>',
+          '<b>先確認買到的是哪一種 HARUKA 票</b>：QR 直接刷閘門的，還是要到車站窗口換紙本的',
           '護照效期還有 6 個月以上',
           '<b>網路</b>：eSIM 或 WiFi 分享器已經買好（民宿有 WiFi，但出門在外要自己的）',
+          '<b>eSIM 先在台灣裝好</b>，但<b>不要提前啟用</b> —— 多數方案是「第一次連上當地網路」才開始算天數',
+          '記住 eSIM 沒網路時先檢查<b>「數據漫遊」有沒有開</b>（<a href="#" data-page="sos">求救卡那頁</a>寫了完整步驟）',
           '<b>現金</b>：日本小店與自助洗衣店還是很吃現金，<b>換一些千元鈔和百元硬幣</b>',
           '海外刷卡通知、提款卡的海外提款功能',
           '常吃的藥、常備藥（腸胃藥、止痛藥、OK 繃）',
@@ -2171,10 +2333,10 @@ var gate = $('#gate'), gErr = $('#gate-err'), gPw = $('#gate-pw');
 
 function start(){
   buildDrawer();
-  // 旅行中なら「今日」。前に見た画面より、いま必要な画面のほうが大事。
+  // 旅行中なら「今日」。それ以外は首頁 —— 前に見た画面より、
+  // 「何があるか」が見えるほうが開いた瞬間の役に立つ。
   var ti = tripIdx();
-  var v = ti >= 0 ? ('d' + ti) : lsGet(LS_VIEW, 'd0');
-  if (!/^([dp])/.test(v)) v = 'd0';
+  var v = ti >= 0 ? ('d' + ti) : 'phome';
   go(v, false);
   loadWx().then(function(){ if (view && view.charAt(0) === 'd') go(view, false); });
 }
